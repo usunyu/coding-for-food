@@ -64,6 +64,29 @@ class Solution {
         }
         return result;
     }
+
+    // time complexity: O(N^2)
+    // space complexity: O(1)
+    public int[] twoSum3(int[] numbers, int target) {
+        // Note: The Solution object is instantiated only once and is reused by each test case.
+        int[] result = new int[2];
+        boolean find = false;
+        for(int i = 0; i < numbers.length; i++) {
+            for(int j = i + 1; j < numbers.length; j++) {
+                int sum = numbers[i] + numbers[j];
+                if(sum == target) {
+                    result[0] = i + 1;
+                    result[1] = j + 1;
+                    find = true;
+                    break;
+                }
+            }
+            if(find) {
+                break;
+            }
+        }
+        return result;
+    }
     
     // time complexity: O(NlogN)
     // space complexity: O(N)

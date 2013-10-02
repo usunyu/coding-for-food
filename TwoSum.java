@@ -1,3 +1,5 @@
+import java.util.*;
+
 class Solution {
     public void quickSort(int[] numbers) {
         quickSort(numbers, 0, numbers.length - 1);
@@ -63,7 +65,9 @@ class Solution {
         return result;
     }
     
-    public int[] twoSum(int[] numbers, int target) {
+    // time complexity: O(NlogN)
+    // space complexity: O(N)
+    public int[] twoSum2(int[] numbers, int target) {
         // Note: The Solution object is instantiated only once and is reused by each test case.
         int[] origin = numbers.clone();
         quickSort(numbers);
@@ -86,6 +90,27 @@ class Solution {
                     result[1] = temp;
                 }
                 break;
+            }
+        }
+        return result;
+    }
+
+    // time complexity: O(N)
+    // space complexity: O(N)
+    public int[] twoSum(int[] numbers, int target) {
+        // Note: The Solution object is instantiated only once and is reused by each test case.
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        int[] result = new int[2];
+        for(int i = 0; i < numbers.length; i++) {
+            int value = numbers[i];
+            int need = target - value;
+            if(map.containsKey(need)) {
+                result[0] = map.get(need) + 1;
+                result[1] = i + 1;
+                break;
+            }
+            if(!map.containsKey(value)) {
+                map.put(value, i);
             }
         }
         return result;

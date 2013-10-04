@@ -140,7 +140,7 @@ class Solution {
     }
 }
 
-class TestApp {
+class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         int[] numbers = {11, 15, 2, 7};

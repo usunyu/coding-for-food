@@ -82,7 +82,7 @@ class Solution {
     }
 }
 
-class TestApp {
+class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         int i = solution.atoi(" - 321");

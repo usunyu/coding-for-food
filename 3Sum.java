@@ -50,7 +50,7 @@ class Solution {
         return result;
     }
 
-    // time complexity: O(N^2)
+    // time complexity: O(NlogN)
     // space complexity: O(1)
 	public ArrayList<ArrayList<Integer>> threeSum2(int[] num) {  
 		ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();  

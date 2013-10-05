@@ -45,6 +45,32 @@ class Solution {
         }
         return isValidBST;
     }
+
+    class IntWraper {
+        int val;
+        public IntWraper(int val) {
+            this.val = val;
+        }
+    }
+
+    // inorder traversal
+    public boolean isValidBST2(TreeNode root, IntWraper prev) {
+        if(root == null) {
+            return true;
+        }
+        if(isValidBST2(root.left, prev)) {
+            if(root.val > prev.val) {
+                prev.val = root.val;
+                return isValidBST2(root.right, prev);
+            }
+        }
+        return false;
+    }
+
+    public boolean isValidBST2(TreeNode root) {
+        IntWraper prev = new IntWraper(Integer.MIN_VALUE);
+        return isValidBST2(root, prev);
+    }
 }
 
 class Main {
@@ -53,6 +79,6 @@ class Main {
         TreeNode t2 = new TreeNode(-1);
         t1.left = t2;
         Solution solution = new Solution();
-        System.out.println(solution.isValidBST(t1));
+        System.out.println(solution.isValidBST2(t1));
     }
 }

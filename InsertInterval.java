@@ -69,6 +69,35 @@ class Solution {
         }
         return result;
     }
+
+    public ArrayList<Interval> insert2(ArrayList<Interval> intervals, Interval newInterval) {
+        ArrayList<Interval> result = new ArrayList<Interval>();
+        if(intervals == null || intervals.size() == 0) {
+            result.add(newInterval);
+            return result;
+        }
+        int i = 0;
+        Interval current;
+        // insert before
+        while(i < intervals.size() && newInterval.start > (current = intervals.get(i)).end) {
+            result.add(current);
+            i++;
+        }
+        // overlap
+        while(i < intervals.size() && newInterval.end >= (current = intervals.get(i)).start) {
+            newInterval.start = Math.min(newInterval.start, current.start);
+            newInterval.end = Math.max(newInterval.end, current.end);
+            i++;
+        }
+        result.add(newInterval);
+        // insert end
+        while(i < intervals.size()) {
+            current = intervals.get(i);
+            result.add(current);
+            i++;
+        }
+        return result;
+    }
 }
 
 class Main {
@@ -86,17 +115,17 @@ class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         ArrayList<Interval> intervals = new ArrayList<Interval>();
-        intervals.add(new Interval(0, 2));
-        intervals.add(new Interval(3, 5));
-        intervals.add(new Interval(6, 7));
-        intervals.add(new Interval(8, 10));
-        intervals.add(new Interval(12, 16));
+        intervals.add(new Interval(1, 5));
+        // intervals.add(new Interval(3, 5));
+        // intervals.add(new Interval(6, 7));
+        // intervals.add(new Interval(8, 10));
+        // intervals.add(new Interval(12, 16));
         // intervals.add(new Interval(1, 5));
         // intervals.add(new Interval(6, 8));
         print(intervals);
-        Interval newInterval = new Interval(4, 6);
+        Interval newInterval = new Interval(2, 3);
         print(newInterval);
-        intervals = solution.insert(intervals, newInterval);
+        intervals = solution.insert2(intervals, newInterval);
         print(intervals);
     }
 }

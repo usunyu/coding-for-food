@@ -1,6 +1,8 @@
 import java.util.*;
 
 class Solution {
+    // time complexity : N!
+    // space complexity : N!
     public ArrayList<String> generateParenthesis(int n) {
         // Note: The Solution object is instantiated only once and is reused by each test case.
         ArrayList<String> parenthesisList = new ArrayList<String>();
@@ -29,6 +31,38 @@ class Solution {
         }
         return parenthesisList;
     }
+
+    public void generateParenthesis2(int leftRemain, int rightRemain, String parenthesis, ArrayList<String> parenthesisList) {
+    if(leftRemain < 0 || rightRemain < 0) {
+        return;
+    }
+        if(leftRemain == 0 && rightRemain == 0) {
+            parenthesisList.add(parenthesis);
+            return;
+        }
+        if(leftRemain < rightRemain) {  // we can insert left and right parenthesis
+            String temp = parenthesis;
+            temp += '(';
+            generateParenthesis2(leftRemain - 1, rightRemain, temp, parenthesisList);
+            temp = parenthesis;
+            temp += ')';
+            generateParenthesis2(leftRemain, rightRemain - 1, temp, parenthesisList);
+        }
+        else if(leftRemain == rightRemain) {    // we can only insert left parenthesis
+            parenthesis += '(';
+            generateParenthesis2(leftRemain - 1, rightRemain, parenthesis, parenthesisList);
+        }
+        else {  // we can only insert right parenthesis
+            parenthesis += ')';
+            generateParenthesis2(leftRemain, rightRemain - 1, parenthesis, parenthesisList);
+        }
+    }
+
+    public ArrayList<String> generateParenthesis2(int n) {
+        ArrayList<String> parenthesisList = new ArrayList<String>();
+        generateParenthesis2(n, n, "", parenthesisList);
+        return parenthesisList;
+    }
 }
 
 class Main {
@@ -41,7 +75,7 @@ class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         int n = 3;
-        ArrayList<String> parenthesisList = solution.generateParenthesis(n);
+        ArrayList<String> parenthesisList = solution.generateParenthesis2(n);
         print(parenthesisList);
     }
 }

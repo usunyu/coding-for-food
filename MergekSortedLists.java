@@ -70,6 +70,51 @@ class Solution {
 		}
 		return head;
 	}
+
+	// time complexity : NlogSize
+	// space complexity : Size
+	public ListNode mergeKLists2(ArrayList<ListNode> lists) {
+		// Note: The Solution object is instantiated only once and is reused by each test case.
+		if(lists == null || lists.size() == 0) {
+			return null;
+		}
+		int size = lists.size();
+		Comparator<ListNode> comparator = new Comparator<ListNode>() {
+	        @Override
+	        public int compare(ListNode n1, ListNode n2) {
+	            if (n1.val < n2.val)
+	                return -1;
+	            else if (n1.val > n2.val)
+	                return 1;
+	            else
+	                return 0;
+	        }
+	    };
+	    PriorityQueue<ListNode> priorityQ = new PriorityQueue<ListNode>(size, comparator);
+
+		ListNode head = null;
+		ListNode current = null;
+		for(int i = 0; i < size; i++) {
+			if(lists.get(i) != null) {
+				priorityQ.add(lists.get(i));
+			}
+		}
+		while(!priorityQ.isEmpty()) {
+			ListNode temp = priorityQ.poll();
+			if(head == null) {
+				head = temp;
+				current = temp;
+			}
+			else {
+				current.next = temp;
+				current = temp;
+			}
+			if(current.next != null) {
+				priorityQ.add(current.next);
+			}
+		}
+		return head;
+	}
 }
 
 class Main {
@@ -100,7 +145,7 @@ class Main {
 			}
 			lists.add(head);
 		}
-		ListNode merge = solution.mergeKLists(null);
+		ListNode merge = solution.mergeKLists2(lists);
 		print(merge);
 	}
 }

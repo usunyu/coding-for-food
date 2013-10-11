@@ -1,4 +1,7 @@
 class Solution {
+    // does not change the order of array
+    // time complexity : O(N)
+    // space complexity : O(1)
     public int removeElement(int[] A, int elem) {
         // Note: The Solution object is instantiated only once and is reused by each test case.
         int count = 0;

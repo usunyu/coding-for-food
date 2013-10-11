@@ -41,6 +41,34 @@ class Solution {
         permute(num, 0, result);
         return result;
     }
+
+    public ArrayList<ArrayList<Integer>> insert(ArrayList<ArrayList<Integer>> lists, int n) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>(); 
+        for(ArrayList<Integer> list : lists) {
+            for(int i = 0; i < list.size() + 1; i++) {
+                ArrayList<Integer> temp = new ArrayList<Integer>(list);
+                temp.add(i, n);
+                result.add(temp);
+            }
+        }
+        return result;
+    }
+
+    // time complexity : O(N!)
+    // space complexity : O(N!)
+    public ArrayList<ArrayList<Integer>> permute2(int[] num) {
+        // Note: The Solution object is instantiated only once and is reused by each test case.
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        if(num.length > 0) {
+            ArrayList<Integer> list = new ArrayList<Integer>();
+            list.add(num[0]);
+            result.add(list);
+            for(int i = 1; i < num.length; i++) {
+                result = insert(result, num[i]);
+            }
+        }
+        return result;
+    }
 }
 
 class Main {
@@ -57,7 +85,7 @@ class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         int[] num = {1, 2, 3};
-        ArrayList<ArrayList<Integer>> result = solution.permute(num);
+        ArrayList<ArrayList<Integer>> result = solution.permute2(num);
         print(result);
     }
 }

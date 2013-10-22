@@ -1,5 +1,7 @@
 
 class Solution {
+    // time complexity : O(N)
+    // space complexity : O(N)
     public String addBinary(String a, String b) {
         // Note: The Solution object is instantiated only once and is reused by each test case.
         if((a == null || a.length() == 0) && (b == null || b.length() == 0)) {

@@ -32,6 +32,34 @@ class Solution {
         }
         return result;
     }
+
+    // iterative implementation
+    public ArrayList<ArrayList<Integer>> combine2(int n, int k) {
+        // Note: The Solution object is instantiated only once and is reused by each test case.
+        ArrayList<ArrayList<Integer>> results = new ArrayList<ArrayList<Integer>>();
+        for(; k > 0; k--) {
+            int num = results.size();
+            // initial
+            if(num == 0) {
+                for(int i = 1; i <= n - k + 1; i++) {
+                    ArrayList<Integer> result = new ArrayList<Integer>();
+                    result.add(i);
+                    results.add(result);
+                }
+            }
+            for(int i = 0; i < num; i++) {
+                ArrayList<Integer> result = results.get(i);
+                int last = result.get(result.size() - 1);
+                for(last += 1; last < n - k + 1; last++) {
+                    ArrayList<Integer> temp = new ArrayList<Integer>(result);
+                    temp.add(last);
+                    results.add(temp);
+                }
+                result.add(last);
+            }
+        }
+        return results;
+    }
 }
 
 class Main {
@@ -47,7 +75,7 @@ class Main {
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        ArrayList<ArrayList<Integer>> result = solution.combine(10, 3);
+        ArrayList<ArrayList<Integer>> result = solution.combine2(4, 2);
         print(result);
     }
 }

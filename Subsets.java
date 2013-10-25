@@ -40,7 +40,7 @@ class Solution {
         quickSort(S, 0, S.length - 1);
     }
 
-    // time complexity : O(N^2)
+    // time complexity : O(2^N)
     public ArrayList<ArrayList<Integer>> subsets(int[] S) {
         // Note: The Solution object is instantiated only once and is reused by each test case.
         ArrayList<ArrayList<Integer>> subsets = new ArrayList<ArrayList<Integer>>();

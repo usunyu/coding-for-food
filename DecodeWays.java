@@ -21,7 +21,9 @@ class Solution {
     }
 
     // dynamic programming
-    public int numDecodings(String s) {
+    // time complexity : O(N)
+    // space complexity : O(N)
+    public int numDecodings3(String s) {
         // Note: The Solution object is instantiated only once and is reused by each test case.
         if(s == null || s.length() == 0) {
             return 0;
@@ -62,11 +64,60 @@ class Solution {
         }
         return space[s.length() - 1];
     }
+
+    // dynamic programming
+    // time complexity : O(N)
+    // space complexity : O(1)
+    public int numDecodings(String s) {
+        // Note: The Solution object is instantiated only once and is reused by each test case.
+        if(s == null || s.length() == 0) {
+            return 0;
+        }
+        int prev1, prev2 = -1;
+        // initial
+        int first = Integer.parseInt(s.substring(0,1));
+        if(first > 0 && first <= 9) {
+            prev1 = 1;
+        }
+        else {
+            prev1 = 0;
+        }
+        for(int i = 1; i < s.length(); i++) {
+            String s1 = s.substring(i, i + 1);
+            String s2 = s.substring(i - 1, i + 1);
+            int i1 = Integer.parseInt(s1);
+            int i2 = Integer.parseInt(s2);
+            int temp = 0;
+            if(i1 > 0 && i1 <= 9 && i2 >= 10 && i2 <= 26) {
+                if(prev2 == -1) {
+                    temp = prev1 + 1;
+                }
+                else {
+                    temp = prev1 + prev2;
+                }
+            }
+            else if(i2 >= 10 && i2 <= 26) {
+                if(prev2 == -1) {
+                    temp = 1;
+                }
+                else {
+                    temp = prev2;
+                }
+            }
+            else if(i1 > 0 && i1 <= 9) {
+                temp = prev1;
+            }
+            // update prev
+            prev2 = prev1;
+            prev1 = temp;
+        }
+        return prev1;
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        System.out.println(solution.numDecodings("01"));
+        System.out.println(solution.numDecodings("012"));
     }
 }

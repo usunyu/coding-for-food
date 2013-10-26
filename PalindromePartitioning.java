@@ -34,17 +34,38 @@ class Solution {
         for(int i = 1; i < s.length(); i++) {
             // check from mid
             int size = palindromeList.size();
+            // add cache
+            HashSet<Integer> cachePos = new HashSet<Integer>();
+            HashSet<Integer> cacheNeg = new HashSet<Integer>();
             for(int k = 0; k < size; k++) {
                 PalindromeSet ps = palindromeList.get(k);
                 int lastIndex = ps.lastIndex;
-                String palindrome = s.substring(lastIndex + 1, i + 1);
-                if(isPalindrome(palindrome)) {
+                if(cachePos.contains(lastIndex)) {  // in cache indicate it is palindrome
+                    String palindrome = s.substring(lastIndex + 1, i + 1);
                     PalindromeSet psn = new PalindromeSet();
                     // copy original
                     psn.palindromes = new ArrayList<String>(ps.palindromes);
                     psn.palindromes.add(palindrome);
                     psn.lastIndex = i;
                     palindromeList.add(psn);
+                }
+                else if(cacheNeg.contains(lastIndex)) { // in cache indicate it is not palindrome
+
+                }
+                else {  // not in cache
+                    String palindrome = s.substring(lastIndex + 1, i + 1);
+                    if(isPalindrome(palindrome)) {
+                        PalindromeSet psn = new PalindromeSet();
+                        // copy original
+                        psn.palindromes = new ArrayList<String>(ps.palindromes);
+                        psn.palindromes.add(palindrome);
+                        psn.lastIndex = i;
+                        palindromeList.add(psn);
+                        cachePos.add(lastIndex);
+                    }
+                    else {
+                        cacheNeg.add(lastIndex);
+                    }
                 }
             }
             // check from begin

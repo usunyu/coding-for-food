@@ -109,14 +109,24 @@ class Solution {
 		// IMPORTANT: Please reset any member data you declared, as
 		// the same Solution instance will be reused for each test case.
 		Stack<InterMatchResult> interMatchStack = new Stack<InterMatchResult>();
-		InterMatchResult initial = new InterMatchResult(0, 0);
-		interMatchStack.push(initial);
+		interMatchStack.push(new InterMatchResult(0, 0));
 		while (!interMatchStack.isEmpty()) {
 			InterMatchResult inter = interMatchStack.pop();
 			int sp = inter.sIndex, pp = inter.pIndex;
-			InterMatchResult interAdd;
-			while (sp < s.length()) {
-				// TODO:
+			if(sp == s.length() && pp == p.length()) return true;
+			while(sp < s.length() && (s.charAt(sp) == p.charAt(pp) || p.charAt(pp) == '.')) {
+				sp++; pp++;
+				if(pp == p.length()) break;
+				if(p.charAt(pp) == '*') {
+					sp--; pp--;
+					break;
+				}
+			}
+			if(p.charAt(pp + 1) == '*') {
+				while(sp < s.length() && (s.charAt(sp) == p.charAt(pp) || p.charAt(pp) == '.')) {
+					interMatchStack.push(new InterMatchResult(sp++, pp + 2));
+				}
+				interMatchStack.push(new InterMatchResult(sp, pp + 2));
 			}
 		}
 		return false;
@@ -127,7 +137,7 @@ class Main {
 	public static void main(String[] args) {
 		Solution solution = new Solution();
 		long start = System.currentTimeMillis();
-		System.out.println(solution.isMatch("ab", ".*c"));
+		System.out.println(solution.isMatch3("aab", "a*a*b"));
 		long end = System.currentTimeMillis();
 		System.out.println("cost: " + (end - start));
 	}

@@ -30,7 +30,7 @@ class Solution {
 		return m(s, p, sp, pp + 2);
 	}
 	
-	// DP solution
+	// DP solution first write
 	public boolean isMatch(String s, String p) {
 		// IMPORTANT: Please reset any member data you declared, as
 		// the same Solution instance will be reused for each test case.
@@ -99,6 +99,24 @@ class Solution {
 					interAdd = new InterMatchResult(sp, pp + 1);
 					interMatchStack.push(interAdd);
 				}
+			}
+		}
+		return false;
+	}
+	
+	// DP solution concise
+	public boolean isMatch3(String s, String p) {
+		// IMPORTANT: Please reset any member data you declared, as
+		// the same Solution instance will be reused for each test case.
+		Stack<InterMatchResult> interMatchStack = new Stack<InterMatchResult>();
+		InterMatchResult initial = new InterMatchResult(0, 0);
+		interMatchStack.push(initial);
+		while (!interMatchStack.isEmpty()) {
+			InterMatchResult inter = interMatchStack.pop();
+			int sp = inter.sIndex, pp = inter.pIndex;
+			InterMatchResult interAdd;
+			while (sp < s.length()) {
+				// TODO:
 			}
 		}
 		return false;

@@ -11,7 +11,26 @@ class InterMatchResult {
 }
 
 class Solution {
+
+	// recursion solution
+	public boolean isMatch2(String s, String p) {
+		if(s == null) return p == null;
+		return m(s, p, 0, 0);
+	}
+
+	public boolean m(String s, String p, int sp, int pp){
+		if(pp == p.length()) return sp == s.length();
+		if(pp == p.length() - 1 || p.charAt(pp + 1) != '*') {
+			if(sp == s.length()) return false;
+			return (p.charAt(pp) == '.' || p.charAt(pp) == s.charAt(sp)) && m(s, p, ++sp, ++pp);
+		}
+		while(sp < s.length() && (p.charAt(pp) == '.' || p.charAt(pp) == s.charAt(sp))) {
+			if(m(s, p, sp++, pp + 2)) return true;
+		}
+		return m(s, p, sp, pp + 2);
+	}
 	
+	// DP solution
 	public boolean isMatch(String s, String p) {
 		// IMPORTANT: Please reset any member data you declared, as
 		// the same Solution instance will be reused for each test case.
@@ -90,7 +109,7 @@ class Main {
 	public static void main(String[] args) {
 		Solution solution = new Solution();
 		long start = System.currentTimeMillis();
-		System.out.println(solution.isMatch("", "c*c*"));
+		System.out.println(solution.isMatch("ab", ".*c"));
 		long end = System.currentTimeMillis();
 		System.out.println("cost: " + (end - start));
 	}

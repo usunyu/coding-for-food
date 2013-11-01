@@ -34,6 +34,28 @@ class Solution {
         }
         return head;
     }
+
+    // time complexity : O(N)
+    // space complexity : O(1)
+    public ListNode removeNthFromEnd2(ListNode head, int n) {
+        // IMPORTANT: Please reset any member data you declared, as
+        // the same Solution instance will be reused for each test case.
+        ListNode fast = head, slow = head;
+        for(int i = 0 ; i < n; i++) {
+            fast = fast.next;
+        }
+        if(fast == null) {
+            return head.next;
+        }
+        else {
+            while(fast.next != null) {
+                fast = fast.next;
+                slow = slow.next;
+            }
+            slow.next = slow.next.next;
+        }
+        return head;
+    }
 }
 
 class Main {

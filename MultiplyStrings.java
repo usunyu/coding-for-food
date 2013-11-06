@@ -61,12 +61,44 @@ class Solution {
         }
         return mul;
     }
+
+    // time complexity : O(M*N)
+    // space complexity : O(M+N)
+    public String multiply2(String num1, String num2) {
+        if (num1.equals("0") || num2.equals("0")) return "0";
+        int l1 = num1.length(), l2 = num2.length();
+        int[] n1 = new int[l1];
+        int[] n2 = new int[l2];
+        for(int i = 0; i < num1.length(); i++) {
+            n1[i] = num1.charAt(l1 - 1 - i) - '0';
+        }
+        for(int i = 0; i < num2.length(); i++) {
+            n2[i] = num2.charAt(l2 - 1 - i) - '0';
+        }
+        StringBuffer strBuff = new StringBuffer();
+        int sum = 0;
+        for(int i = 0; i < l1 + l2 - 1; i++) {
+            for(int j = 0; j <=i; j++) {
+                if(j < l1 && i - j < l2) {
+                    sum += n1[j] * n2[i - j];
+                }
+            }
+            int dig = sum % 10;
+            strBuff.append(dig);
+            sum /= 10;
+        }
+        if(sum > 0) {
+            strBuff.append(sum);
+        }
+        String s = strBuff.reverse().toString();
+        return (s.isEmpty()) ? "0" : s;
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        String num1 = "9133", num2 = "0";
-        System.out.println(solution.multiply(num1, num2));
+        String num1 = "123", num2 = "456";
+        System.out.println(solution.multiply2(num1, num2));
     }
 }

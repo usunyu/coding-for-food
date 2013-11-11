@@ -56,13 +56,39 @@ class Solution {
         }
         return minSteps;
     }
+
+    // dynamic programming solution
+    public int minDistance2(String word1, String word2) {
+        int m = word1.length();
+        int n = word2.length();
+        if(m == 0 || n == 0) return m + n;
+        int[][] space = new int[m + 1][n + 1];
+        // initial
+        for(int i = 0; i <= m; i++) space[i][0] = i;
+        for(int i = 0; i <= n; i++) space[0][i] = i;
+        // calculate
+        for(int i = 1; i <= m; i++) {
+            for(int j = 1; j <= n; j++) {
+                if(word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    space[i][j] = space[i - 1][j - 1];
+                }
+                else {
+                    int add = space[i - 1][j] + 1;
+                    int del = space[i][j - 1] + 1;
+                    int rep = space[i - 1][j - 1] + 1;
+                    space[i][j] = Math.min(Math.min(add, del), rep);
+                }
+            }
+        }
+        return space[m][n];
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        String word1 = "dinitrophenylhydrazine", word2 = "acetylphenylhydrazine";
-        System.out.println(solution.minDistance(word1, word2));
+        String word1 = "sea", word2 = "ate";
+        System.out.println(solution.minDistance2(word1, word2));
     }
 }
 

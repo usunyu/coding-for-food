@@ -23,6 +23,25 @@ class Solution {
         inorderTraversal(root, result);
         return result;
     }
+
+    // iterative solution
+    public ArrayList<Integer> inorderTraversal2(TreeNode root) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        TreeNode node = root;
+        while(!stack.isEmpty() || node != null) {
+            if(node != null) {
+                stack.push(node);
+                node = node.left;
+            }
+            else {
+                node = stack.pop();
+                result.add(node.val);
+                node = node.right;
+            }
+        }
+        return result;
+    }
 }
 
 class Main {
@@ -33,7 +52,7 @@ class Main {
         TreeNode node2 = new TreeNode(3);
         node1.left = node2;
         Solution solution = new Solution();
-        ArrayList<Integer> result = solution.inorderTraversal(root);
+        ArrayList<Integer> result = solution.inorderTraversal2(root);
         for(int i : result) {
             System.out.print(i + " ");
         }

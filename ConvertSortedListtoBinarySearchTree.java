@@ -69,18 +69,20 @@ class Solution {
         return sortedArrayToBST(array, 0, array.size() - 1);
     }
 
-    private TreeNode listToBST2(ListNode head, int low, int high) {  
+    // time complexity : O(N)
+    // space complexity : O(1)
+    private TreeNode listToBST(ListNode head, int low, int high) {  
         if (low > high) return null;  
         int mid = low + (high - low) / 2;  
         // build up tree recursively  
-        TreeNode left = listToBST2(head, low, mid-1);  
+        TreeNode left = listToBST(head, low, mid-1);  
         TreeNode root = new TreeNode(head.val);  
         root.left = left;  
         // Java pass in Object by reference, so we can't change head but we can change its content :)  
         if (head.next != null) { // "move to next"  
             head.val = head.next.val;
             head.next = head.next.next;
-            root.right = listToBST2(head, mid+1, high);
+            root.right = listToBST(head, mid+1, high);
         }
         return root;  
     }
@@ -94,7 +96,7 @@ class Solution {
             len++;  
         }  
         // build the BST  
-        return listToBST2(head, 0, len-1);  
+        return listToBST(head, 0, len-1);  
     }
 }
 

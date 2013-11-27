@@ -54,6 +54,8 @@ class Solution {
         return root;
     }
     
+    // same as Convert Sorted Array to Binary Search Tree
+    // using O(N) extra space
     public TreeNode sortedListToBST(ListNode head) {
         // IMPORTANT: Please reset any member data you declared, as
         // the same Solution instance will be reused for each test case.
@@ -65,6 +67,34 @@ class Solution {
             current = current.next;
         }
         return sortedArrayToBST(array, 0, array.size() - 1);
+    }
+
+    private TreeNode listToBST2(ListNode head, int low, int high) {  
+        if (low > high) return null;  
+        int mid = low + (high - low) / 2;  
+        // build up tree recursively  
+        TreeNode left = listToBST2(head, low, mid-1);  
+        TreeNode root = new TreeNode(head.val);  
+        root.left = left;  
+        // Java pass in Object by reference, so we can't change head but we can change its content :)  
+        if (head.next != null) { // "move to next"  
+            head.val = head.next.val;
+            head.next = head.next.next;
+            root.right = listToBST2(head, mid+1, high);
+        }
+        return root;  
+    }
+
+    // http://n00tc0d3r.blogspot.com/search?q=Convert+Sorted+List+to+Binary+Search+Tree
+    public TreeNode sortedListToBST2(ListNode head) {  
+        // calculate list length  
+        int len = 0; ListNode cur = head;  
+        while (cur!=null) {  
+            cur = cur.next;  
+            len++;  
+        }  
+        // build the BST  
+        return listToBST2(head, 0, len-1);  
     }
 }
 
@@ -92,7 +122,7 @@ class Main {
             }
             prev = node;
         }
-        TreeNode root = solution.sortedListToBST(head);
+        TreeNode root = solution.sortedListToBST2(head);
         print(solution.levelOrder(root));
     }
 }

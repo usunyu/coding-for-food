@@ -84,6 +84,46 @@ class Solution {
         }
         return result;
     }
+
+    private boolean[][] buildPalindromeTable(String s) {
+        // table[i][j] == true iff s[i..j] is a palindrome
+        boolean table[][] = new boolean[s.length()][s.length()];
+        for(int i = 0; i < s.length(); i++) {
+            table[i][i] = true;
+            // odd case
+            int left = i - 1, right = i + 1;
+            while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                table[left--][right++] = true;
+            }
+            // even case
+            left = i; right = i + 1;
+            while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                table[left--][right++] = true;
+            }
+        }
+        return table;
+    }
+
+    private void partitionHelper(String s, int index, boolean[][] table, ArrayList<String> path,
+        ArrayList<ArrayList<String>> results) {
+        if(index == s.length()) {
+            results.add(new ArrayList<String>(path));
+        }
+        for(int i = index; i < s.length(); i++) {
+            if(table[index][i]) {
+                //ArrayList<String> npath = new ArrayList<String>(path);
+                path.add(s.substring(index, i + 1));
+                partitionHelper(s, i + 1, table, path, results);
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+
+    public ArrayList<ArrayList<String>> partition2(String s) {
+        ArrayList<ArrayList<String>> results = new ArrayList<ArrayList<String>>();
+        partitionHelper(s, 0, buildPalindromeTable(s), new ArrayList<String>(),results);
+        return results;
+    }
 }
 
 class Main {
@@ -99,7 +139,7 @@ class Main {
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        ArrayList<ArrayList<String>> result = solution.partition("aab");
+        ArrayList<ArrayList<String>> result = solution.partition2("aab");
         print(result);
     }
 }

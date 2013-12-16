@@ -74,12 +74,52 @@ class Solution {
         }
         return cut[0];
     }
+
+    public int minCut3(String s) {
+        if(s.length() <= 1) return 0;
+        boolean[][] table = buildPalindromeTable(s);
+        // cut[i] = k means the minimum cuts needed for s[0..i] is k
+        int[] cut = new int[s.length()];
+        // initial
+        cut[0] = 0;
+        for(int i = 1; i < s.length(); i++) {
+            if(table[0][i]) {
+                cut[i] = 0;
+            }
+            else {
+                cut[i] = i;
+                for(int j = 1; j <= i; j++) {
+                    if(table[j][i]) {
+                        cut[i] = Math.min(cut[i], cut[j - 1] + 1);
+                    }
+                }
+            }
+        }
+        return cut[s.length() - 1];
+    }
+
+    // double DP
+    public int minCut4(String s) {
+        if(s.length() <= 1) return 0;
+        boolean[][] table = new boolean[s.length()][s.length()];
+        int[] cut = new int[s.length()];
+        for(int i = 0; i < s.length(); i++) {
+            cut[i] = i;
+            for(int j = 0; j <= i; j++) {
+                if(s.charAt(i) == s.charAt(j) && (i - j < 2 || table[j + 1][i - 1])) {
+                    table[j][i] = true;
+                    cut[i] = Math.min(cut[i], (j >= 1 ? cut[j - 1] : -1) + 1);
+                }
+            }
+        }
+        return cut[s.length() - 1];
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        System.out.println(solution.minCut2("amanaplanacanalpanama"));
+        System.out.println(solution.minCut4("ddef"));
     }
 }
 

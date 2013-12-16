@@ -119,10 +119,43 @@ class Solution {
         }
     }
 
+    // DP + recursion
     public ArrayList<ArrayList<String>> partition2(String s) {
         ArrayList<ArrayList<String>> results = new ArrayList<ArrayList<String>>();
         partitionHelper(s, 0, buildPalindromeTable(s), new ArrayList<String>(),results);
         return results;
+    }
+
+    // DP + DP
+    public ArrayList<ArrayList<String>> partition3(String s) {
+        // build up a table for palindrome substrings  
+        boolean[][] table = buildPalindromeTable(s);  
+   
+        // this map is used to store previous results  
+        // preRes.get(i) is all partitions of s[i..len-1]  
+        HashMap<Integer, ArrayList<ArrayList<String>>> preRes = new HashMap<Integer, ArrayList<ArrayList<String>>>();  
+   
+        for (int i = s.length() - 1; i >= 0; --i) {  
+            ArrayList<ArrayList<String>> partitions = new ArrayList<ArrayList<String>>();
+            for (int j = i; j < s.length(); ++j) {
+                if (table[i][j]) {
+                    if (j + 1 == s.length()) {
+                        ArrayList<String> pp = new ArrayList<String>();
+                        pp.add(s.substring(i, j + 1));
+                        partitions.add(pp);
+                    } else {
+                        for (ArrayList<String> p : preRes.get(j + 1)) {
+                            ArrayList<String> pp = new ArrayList<String>();
+                            pp.add(s.substring(i, j + 1));
+                            pp.addAll(p);
+                            partitions.add(pp);
+                        }
+                    }
+                }
+            }
+            preRes.put(i, partitions);
+        }
+        return preRes.get(0);
     }
 }
 
@@ -139,7 +172,7 @@ class Main {
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        ArrayList<ArrayList<String>> result = solution.partition2("aab");
+        ArrayList<ArrayList<String>> result = solution.partition3("aab");
         print(result);
     }
 }

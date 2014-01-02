@@ -35,6 +35,7 @@ class Solution {
         return longest;
     }
 
+    // time complexity: O(N^2)
     public String longestPalindrome2(String s) {
         String longest = "*";
         for(int i = 0; i < s.length(); i++) {
@@ -61,11 +62,56 @@ class Solution {
         }
         return longest;
     }
+
+    // Transform S into T.
+    // For example, S = "abba", T = "^#a#b#b#a#$".
+    // ^ and $ signs are sentinels appended to each end to avoid bounds checking
+    private String preProcess(String s) {
+        int n = s.length();
+        if (n == 0) return "^$";
+        String ret = "^";
+        for(int i = 0; i < n; i++) {
+            ret += "#" + s.charAt(i);
+        }
+        ret += "#$";
+        return ret;
+    }
+
+    // time complexity: O(N)
+    // reference: http://discuss.leetcode.com/questions/178/longest-palindromic-substring
+    public String longestPalindrome3(String s) {
+        String T = preProcess(s);
+        int n = T.length();
+        int[] P = new int[n];
+        int C = 0, R = 0;
+        for(int i = 1; i < n - 1; i++) {
+            int mirror = 2 * C - i; // equals to i' = C - (i-C)
+            P[i] = (R > i) ? Math.min(R - i, P[mirror]) : 0;
+            // Attempt to expand palindrome centered at i
+            while (T.charAt(i + 1 + P[i]) == T.charAt(i - 1 - P[i])) P[i]++;
+            // If palindrome centered at i expand past R,
+            // adjust center based on expanded palindrome.
+            if (i + P[i] > R) {
+                C = i;
+                R = i + P[i];
+            }
+        }
+        // Find the maximum element in P.
+        int maxLen = 0;
+        int centerIndex = 0;
+        for (int i = 1; i < n-1; i++) {
+            if (P[i] > maxLen) {
+                maxLen = P[i];
+                centerIndex = i;
+            }
+        }
+        return s.substring((centerIndex - 1 - maxLen)/2, (centerIndex - 1 - maxLen)/2 + maxLen);
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        System.out.println(solution.longestPalindrome2("cabbad"));
+        System.out.println(solution.longestPalindrome3("cabbad"));
     }
 }

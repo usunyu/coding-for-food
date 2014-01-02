@@ -105,7 +105,7 @@ class Solution {
                 centerIndex = i;
             }
         }
-        return s.substring((centerIndex - 1 - maxLen)/2, (centerIndex - 1 - maxLen)/2 + maxLen);
+        return s.substring((centerIndex - 1 - maxLen)/2, (centerIndex - 1 + maxLen)/2);
     }
 }
 

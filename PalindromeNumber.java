@@ -24,11 +24,28 @@ class Solution {
         }
         return true;
     }
+
+    public boolean isPalindrome2(int x) {
+        if (x < 0) return false;
+        int div = 1;
+        while (x / div >= 10) {
+            div *= 10;
+        }
+        while (x != 0) {
+            int l = x / div;
+            int r = x % 10;
+            if (l != r) return false;
+            // get rid of left and right
+            x = (x % div) / 10;
+            div /= 100;
+        }
+        return true;
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        System.out.println(solution.isPalindrome(1221));
+        System.out.println(solution.isPalindrome2(1221));
     }
 }

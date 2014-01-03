@@ -47,6 +47,7 @@ class Solution {
                         quadruplets.add(need);
                         results.add(quadruplets);
                     }
+                    if(need < num[i3]) break;
                 }
             }
         }

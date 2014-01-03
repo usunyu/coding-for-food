@@ -4,9 +4,9 @@ class Solution {
     // Time Limit Exceeded
     // Time Complexity: O(N^4)
     public ArrayList<ArrayList<Integer>> fourSum(int[] num, int target) {
-        if(num.length < 4) return null;
-        Arrays.sort(num);
         ArrayList<ArrayList<Integer>> results = new ArrayList<ArrayList<Integer>>();
+        if(num.length < 4) return results;
+        Arrays.sort(num);
         for(int i1 = 0; i1 <= num.length - 4; i1++) {
             for(int i2 = i1 + 1; i2 <= num.length - 3; i2++) {
                 for(int i3 = i2 + 1; i3 <= num.length - 2; i3++) {
@@ -28,26 +28,35 @@ class Solution {
 
     // Time Complexity: O(N^3)
     public ArrayList<ArrayList<Integer>> fourSum2(int[] num, int target) {
-        if(num.length < 4) return null;
-        Arrays.sort(num);
-        HashSet<Integer> cache = new HashSet<Integer>();
-        for(int i : num) {
-            cache.add(i);
-        }
         ArrayList<ArrayList<Integer>> results = new ArrayList<ArrayList<Integer>>();
+        if(num.length < 4) return results;
+        Arrays.sort(num);
+        HashSet<String> check = new HashSet<String>();
         for(int i1 = 0; i1 <= num.length - 4; i1++) {
             for(int i2 = i1 + 1; i2 <= num.length - 3; i2++) {
-                for(int i3 = i2 + 1; i3 <= num.length - 2; i3++) {
-                    int need = target - num[i1] - num[i2] - num[i3];
-                    if(need > num[i3] && cache.contains(need)) {
+                int left = i2 + 1, right = num.length - 1;
+                int need = target - num[i1] - num[i2];
+                while(left < right) {
+                    if(num[left] + num[right] == need) {
                         ArrayList<Integer> quadruplets = new ArrayList<Integer>();
                         quadruplets.add(num[i1]);
                         quadruplets.add(num[i2]);
-                        quadruplets.add(num[i3]);
-                        quadruplets.add(need);
-                        results.add(quadruplets);
+                        quadruplets.add(num[left]);
+                        quadruplets.add(num[right]);
+                        String str = quadruplets.toString();
+                        if(!check.contains(str)) {
+                            results.add(quadruplets);
+                            check.add(str);
+                        }
+                        left++;
+                        right--;
                     }
-                    if(need < num[i3]) break;
+                    else if(num[left] + num[right] > need) {
+                        right--;
+                    }
+                    else {
+                        left++;
+                    }
                 }
             }
         }

@@ -56,6 +56,45 @@ class Solution {
             sort(num, reverse + 1, num.length - 1);
         }
     }
+
+    private void reverse(int[] num, int start, int end) {
+        for(int i = start, j = end; i < j; i++, j--) {
+            swap(num, i, j);
+        }
+    }
+
+    // no sort
+    public void nextPermutation2(int[] num) {
+        // find last reverse order
+        int reverse = -1;
+        for(int i = num.length - 2; i >= 0; i--) {
+            if(num[i + 1] > num[i]) {
+                reverse = i;
+                break;
+            }
+        }
+        if(reverse == -1) { // arrangement is not possible
+            Arrays.sort(num);
+        }
+        else {  // rearrange
+            // find the rightmost number larger than reverse then switch
+            int switchIndex = 0;
+            for(int i = num.length - 1; i > reverse; i--) {
+                if(num[i] > num[reverse]) {
+                    swap(num, i, reverse);
+                    switchIndex = i;
+                    break;
+                }
+            }
+            // rearrange the rest
+            for(int i = switchIndex; i < num.length - 1; i++) {
+                if(num[i] < num[i + 1]) {
+                    swap(num, i, i + 1);
+                }
+            }
+            reverse(num, reverse + 1, num.length - 1);
+        }
+    }
 }
 
 class Main {
@@ -69,7 +108,7 @@ class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         int[] num = {5, 4, 7, 5, 3, 2};
-        solution.nextPermutation(num);
+        solution.nextPermutation2(num);
         print(num);
     }
 }

@@ -68,6 +68,85 @@ class Solution {
         if(minCount < Integer.MAX_VALUE) min = S.substring(minLeft, minLeft + minCount);
         return min;
     }
+
+    private HashMap<Character, Integer> procIndexMap(String T) {
+        HashMap<Character, Integer> indexMap = new HashMap<Character, Integer>();
+        for(int i = 0, j = 0; i < T.length(); i++, j++) {
+            char c = T.charAt(i);
+            if(!indexMap.containsKey(c)) {
+                indexMap.put(c, j);
+            }
+            else j--;
+        }
+        return indexMap;
+    }
+
+    private int[] procNeedFind(String T, HashMap<Character, Integer> indexMap) {
+        int[] needFind = new int[indexMap.size()];
+        for(int i = 0; i < T.length(); i++) {
+            char ch = T.charAt(i);
+            int index = indexMap.get(ch);
+            needFind[index]++;
+        }
+        return needFind;
+    }
+
+    // time complexity : O(n)
+    public String minWindow2(String S, String T) {
+        HashMap<Character, Integer> indexMap = procIndexMap(T);
+        int[] needFind = procNeedFind(T, indexMap);
+        int[] hasFind = new int[indexMap.size()];
+        int matchCount = indexMap.size();
+        // find first match
+        int start = -1, end = -1;
+        for(int i = 0; i < S.length(); i++) {
+            char ch = S.charAt(i);
+            if(indexMap.containsKey(ch)) {
+                if(start == -1) start = i;
+                int index = indexMap.get(ch);
+                hasFind[index]++;
+                if(hasFind[index] == needFind[index]) {
+                    matchCount--;
+                }
+                if(matchCount == 0) {
+                    end = i;
+                    break;
+                }
+            }
+        }
+        if(end == -1) return "";
+        // search the rest
+        int minStart = start, minEnd = end;
+        while(end <= S.length()) {
+            // check if we can advance start
+            char ch = S.charAt(start);
+            int index = indexMap.get(ch);
+            if(hasFind[index] - 1 >= needFind[index]) { // can advance
+                hasFind[index]--;
+                while(++start <= end) {
+                    ch = S.charAt(start);
+                    if(indexMap.containsKey(ch)) {
+                        if(end - start < minEnd - minStart) {
+                            minStart = start;
+                            minEnd = end;
+                        }
+                        break;
+                    }
+                }
+            }
+            else {  // advance end
+                while(++end < S.length()) {
+                    ch = S.charAt(end);
+                    if(indexMap.containsKey(ch)) {
+                        index = indexMap.get(ch);
+                        hasFind[index]++;
+                        break;
+                    }
+                }
+            }
+        }
+        return S.substring(minStart, minEnd + 1);
+    }
 }
 
 class Main {
@@ -82,6 +161,6 @@ class Main {
         Solution solution = new Solution();
         String S = "ADOBECODEBANC";
         String T = "ABC";
-        System.out.println(solution.minWindow(S, T));
+        System.out.println(solution.minWindow2(S, T));
     }
 }

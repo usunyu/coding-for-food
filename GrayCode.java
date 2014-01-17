@@ -16,11 +16,24 @@ class Solution {
         }
         return result;
     }
+
+    // improve performance
+    public ArrayList<Integer> grayCode2(int n) {
+        ArrayList<Integer> results = new ArrayList<Integer>(1<<n);
+        results.add(0);
+        for (int i=0; i < n; ++i) {
+            int flipper = 1<<i;
+            for (int j=results.size()-1; j>=0; --j) {
+                results.add(results.get(j) | flipper);
+            }
+        }
+        return results;
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        System.out.println(solution.grayCode(3).toString());
+        System.out.println(solution.grayCode2(3).toString());
     }
 }

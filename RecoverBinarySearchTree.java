@@ -32,6 +32,53 @@ class Solution {
         Collections.sort(array);
         inorderFix(root, array, new WrapInt());
     }
+
+    private void swap(TreeNode a, TreeNode b) {
+        if (a == null || b == null)  return;
+        int tmp = a.val;
+        a.val = b.val;
+        b.val = tmp;
+    }
+
+    // morris traversal: http://www.cnblogs.com/AnnieKim/archive/2013/06/15/MorrisTraversal.html
+    // space complexity: O(1)
+    public void recoverTree2(TreeNode root) {
+        if(root == null) return;
+        TreeNode cur = root, prev = null, n1 = null, n2 = null;
+        while(cur != null) {
+            if(cur.left == null) {   // 1. if cur.left = null, output cur and set cur.right to cur
+                // visit node
+                if(prev != null && cur.val < prev.val) {
+                    n2 = cur;
+                    if(n1 == null) n1 = prev;
+                }
+                prev = cur;
+                cur = cur.right;
+            }
+            else {
+                // find predecessor
+                TreeNode predecessor = cur.left;
+                while(predecessor.right != null && predecessor.right != cur) {
+                    predecessor = predecessor.right;
+                }
+                if(predecessor.right == null) {    // 2. a) if predecessor.right = null, set predecessor.right = cur and set cur = cur.left
+                    predecessor.right = cur;
+                    cur = cur.left;
+                }
+                else {  // 2. b) if predecessor.right = cur, set predecessor.right = null(recover tree), output cur and set cur = cur.right
+                    predecessor.right = null;
+                    // visit node
+                    if(prev != null && cur.val < prev.val) {
+                        n2 = cur;
+                        if(n1 == null) n1 = prev;
+                    }
+                    prev = cur;
+                    cur = cur.right;
+                }
+            }
+        }
+        swap(n1, n2);
+    }
 }
 
 class Main {
@@ -76,7 +123,7 @@ class Main {
         TreeNode t6 = new TreeNode(15);
         t2.right = t6;
         print(inorderTraversal(root));
-        solution.recoverTree(root);
+        solution.recoverTree2(root);
         print(inorderTraversal(root));
     }
 }

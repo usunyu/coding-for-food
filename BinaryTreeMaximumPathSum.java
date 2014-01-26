@@ -9,6 +9,7 @@ class TreeNode {
 
 class Solution {
     // list[0] store max total sum, list[1] store max height sum
+    // WTF!!
     private void maxPathSum(TreeNode root, ArrayList<Integer> list) {
         if(root == null) {
             list.add(null);
@@ -46,6 +47,29 @@ class Solution {
         maxPathSum(root, list);
         return list.get(0);
     }
+
+    public int maxPathSum2(TreeNode root) {  
+        // pass in an Object that will be filled in the two values
+        Data data = maxSubPath(root);
+        return data.sum;
+    }
+
+    private class Data {
+        int path = 0;
+        int sum = Integer.MIN_VALUE;
+    }
+
+    private Data maxSubPath(TreeNode root) {
+        Data data = new Data();
+        if (root == null) return data;
+
+        Data l = maxSubPath(root.left);
+        Data r = maxSubPath(root.right);
+
+        data.path = Math.max(0, Math.max(l.path, r.path) + root.val);
+        data.sum = Math.max(Math.max(l.sum, r.sum), l.path+root.val+r.path);
+        return data;
+    }
 }
 
 class Main {
@@ -56,6 +80,6 @@ class Main {
         root.left = t1;
         TreeNode t2 = new TreeNode(3);
         root.right = t2;
-        System.out.println(solution.maxPathSum(root));
+        System.out.println(solution.maxPathSum2(root));
     }
 }

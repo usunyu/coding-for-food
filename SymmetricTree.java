@@ -10,10 +10,11 @@ class TreeNode {
 class Solution {
     // iteratively solution
     public boolean isSymmetric(TreeNode root) {
+        if(root == null) return true;
         Stack<TreeNode> leftStack = new Stack<TreeNode>();
         Stack<TreeNode> rightStack = new Stack<TreeNode>();
-        leftStack.push(root);
-        rightStack.push(root);
+        leftStack.push(root.left);
+        rightStack.push(root.right);
         boolean symmetric = true;
         while(!leftStack.isEmpty() && !rightStack.isEmpty()) {
             TreeNode t1 = leftStack.pop();
@@ -38,6 +39,17 @@ class Solution {
         if(!leftStack.isEmpty() || !rightStack.isEmpty()) symmetric = false;
         return symmetric;
     }
+
+    private boolean isSymmetricRec(TreeNode lnode, TreeNode rnode) {
+        if(lnode == null && rnode == null) return true;
+        if(lnode == null || rnode == null || lnode.val != rnode.val) return false;
+        return isSymmetricRec(lnode.left, rnode.right) && isSymmetricRec(lnode.right, rnode.left);
+    }
+
+    // recursively solution
+    public boolean isSymmetric2(TreeNode root) {
+        return root == null || isSymmetricRec(root.left, root.right);
+    }
 }
 
 class Main {
@@ -56,6 +68,6 @@ class Main {
         t2.left = t5;
         TreeNode t6 = new TreeNode(3);
         t2.right = t6;
-        System.out.println(solution.isSymmetric(root));
+        System.out.println(solution.isSymmetric2(root));
     }
 }

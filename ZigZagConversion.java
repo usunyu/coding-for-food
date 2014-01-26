@@ -3,14 +3,9 @@ class Solution {
         if(nRows == 1) return s;
         StringBuilder builder = new StringBuilder();
         for(int i = 0; i < nRows; i++) {
-            if(i == 0 || i == nRows - 1) {
-                for(int j = i; j < s.length(); j+= (2 * nRows - 2)) {
-                    builder.append(s.charAt(j));
-                }
-            }
-            else {
-                for(int j = i; j < s.length(); j+= (2 * nRows - 2)) {
-                    builder.append(s.charAt(j));
+            for(int j = i; j < s.length(); j+= (2 * nRows - 2)) {
+                builder.append(s.charAt(j));
+                if(i != 0 && i != nRows - 1) {
                     int block = j / (2 * nRows - 2) + 1;
                     int k = block * (2 * nRows - 2) - i;
                     if(k < s.length())

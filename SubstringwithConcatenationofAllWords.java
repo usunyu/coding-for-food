@@ -36,6 +36,36 @@ class Solution {
         }
         return indices;
     }
+
+    // add cache
+    public ArrayList<Integer> findSubstring2(String S, String[] L) {
+        ArrayList<Integer> indices = new ArrayList<Integer>();
+        if(L.length == 0) return indices;
+        int len = L[0].length();
+        HashMap<String, Integer> words = prepStrMap(L);
+        HashSet<Integer> skip = new HashSet<Integer>();
+
+        for(int i = 0; i <= S.length() - L.length * len; i++) {
+            HashMap<String, Integer> strMap = new HashMap<String, Integer>(words);
+            for(int j = i; j <= S.length() - len; j += len) {
+                if(skip.contains(j)) break;
+                String str = S.substring(j, j + len);
+                if(!words.containsKey(str)) {
+                    skip.add(j);
+                    break;
+                }
+                if(!strMap.containsKey(str)) break;
+                if(strMap.get(str) > 1)
+                    strMap.put(str, strMap.get(str) - 1);
+                else
+                    strMap.remove(str);
+            }
+            if(strMap.isEmpty()) {
+                indices.add(i);
+            }
+        }
+        return indices;
+    }
 }
 
 class Main {
@@ -48,8 +78,8 @@ class Main {
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        String S = "lingmindraboofooowingdingbarrwingmonkeypoundcake";
-        String[] L = {"fooo","barr","wing","ding","wing"};
-        print(solution.findSubstring(S, L));
+        String S = "aaa";
+        String[] L = {"a","a"};
+        print(solution.findSubstring2(S, L));
     }
 }

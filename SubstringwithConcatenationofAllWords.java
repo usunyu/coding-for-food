@@ -19,7 +19,6 @@ class Solution {
         if(L.length == 0) return indices;
         int len = L[0].length();
         HashMap<String, Integer> words = prepStrMap(L);
-
         for(int i = 0; i <= S.length() - L.length * len; i++) {
             HashMap<String, Integer> strMap = new HashMap<String, Integer>(words);
             for(int j = i; j <= S.length() - len; j += len) {
@@ -44,7 +43,6 @@ class Solution {
         int len = L[0].length();
         HashMap<String, Integer> words = prepStrMap(L);
         HashSet<Integer> skip = new HashSet<Integer>();
-
         for(int i = 0; i <= S.length() - L.length * len; i++) {
             HashMap<String, Integer> strMap = new HashMap<String, Integer>(words);
             for(int j = i; j <= S.length() - len; j += len) {

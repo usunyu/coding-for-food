@@ -3,7 +3,11 @@ import java.util.HashMap;
 
 class Solution {
 	private String getStrId(int row, int col) {
-		return row + "," + col;
+		StringBuilder b = new StringBuilder();
+		b.append(row);
+		b.append(",");
+		b.append(col);
+		return b.toString();
 	}
 
     private int minSubTotal(ArrayList<ArrayList<Integer>> triangle, int row, int col, HashMap<String, Integer> cache) {

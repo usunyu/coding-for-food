@@ -129,7 +129,7 @@ class Solution {
         dict.add(start); dict.add(end);
         // swap start and end
         String tmp = start; start = end; end = tmp;
-        // O(n^2 * m)
+        // O(n * m)
         for(String word : dict) {
             for (int i = 0; i < word.length(); i++) {
                 StringBuilder sb = new StringBuilder(word);

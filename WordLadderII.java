@@ -1,8 +1,7 @@
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.HashSet;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 class Solution {
     private boolean isNext(String str1, String str2) {
@@ -113,35 +112,62 @@ class Solution {
         }
     }
 
+    private void addWord(String str1, String str2, HashMap<String, ArrayList<String>> wordNexts) {
+        if(wordNexts.containsKey(str1)) {
+            wordNexts.get(str1).add(str2);
+        }
+        else {
+            ArrayList<String> list = new ArrayList<String>();
+            list.add(str2);
+            wordNexts.put(str1, list);
+        }
+    }
+
+    private boolean isNext2(String str1, String str2) {
+        if(str1.equals(str2)) return false;
+        int count = 0;
+        for(int i = 0; i < str1.length(); i++) {
+            if(str1.charAt(i) != str2.charAt(i)) count++;
+            if(count >= 2) return false;
+        }
+        return true;
+    }
+
     public ArrayList<ArrayList<String>> findLadders2(String start, String end, HashSet<String> dict) {
         // prepare process
         HashMap<String, ArrayList<String>> wordNexts = new HashMap<String, ArrayList<String>>();
         dict.add(start); dict.add(end);
+        // swap start and end
+        String tmp = start; start = end; end = tmp;
         // O(n^2 * m)
-        for(String str1 : dict) {
-            ArrayList<String> list = new ArrayList<String>();
-            for(String str2 : dict) {
-                if(isNext(str1, str2)) {
-                    list.add(str2);
+        for(String word : dict) {
+            for (int i = 0; i < word.length(); i++) {
+                StringBuilder sb = new StringBuilder(word);
+                char original = sb.charAt(i);
+                for (char c = 'a'; c <= 'z'; ++c) {
+                    if (c == original) continue;
+                    sb.setCharAt(i, c);
+                    String s = sb.toString();
+                    if(dict.contains(s)) {
+                        addWord(word, s, wordNexts);
+                    }
                 }
             }
-            wordNexts.put(str1, list);
+            
         }
         ArrayList<ArrayList<String>> ladders = new ArrayList<ArrayList<String>>();
         // use BFS to find paths
         LinkedList<NodeHelper> queue = new LinkedList<NodeHelper>();
         int length = 0, max = Integer.MAX_VALUE;
         queue.add(new NodeHelper(start, null));
-        HashMap<String, Integer> cache = new HashMap<String, Integer>();
+        HashSet<String> cache = new HashSet<String>();
         while(!queue.isEmpty()) {
             length++;
             if(length > max) break;
             LinkedList<NodeHelper> queueTemp = new LinkedList<NodeHelper>();
             while(!queue.isEmpty()) {
                 NodeHelper node = queue.remove();
-                // current str's length is longer
-                if(cache.containsKey(node.word) && cache.get(node.word) < length) continue;
-                else cache.put(node.word, length);
+                cache.add(node.word);
                 if(node.word.equals(end)) { // add path
                     max = length;
                     ArrayList<String> path = new ArrayList<String>();
@@ -149,12 +175,16 @@ class Solution {
                         path.add(node.word);
                         node = node.prev;
                     }
-                    Collections.reverse(path);
                     ladders.add(path);
                     continue;
                 }
-                for(String s : wordNexts.get(node.word))
-                    queueTemp.add(new NodeHelper(s, node));
+                if(wordNexts.containsKey(node.word)) {
+                    for(String s : wordNexts.get(node.word)) {
+                        // current str's list length is longer
+                        if(!cache.contains(s))
+                            queueTemp.add(new NodeHelper(s, node));
+                    }
+                }
             }
             queue = queueTemp;
         }

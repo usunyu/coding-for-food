@@ -123,16 +123,6 @@ class Solution {
         }
     }
 
-    private boolean isNext2(String str1, String str2) {
-        if(str1.equals(str2)) return false;
-        int count = 0;
-        for(int i = 0; i < str1.length(); i++) {
-            if(str1.charAt(i) != str2.charAt(i)) count++;
-            if(count >= 2) return false;
-        }
-        return true;
-    }
-
     public ArrayList<ArrayList<String>> findLadders2(String start, String end, HashSet<String> dict) {
         // prepare process
         HashMap<String, ArrayList<String>> wordNexts = new HashMap<String, ArrayList<String>>();
@@ -153,7 +143,6 @@ class Solution {
                     }
                 }
             }
-            
         }
         ArrayList<ArrayList<String>> ladders = new ArrayList<ArrayList<String>>();
         // use BFS to find paths

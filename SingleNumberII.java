@@ -22,12 +22,24 @@ class Solution {
         }
         return ret;
     }
+
+    public int singleNumber2(int[] A) {
+        int ones = 0, twos = 0, threes = 0;
+        for (int i = 0; i < A.length; i++) {
+            twos |= ones & A[i];
+            ones ^= A[i];
+            threes = ones & twos;
+            ones &= ~threes;
+            twos &= ~threes;
+        }
+        return ones;
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         int[] nums = {2, 3, 3, 1, 5, 3, 1, 5, 1, 5};
-        System.out.println(solution.singleNumber(nums));
+        System.out.println(solution.singleNumber2(nums));
     }
 }

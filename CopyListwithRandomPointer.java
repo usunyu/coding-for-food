@@ -36,6 +36,46 @@ class Solution {
         }
         return cloneHead;
     }
+
+    // reference : http://fisherlei.blogspot.com/2013/11/leetcode-copy-list-with-random-pointer.html
+    // space complexity : O(1)
+    public RandomListNode copyRandomList2(RandomListNode head) {
+        if(head == null) return null;
+        // insert nodes
+        RandomListNode current = head, clone;
+        while(current != null) {
+            clone = new RandomListNode(current.label);
+            RandomListNode tmp = current.next;
+            current.next = clone;
+            clone.next = tmp;
+            current = tmp;
+        }
+        // copy random pointer
+        current = head;
+        while(current != null) {
+            clone = current.next;
+            if(current.random == null) clone.random = null;
+            else clone.random = current.random.next;
+            current = current.next.next;
+        }
+        // decouple two links
+        current = head;
+        RandomListNode cloneHead = null, clonePrev = null;
+        while(current != null) {
+            clone = current.next;
+            if(cloneHead == null) {
+                cloneHead = clone;
+                clonePrev = clone;
+            }
+            else {
+                clonePrev.next = clone;
+                clonePrev = clone;
+            }
+            current.next = current.next.next;
+            current = current.next;
+        }
+        return cloneHead;
+    }
 }
 
 class Main {
@@ -43,6 +83,6 @@ class Main {
         Solution solution = new Solution();
         RandomListNode node = new RandomListNode(-1);
         node.random = node;
-        solution.copyRandomList(node);
+        solution.copyRandomList2(node);
     }
 }

@@ -33,6 +33,22 @@ class Solution {
     public boolean wordBreak2(String s, Set<String> dict) {
         return wordBreak2(s, dict, new HashMap<String, Boolean>());
     }
+
+    // DP Solution
+    // possible[i] = true   if s[0...i] in dict
+    //                      if possible[k] = true and s[k...i] in dict, 0 < k < i
+    //               false  otherwise
+    public boolean wordBreak3(String s, Set<String> dict) {
+        boolean[] possible = new boolean[s.length()];
+        for(int i = 0; i < s.length(); i++) {
+            if(dict.contains(s.substring(0, i + 1))) possible[i] = true;
+            for(int k = 0; k < i; k++) {
+                if(possible[i]) break;
+                possible[i] = possible[k] && dict.contains(s.substring(k + 1, i + 1));
+            }
+        }
+        return possible[s.length() - 1];
+    }
 }
 
 class Main {
@@ -49,6 +65,6 @@ class Main {
         dict.add("aaaaaaaa");
         dict.add("aaaaaaaaa");
         dict.add("aaaaaaaaaa");
-        System.out.println(solution.wordBreak2("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab", dict));
+        System.out.println(solution.wordBreak3("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab", dict));
     }
 }

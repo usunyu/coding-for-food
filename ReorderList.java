@@ -30,6 +30,40 @@ class Solution {
         }
         last.next = null;
     }
+
+    public void reorderList2(ListNode head) {
+        if(head == null) return;
+        // partition the list into 2 sublists of equal length
+        ListNode fast = head, slow = head, prev = null;
+        while(fast != null) {
+            fast = fast.next;
+            prev = slow;
+            if(fast == null) {
+                slow = slow.next;
+                break;
+            }
+            fast = fast.next;
+            slow = slow.next;
+        }
+        if(prev != null) prev.next = null;
+        // reverse the second sublist
+        ListNode head2 = null;
+        while(slow != null) {
+            ListNode tmp = slow.next;
+            slow.next = head2;
+            head2 = slow;
+            slow = tmp;
+        }
+        // merge the 2 sublists as required
+        while(head2 != null) {
+            ListNode tmp = head.next;
+            ListNode tmp2 = head2.next;
+            head.next = head2;
+            head2.next = tmp;
+            head = tmp;
+            head2 = tmp2;
+        }
+    }
 }
 
 class Main {
@@ -44,7 +78,7 @@ class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         ListNode head = null, prev = null;
-        for(int i = 1; i <= 4; i++) {
+        for(int i = 1; i <= 5; i++) {
             ListNode node = new ListNode(i);
             if(head == null) {
                 head = node;
@@ -56,7 +90,7 @@ class Main {
             }
         }
         print(head);
-        solution.reorderList(head);
+        solution.reorderList2(head);
         print(head);
     }
 }

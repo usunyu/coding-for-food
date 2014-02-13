@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Stack;
 
 class TreeNode {
     int val;
@@ -21,6 +22,21 @@ class Solution {
         preorderTraversal(root, traversal);
         return traversal;
     }
+
+    // iteratively
+    public ArrayList<Integer> preorderTraversal2(TreeNode root) {
+        ArrayList<Integer> traversal = new ArrayList<Integer>();
+        if(root == null) return traversal;
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        stack.push(root);
+        while(!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+            traversal.add(node.val);
+            if(node.right != null) stack.push(node.right);
+            if(node.left != null) stack.push(node.left);
+        }
+        return traversal;
+    }
 }
 
 class Main {
@@ -31,6 +47,6 @@ class Main {
         TreeNode node2 = new TreeNode(3);
         root.left = node1;
         root.right = node2;
-        System.out.println(solution.preorderTraversal(root));
+        System.out.println(solution.preorderTraversal2(root));
     }
 }

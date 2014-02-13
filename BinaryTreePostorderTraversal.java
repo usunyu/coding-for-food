@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Stack;
 
 class TreeNode {
     int val;
@@ -11,14 +12,41 @@ class Solution {
     private void postorderTraversal(TreeNode root, ArrayList<Integer> traversal) {
         if(root == null) return;
         postorderTraversal(root.left, traversal);
-        traversal.add(root.val);
         postorderTraversal(root.right, traversal);
+        traversal.add(root.val);
     }
     
     // recursive
     public ArrayList<Integer> postorderTraversal(TreeNode root) {
         ArrayList<Integer> traversal = new ArrayList<Integer>();
         postorderTraversal(root, traversal);
+        return traversal;
+    }
+
+    // iteratively
+    public ArrayList<Integer> postorderTraversal2(TreeNode root) {
+        ArrayList<Integer> traversal = new ArrayList<Integer>();
+        TreeNode pointer = root;
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        while(!stack.isEmpty() || pointer != null) {
+            if(pointer != null) {
+                while(pointer != null) {
+                    stack.push(pointer);
+                    pointer = pointer.left;
+                }
+                pointer = stack.peek().right;
+            }
+            else {
+                TreeNode node = stack.pop();
+                traversal.add(node.val);
+                if(!stack.isEmpty()) {
+                    TreeNode parent = stack.peek();
+                    if(parent.left == node) {
+                        pointer = parent.right;
+                    }
+                }
+            }
+        }
         return traversal;
     }
 }
@@ -31,6 +59,6 @@ class Main {
         TreeNode node2 = new TreeNode(3);
         root.left = node1;
         root.right = node2;
-        System.out.println(solution.postorderTraversal(root));
+        System.out.println(solution.postorderTraversal2(root));
     }
 }

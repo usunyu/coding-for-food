@@ -1,4 +1,0 @@
-LeetCode
-========
-
-My LeetCode Solutions

@@ -47,8 +47,8 @@ class Solution {
     private ListNode sortList2(int length) {
         if(length == 1) {
             ListNode tmp = HEAD;
-            HEAD = HEAD.next;
-            tmp.next = null;
+            HEAD = HEAD.next;   // trick part, with doing this, no need to traverse through to get middle
+            tmp.next = null;    // for merge
             return tmp;
         }
         ListNode left = sortList2(length / 2);

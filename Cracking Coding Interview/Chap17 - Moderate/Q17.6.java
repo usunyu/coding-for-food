@@ -46,12 +46,55 @@ class Main {
 				break;
 			}
 		}
+		return range;
+	}
 
+	public static Range findMinRange2(int[] array) {
+		int left = 0, right = array.length - 1;
+		// find left end
+		for(int i = 0; i < array.length - 1; i++) {
+			if(array[i + 1] < array[i]) {
+				left = i;
+				break;
+			}
+		}
+		// find right start
+		for(int i = array.length - 1; i >= 1; i--) {
+			if(array[i] < array[i - 1]) {
+				right = i;
+				break;
+			}
+		}
+		// find min and mx in middle
+		int min = right, max = left;
+		for(int i = left + 1; i <= right - 1; i++) {
+			if(array[i] < array[min]) min = i;
+			if(array[i] > array[max]) max = i;
+		}
+		Range range = new Range();
+		if(left == array.length - 1) {
+			return range;
+		}
+		// search left
+		for(int i = 0; i < left; i++) {
+			if(array[i] > array[min]) {
+				range.left = i;
+				break;
+			}
+		}
+		// search right
+		for(int i = array.length - 1; i >= right; i--) {
+			if(array[i] < array[max]) {
+				range.right = i;
+				break;
+			}
+		}
 		return range;
 	}
 
 	public static void main(String[] args) {
 		int[] array = {1, 2, 4, 7, 10, 11, 7, 12, 6, 7, 16, 18, 19};
 		System.out.println(findMinRange(array));
+		System.out.println(findMinRange2(array));
 	}
 }

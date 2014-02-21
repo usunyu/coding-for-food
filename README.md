@@ -11,5 +11,5 @@ http://www.amazon.com/Cracking-Coding-Interview-Programming-Questions/dp/0984782
 * Solutions to CareerCup http://www.careercup.com/page
 * Solutions to Evernote Problems http://evernote.com/careers/challenge.php
 * Solutions to Rocket Fuel Problems http://get-that-job-at-google.blogspot.com/2013/02/rocketfuel-codesprint-at-iit-bombay.html
-* Solutions to InterviewStreet Sample Problems
+* Solutions to InterviewStreet Sample Problems https://www.interviewstreet.com/recruit/test/start/sample/
 * Data Structures and Algorithms Coding Practice

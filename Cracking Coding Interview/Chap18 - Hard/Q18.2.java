@@ -1,0 +1,49 @@
+class Main {
+	/* Random number between lower and higher, inclusive */
+	public static int rand(int lower, int higher) { 
+		return lower + (int)(Math.random() * (higher - lower + 1));
+	}
+
+	public static int[] shuffleArrayRecursively(int[] cards, int i) {
+		if (i == 0) {
+			return cards;
+		}
+
+		/* shuffle elements 0 through index - 1 */
+		shuffleArrayRecursively(cards, i - 1);
+		int k = rand(0, i);		
+
+		/* Swap element k and index */
+		int temp = cards[k];
+		cards[k] = cards[i];
+		cards[i] = temp;
+
+		/* Return shuffled array */
+		return cards;
+ 	}
+
+	public static void shuffleArrayInteratively(int[] cards) { 
+		for (int i = 0; i < cards.length; i++) { 
+			int k = rand(0, i);
+			int temp = cards[k];
+			cards[k] = cards[i];
+			cards[i] = temp;
+		}
+	}
+
+	public static void print(int[] array) {
+		System.out.print("[");
+		for(int i = 0; i < array.length; i++) {
+			if(i == array.length - 1) System.out.print(array[i]);
+			else System.out.print(array[i] + ", ");
+		}
+		System.out.println("]");
+	}
+
+	public static void main(String[] args) {
+		int[] cards = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+		print(cards);
+		shuffleArrayInteratively(cards);
+		print(cards);
+	}
+}

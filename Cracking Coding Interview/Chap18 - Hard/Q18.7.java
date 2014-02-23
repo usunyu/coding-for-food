@@ -1,21 +1,19 @@
-import java.util.HashSet;
-
-class Flag {
-	boolean contains;
-
-	public Flag(boolean c) {
-		contains = c;
-	}
-}
+import java.util.HashMap;
 
 class Main {
-	private static boolean searchWord(String word, HashSet<String> set, Flag flag) {
+	private static boolean searchWord(String word, HashMap<String, Integer> map, boolean flag) {
 		boolean contains = false;
 		for(int i = 1; i <= word.length(); i++) {
 			String sub = word.substring(0, i);
-			if(set.contains(sub)) {
-				if(i == word.length() && flag.contains) contains = true;
-				else contains = searchWord(word.substring(i), set, new Flag(true));
+			if(map.containsKey(sub) && map.get(sub) > 0) {
+				if(i == word.length() && flag)
+					contains = true;
+				else {
+					map.put(sub, map.get(sub) - 1);
+					contains = searchWord(word.substring(i), map, true);
+					// recover
+					map.put(sub, map.get(sub) + 1);
+				}
 			}
 			if(contains) break;
 		}
@@ -23,15 +21,18 @@ class Main {
 	}
 
 	public static String findLongestWord(String[] words) {
-		HashSet<String> set = new HashSet<String>();
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		for(String word : words) {
-			set.add(word);
+			if(map.containsKey(word))
+				map.put(word, map.get(word) + 1);
+			else
+				map.put(word, 1);
 		}
 		String longestWord = "";
 		// search word
 		for(String word : words) {
 			if(word.length() > longestWord.length()) {
-				if(searchWord(word, set, new Flag(false))) {
+				if(searchWord(word, map, false)) {
 					longestWord = word;
 				}
 			}
@@ -40,7 +41,7 @@ class Main {
 	}
 
 	public static void main(String[] args) {
-		String[] words = {"hello", "nihao", "ohaiyou", "hellonihao", "xxxxxxxooooooo"};
+		String[] words = {"hello", "nihao", "ohaiyou", "hellonihaonihao", "xxxxxxxooooooo", "hellonihao"};
 		System.out.println(findLongestWord(words));
 	}
 }

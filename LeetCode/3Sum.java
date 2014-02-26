@@ -83,6 +83,39 @@ class Solution {
 		}
 		return result;  
 	}
+
+    /*
+        Second Round
+    */
+    public ArrayList<ArrayList<Integer>> threeSum3(int[] num) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        if(num.length < 3) return result;
+        Arrays.sort(num);
+        for(int i = 0; i < num.length - 2; i++) {
+            // remove duplicate
+            if(i > 0 && num[i] == num[i - 1]) continue;
+            int target = -num[i];
+            int start = i + 1, end = num.length - 1;
+            while(start < end) {
+                int sum = num[start] + num[end];
+                if(sum > target) {
+                    end--;
+                }
+                else if(sum < target) {
+                    start++;
+                }
+                else {
+                    ArrayList<Integer> subResult = new ArrayList<Integer>();
+                    subResult.add(num[i]); subResult.add(num[start]); subResult.add(num[end]);
+                    result.add(subResult);
+                    // remove duplicate
+                    do { start++; }
+                    while(start < end && num[start] == num[start - 1]);
+                }
+            }
+        }
+        return result;
+    }
 }
 
 class Main {
@@ -101,7 +134,7 @@ class Main {
         Solution solution = new Solution();
         int[] S = {-4,-2,-2,-2,0,1,2,2,2,3,3,4,4,6,6};
         // int[] S = {0,0,0};
-        ArrayList<ArrayList<Integer>> result = solution.threeSum2(S);
+        ArrayList<ArrayList<Integer>> result = solution.threeSum3(S);
         print(result);
     }
 }

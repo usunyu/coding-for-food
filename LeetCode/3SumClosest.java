@@ -102,8 +102,9 @@ class Solution {
                 if(Math.abs(target - closest) > Math.abs(target - sum)) {
                     closest = sum;
                 }
-                // skip duplicate
-                do { start++; } while(start < end && num[start - 1] == num[start]);
+                if(sum > target) end--;
+                else if(sum < target) start++;
+                else return sum;
             }
         }
         return closest;

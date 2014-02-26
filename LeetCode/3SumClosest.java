@@ -79,12 +79,41 @@ class Solution {
         }
         return ret;
     }
+
+    /*
+        Second Round
+    */
+    public int threeSumClosest3(int[] num, int target) {
+        int closest;
+        if(num.length < 3) {
+            closest = 0;
+            for(int i : num) closest += i;
+            return closest;
+        }
+        Arrays.sort(num);
+        // initial
+        closest = num[0] + num[1] + num[2];
+        for(int i = 0; i < num.length - 2; i++) {
+            // skip duplicate
+            if(i > 0 && num[i - 1] == num[i]) continue;
+            int start = i + 1, end = num.length - 1;
+            while(start < end) {
+                int sum = num[i] + num[start] + num[end];
+                if(Math.abs(target - closest) > Math.abs(target - sum)) {
+                    closest = sum;
+                }
+                // skip duplicate
+                do { start++; } while(start < end && num[start - 1] == num[start]);
+            }
+        }
+        return closest;
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         int[] num = {-10,0,-2,3,-8,1,-10,8,-8,6,-7,0,-7,2,2,-5,-8,1,-4,6};
-        System.out.println(solution.threeSumClosest2(num, 18));
+        System.out.println(solution.threeSumClosest3(num, 18));
     }
 }

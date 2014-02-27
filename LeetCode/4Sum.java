@@ -62,6 +62,42 @@ class Solution {
         }
         return results;
     }
+
+    /*
+        Second Round
+    */
+    public ArrayList<ArrayList<Integer>> fourSum3(int[] num, int target) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        if(num.length < 4) return result;
+        Arrays.sort(num);
+        for(int i = 0; i < num.length - 3; i++) {
+            // skip duplicate
+            if(i > 0 && num[i - 1] == num[i]) continue;
+            for(int j = i + 1; j < num.length - 2; j++) {
+                // skip duplicate
+                if(j > i + 1 && num[j - 1] == num[j]) continue;
+                int start = j + 1, end = num.length - 1;
+                int part = num[i] + num[j];
+                while(start < end) {
+                    int sum = part + num[start] + num[end];
+                    if(sum < target) {
+                        start++;
+                    }
+                    else if(sum > target) {
+                        end--;
+                    }
+                    else {
+                        ArrayList<Integer> subResult = new ArrayList<Integer>();
+                        subResult.add(num[i]); subResult.add(num[j]); subResult.add(num[start]); subResult.add(num[end]);
+                        result.add(subResult);
+                        // skip duplicate
+                        do { start++; } while(start < end && num[start - 1] == num[start]);
+                    }
+                }
+            }
+        }
+        return result;
+    }
 }
 
 class Main {
@@ -77,6 +113,6 @@ class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         int[] array = {1, 0, -1, 0, -2, 2};
-        print(solution.fourSum2(array, 0));
+        print(solution.fourSum3(array, 0));
     }
 }

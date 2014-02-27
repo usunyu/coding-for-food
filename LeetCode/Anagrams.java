@@ -45,6 +45,30 @@ class Solution {
         }
         return result;
     }
+
+    /*
+        Second Round
+    */
+    public ArrayList<String> anagrams2(String[] strs) {
+        HashMap<Integer, ArrayList<String>> map = new HashMap<Integer, ArrayList<String>>();
+        for(String str : strs) {
+            int hash = hash(str);
+            ArrayList<String> list;
+            if(map.containsKey(hash)) {
+                list = map.get(hash);
+            }
+            else {
+                list = new ArrayList<String>();
+                map.put(hash, list);
+            }
+            list.add(str);
+        }
+        ArrayList<String> result = new ArrayList<String>();
+        for(ArrayList<String> list : map.values()) {
+            if(list.size() > 1) result.addAll(list);
+        }
+        return result;
+    }
 }
 
 class Main {
@@ -58,7 +82,7 @@ class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         String[] strs = {"abc", "loy", "cba", "tt", "dd", "yol", "yol"};
-        ArrayList<String> result = solution.anagrams(strs);
+        ArrayList<String> result = solution.anagrams2(strs);
         print(result);
     }
 }

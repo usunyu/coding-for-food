@@ -33,6 +33,8 @@ Expected Output:
 3.[[]][]
 4.[[][]]
 5.[[[]]]
+
+http://www.careercup.com/question?id=6253551042953216
 */
 
 class Main {

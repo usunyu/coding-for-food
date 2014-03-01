@@ -6,6 +6,8 @@ example : if a = {2,3,1,0}
 o/p = a = {1,0,3,2} 
 
 Note : The array contains 0 to n-1 integers.
+
+http://www.careercup.com/question?id=4909367207919616
 */
 
 class Main {

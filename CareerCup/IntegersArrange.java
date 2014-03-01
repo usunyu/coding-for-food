@@ -1,5 +1,7 @@
 /*
 Given an array of (unsorted) integers, arrange them such that a < b > c < d > e... etc.
+
+http://www.careercup.com/question?id=5724823657381888
 */
 
 class Main {

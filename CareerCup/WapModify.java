@@ -17,19 +17,43 @@ class Main {
 		}
 		System.out.println();
 	}
+	
+	public static void flip(int[] array) {
+		for(int i = 0; i < array.length; i++) {
+			array[i] = -array[i];
+		}
+	}
+	
+	public static int firstIndex(int[] array) {
+		int index = -1;
+		for(int i = 0; i < array.length; i++) {
+			if(array[i] < 0) {
+				index = i;
+				break;
+			}
+		}
+		return index;
+	}
 
 	public static void wapMod(int[] array) {
-		int first = array[0], i = 0;
-		while(array[i] != 0) {
-			int tmp = array[i];
-			array[i] = array[array[i]];
-			i = tmp;
+		// mark unfinish
+		flip(array);
+		int index;
+		// if all number is positive, we finish
+		while((index = firstIndex(array)) != -1) {
+			// find first index if we haven't finish
+			int first = Math.abs(array[index]), i = index;
+			while(Math.abs(array[i]) != index) {	// haven't go back to first
+				int nextIndex = Math.abs(array[i]);
+				array[i] = Math.abs(array[nextIndex]);
+				i = nextIndex;
+			}
+			array[i] = first;
 		}
-		array[i] = first;
 	}
 
 	public static void main(String[] args) {
-		int[] array = {2,3,1,0};
+		int[] array = {5, 7, 2, 8, 3, 6, 4, 1, 0};
 		print(array);
 		wapMod(array);
 		print(array);

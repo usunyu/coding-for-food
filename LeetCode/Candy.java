@@ -47,12 +47,61 @@ class Solution {
         }
         return count;
     }
+
+    /*
+        Second Round
+    */
+    public int candy2(int[] ratings) {
+        if(ratings.length == 0) return 0;
+        // find the min rating
+        int minIndex = 0;
+        for(int i = 1; i < ratings.length; i++) {
+            if(ratings[i] < ratings[minIndex]) {
+                minIndex = i;
+            }
+        }
+        // set min index
+        int[] candies = new int[ratings.length];
+        candies[minIndex] = 1;
+        // scan from min to right
+        for(int i = minIndex + 1; i < candies.length; i++) {
+            if(ratings[i] > ratings[i - 1]) {
+                candies[i] = candies[i - 1] + 1;
+            }
+            else {
+                candies[i] = 1;
+                // raise left
+                int back = i;
+                while(back > 0 && ratings[back] < ratings[back - 1] && candies[back] == candies[back - 1]) {
+                    candies[--back]++;
+                }
+            }
+        }
+        // scan from min to left
+        for(int i = minIndex - 1; i >= 0; i--) {
+            if(ratings[i] > ratings[i + 1]) {
+                candies[i] = candies[i + 1] + 1;
+            }
+            else {
+                candies[i] = 1;
+                // raise right
+                int back = i;
+                while(back < candies.length - 1 && ratings[back] < ratings[back + 1] && candies[back] == candies[back + 1]) {
+                    candies[++back]++;
+                }
+            }
+        }
+        // count candies
+        int count = 0;
+        for(int candy : candies) count += candy;
+        return count;
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         int[] ratings = {1,2,4,4,3};
-        System.out.println(solution.candy(ratings));
+        System.out.println(solution.candy2(ratings));
     }
 }

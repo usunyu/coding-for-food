@@ -1,3 +1,18 @@
+/*
+Given a set of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.
+
+The same repeated number may be chosen from C unlimited number of times.
+
+Note:
+All numbers (including target) will be positive integers.
+Elements in a combination (a1, a2, … , ak) must be in non-descending order. (ie, a1 ≤ a2 ≤ … ≤ ak).
+The solution set must not contain duplicate combinations.
+For example, given candidate set 2,3,6,7 and target 7, 
+A solution set is: 
+[7] 
+[2, 2, 3] 
+*/
+
 import java.util.*;
 
 class Solution {
@@ -28,6 +43,38 @@ class Solution {
         combinationSum(candidates, target, 0, new ArrayList<Integer>(), combinations);
         return combinations;
     }
+
+    /*
+        Second Round
+    */
+    private void combinationSum2(int[] candidates, int target, ArrayList<Integer> path, int index, ArrayList<ArrayList<Integer>> result) {
+        if(target == 0) {   // we find a solution
+            ArrayList<Integer> p = new ArrayList<Integer>(path);
+            result.add(p);
+        }
+        else if(target > 0 && index < candidates.length) {
+            int t = target;
+            // ArrayList<Integer> p = new ArrayList<Integer>(path);
+            int count = 0;
+            while(t >= 0) {
+                count++;
+                t -= candidates[index];
+                path.add(candidates[index]);
+                combinationSum2(candidates, t, path, index + 1, result);
+            }
+            // remove range
+            path.subList(path.size() - count, path.size()).clear();; 
+            combinationSum2(candidates, target, path, index + 1, result);
+        }
+    }
+    
+    public ArrayList<ArrayList<Integer>> combinationSum2(int[] candidates, int target) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        if(candidates.length == 0) return result;
+        Arrays.sort(candidates);
+        combinationSum2(candidates, target, new ArrayList<Integer>(), 0, result);
+        return result;
+    }
 }
 
 class Main {
@@ -44,7 +91,7 @@ class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         int[] candidates = {2,3,6,7};
-        ArrayList<ArrayList<Integer>> combinations = solution.combinationSum(candidates, 7);
+        ArrayList<ArrayList<Integer>> combinations = solution.combinationSum2(candidates, 7);
         print(combinations);
     }
 }

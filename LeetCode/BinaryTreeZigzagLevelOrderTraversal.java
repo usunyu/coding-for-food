@@ -1,3 +1,36 @@
+/*
+Given a binary tree, return the zigzag level order traversal of its nodes' values. (ie, from left to right, then right to left for the next level and alternate between).
+
+For example:
+Given binary tree {3,9,20,#,#,15,7},
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its zigzag level order traversal as:
+[
+  [3],
+  [20,9],
+  [15,7]
+]
+confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
+
+
+OJ's Binary Tree Serialization:
+The serialization of a binary tree follows a level order traversal, where '#' signifies a path terminator where no node exists below.
+
+Here's an example:
+   1
+  / \
+ 2   3
+    /
+   4
+    \
+     5
+The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
+*/
+
 import java.util.*;
 
 class TreeNode {
@@ -59,6 +92,37 @@ class Solution {
         }
         return result;
     }
+
+    /*
+        Second Round
+    */
+    public ArrayList<ArrayList<Integer>> zigzagLevelOrder2(TreeNode root) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        if(root == null) return result;
+        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.add(root);
+        boolean fromLeft = true;
+        while(!queue.isEmpty()) {
+            LinkedList<TreeNode> tmp = new LinkedList<TreeNode>();
+            ArrayList<Integer> sub = new ArrayList<Integer>();
+            while(!queue.isEmpty()) {
+                TreeNode node = queue.pollLast();
+                if(fromLeft) {
+                    if(node.left != null) tmp.add(node.left);
+                    if(node.right != null) tmp.add(node.right);
+                }
+                else {
+                    if(node.right != null) tmp.add(node.right);
+                    if(node.left != null) tmp.add(node.left);
+                }
+                sub.add(node.val);
+            }
+            result.add(sub);
+            fromLeft = fromLeft ? false : true;
+            queue = tmp;
+        }
+        return result;
+    }
 }
 
 class Main {
@@ -73,7 +137,7 @@ class Main {
         TreeNode node4 = new TreeNode(5);
         node2.right = node4;
         Solution solution = new Solution();
-        ArrayList<ArrayList<Integer>> result = solution.zigzagLevelOrder(root);
+        ArrayList<ArrayList<Integer>> result = solution.zigzagLevelOrder2(root);
         for(ArrayList<Integer> level : result) {
             for(int i : level) {
                 System.out.print(i + " ");

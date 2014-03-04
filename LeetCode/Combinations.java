@@ -1,3 +1,19 @@
+/*
+Given two integers n and k, return all possible combinations of k numbers out of 1 ... n.
+
+For example,
+If n = 4 and k = 2, a solution is:
+
+[
+  [2,4],
+  [3,4],
+  [2,3],
+  [1,2],
+  [1,3],
+  [1,4],
+]
+*/
+
 import java.util.*;
 
 class Solution {
@@ -60,6 +76,29 @@ class Solution {
         }
         return results;
     }
+
+    /*
+        Second Round
+    */
+    private void combine3(int n, int k, int index, ArrayList<Integer> path, ArrayList<ArrayList<Integer>> result) {
+        if(k == 0) {
+            result.add(path);
+        }
+        else {
+            for(int i = index; i <= n; i++) {
+                ArrayList<Integer> p = new ArrayList<Integer>(path);
+                p.add(i);
+                combine3(n, k - 1, i + 1, p, result);
+            }
+        }
+    }
+    
+    public ArrayList<ArrayList<Integer>> combine3(int n, int k) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        if(n <= 0 || k > n) return result;
+        combine3(n, k, 1, new ArrayList<Integer>(), result);
+        return result;
+    }
 }
 
 class Main {
@@ -75,7 +114,7 @@ class Main {
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        ArrayList<ArrayList<Integer>> result = solution.combine2(4, 2);
+        ArrayList<ArrayList<Integer>> result = solution.combine3(4, 2);
         print(result);
     }
 }

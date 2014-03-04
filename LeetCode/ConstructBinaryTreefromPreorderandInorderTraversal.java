@@ -1,3 +1,10 @@
+/*
+Given preorder and inorder traversal of a tree, construct the binary tree.
+
+Note:
+You may assume that duplicates do not exist in the tree.
+*/
+
 import java.util.*;
 
 class TreeNode {
@@ -102,6 +109,29 @@ class Solution {
         }
         return buildTree2(preorder, 0, preorder.length - 1, inorderMap, 0, inorder.length - 1);
     }
+
+    /*
+        Second Round
+    */
+    private TreeNode buildTree3(int[] preorder, int pstart, int pend, int[] inorder, int istart, int iend) {
+        if(pstart > pend || istart > iend) return null;
+        TreeNode root = new TreeNode(preorder[pstart]);
+        // search index need split in inorder
+        int index;
+        for(index = istart; index <= iend; index++) {
+            if(inorder[index] == preorder[pstart]) break;
+        }
+        index -= istart;
+        root.left = buildTree3(preorder, pstart + 1, pstart + index, inorder, istart, istart + index - 1);
+        root.right = buildTree3(preorder, pstart + index + 1, pend, inorder, istart + index + 1, iend);
+        return root;
+    }
+    
+    public TreeNode buildTree3(int[] preorder, int[] inorder) {
+        if(preorder.length == 0 || preorder.length != inorder.length) return null;
+        int length = preorder.length;
+        return buildTree3(preorder, 0, length - 1, inorder, 0, length - 1);
+    }
 }
 
 class Main {
@@ -119,7 +149,7 @@ class Main {
         Solution solution = new Solution();
         int[] preorder = {1,2};
         int[] inorder = {1,2};
-        TreeNode root = solution.buildTree2(preorder, inorder);
+        TreeNode root = solution.buildTree3(preorder, inorder);
         print(solution.levelOrder(root));
     }
 }

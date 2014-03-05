@@ -1,3 +1,9 @@
+/*
+A linked list is given such that each node contains an additional random pointer which could point to any node in the list or null.
+
+Return a deep copy of the list.
+*/
+
 import java.util.HashMap;
 
 class RandomListNode {
@@ -76,6 +82,47 @@ class Solution {
         }
         return cloneHead;
     }
+
+    /*
+        Second Round
+    */
+    public RandomListNode copyRandomList3(RandomListNode head) {
+        if(head == null) return null;
+        RandomListNode node = head;
+        HashMap<RandomListNode, RandomListNode> map = new HashMap<RandomListNode, RandomListNode>();
+        RandomListNode newHead = null, prev = null;
+        // copy
+        while(node != null) {
+            RandomListNode newNode = null, newRandomNode = null;
+            if(map.containsKey(node)) {
+                newNode = map.get(node);
+            }
+            else {
+                newNode = new RandomListNode(node.label);
+                map.put(node, newNode);
+            }
+            if(node.random != null) {
+                if(map.containsKey(node.random)) {
+                    newRandomNode = map.get(node.random);
+                }
+                else {
+                    newRandomNode = new RandomListNode(node.random.label);
+                    map.put(node.random, newRandomNode);
+                }
+            }
+            newNode.random = newRandomNode;
+            if(newHead == null) {
+                newHead = newNode;
+                prev = newNode;
+            }
+            else {
+                prev.next = newNode;
+                prev = newNode;
+            }
+            node = node.next;
+        }
+        return newHead;
+    }
 }
 
 class Main {
@@ -83,6 +130,6 @@ class Main {
         Solution solution = new Solution();
         RandomListNode node = new RandomListNode(-1);
         node.random = node;
-        solution.copyRandomList2(node);
+        solution.copyRandomList3(node);
     }
 }

@@ -36,3 +36,207 @@ For the second case, group objects 1 and 2 together by moving the first object t
 For the third case, group objects 1 and 2 together by moving the first object to position 2 and group objects 3 and 4 
 together by moving object 3 to position 7. Thus the answer is 1 + 2 = 3.
 */
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.Scanner;
+
+class Case {
+	int N;	// number of objects
+	int K;	// number of groups
+	LinkedList<Group> groups;	// groups
+	
+	public Case(int N, int K) {
+		this.N = N;
+		this.K = K;
+		groups = new LinkedList<Group>();
+	}
+	
+	// find steps need for every group to move all objects to its nearest group
+	public int calMoveGroup() {
+		ListIterator<Group> iterator = (ListIterator<Group>) groups.iterator();
+		int minMove = Integer.MAX_VALUE;
+		while(iterator.hasNext()) {
+			Group currentGroup = iterator.next();
+			int prevDis = Integer.MAX_VALUE, nextDis = Integer.MAX_VALUE;
+			iterator.previous();
+			if(iterator.hasPrevious()) {
+				Group prevGroup = iterator.previous();
+				prevDis = currentGroup.position - prevGroup.position;
+				iterator.next();
+			}
+			iterator.next();
+			if(iterator.hasNext()) {
+				Group nextGroup = iterator.next();
+				nextDis = nextGroup.position - currentGroup.position;
+				iterator.previous();
+			}
+			int dis = Math.min(prevDis, nextDis);
+			int move = currentGroup.objects.size() * dis;
+			currentGroup.minMove = move;
+			minMove = Math.min(minMove, move);
+		}
+		return minMove;
+	}
+	
+	public void removeMinGroup(int minMove) {
+		ListIterator<Group> iterator = (ListIterator<Group>) groups.iterator();
+		while(iterator.hasNext()) {
+			Group currentGroup = iterator.next();
+			if(currentGroup.minMove == minMove) {
+				iterator.previous();
+				int prevDis = Integer.MAX_VALUE, nextDis = Integer.MAX_VALUE;
+				Group prevGroup = null, nextGroup = null;
+				if(iterator.hasPrevious()) {
+					prevGroup = iterator.previous();
+					prevDis = currentGroup.position - prevGroup.position;
+					iterator.next();
+				}
+				iterator.next();
+				if(iterator.hasNext()) {
+					nextGroup = iterator.next();
+					nextDis = nextGroup.position - currentGroup.position;
+					iterator.previous();
+				}
+				if(prevDis < nextDis) {	// move all objects to prev group
+					prevGroup.objects.addAll(currentGroup.objects);
+				}
+				else {	// move all objects to next group
+					nextGroup.objects.addAll(currentGroup.objects);
+				}
+				iterator.remove();
+				break;
+			}
+		}
+	}
+	
+	public void insertObject(int object, int position) {
+		if(groups.size() == 0) {
+			Group group = new Group(position);
+			group.objects.add(object);
+			groups.add(group);
+		}
+		else {	// find a right place to insert
+			boolean inserted = false;
+			ListIterator<Group> iterator = (ListIterator<Group>) groups.iterator();
+			while(iterator.hasNext()) {
+				Group current = iterator.next();
+				if(current.position == position) {	// should insert to this group
+					current.objects.add(object);
+					inserted = true;
+				}
+				if(current.position > position) {	// should create a new group and insert
+					Group group = new Group(position);
+					group.objects.add(object);
+					iterator.add(group);
+					inserted = true;
+				}
+				if(inserted) break;
+			}
+			if(!inserted) {
+				Group group = new Group(position);
+				group.objects.add(object);
+				iterator.add(group);
+				inserted = true;
+			}
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "Case [N=" + N + ", K=" + K + ", groups=" + groups + "]";
+	}
+}
+
+class Group {
+	int position;
+	ArrayList<Integer> objects;
+	int minMove;
+	
+	public Group(int position) {
+		this.position = position;
+		this.objects = new ArrayList<Integer>();
+	}
+
+	@Override
+	public String toString() {
+		return "Group [position=" + position + ", objects=" + objects + "]";
+	}
+}
+
+// greedy solution
+class Solution {
+	static int T;	// number of cases
+	static ArrayList<Case> Cases = new ArrayList<Case>();
+	static ArrayList<Integer> Result = new ArrayList<Integer>();
+	
+	// find steps need for every group to move all objects to its nearest group
+	// get the minimal one and move
+	private static void calculate() {
+		for(Case cas : Cases) {
+			int moves = 0;
+			LinkedList<Group> groups = cas.groups;
+			while(groups.size() > cas.K) {
+				int move = cas.calMoveGroup();
+				cas.removeMinGroup(move);
+				moves += move;
+			}
+			Result.add(moves);
+		}
+	}
+	
+	private static void output() {
+		for(int res : Result) {
+			System.out.println(res);
+		}
+	}
+	
+	private static void input(String filePath) {
+		// assume the file is in the right format
+		try {
+			File file = new File(filePath);
+			Scanner sc = new Scanner(file);
+			// read first line for T
+			String line = sc.nextLine();
+			T = Integer.parseInt(line);
+			// read test cases
+			while(sc.hasNext()) {
+				// read N and K
+				line = sc.nextLine();
+				String[] nodes = line.split(" ");
+				int N = Integer.parseInt(nodes[0]);
+				int K = Integer.parseInt(nodes[1]);
+				Case cas = new Case(N, K);
+				// read positions
+				line = sc.nextLine();
+				nodes = line.split(" ");
+				for(int i = 0; i < nodes.length; i++) {
+					int position = Integer.parseInt(nodes[i]);
+					cas.insertObject(i, position);
+				}
+				Cases.add(cas);
+			}
+			sc.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private static void usage() {
+		System.out.println("Usage: java Solution GroupingObjects_testcases/input000.txt.");
+	}
+	
+	public static void main(String[] args) {
+		if (args.length == 0) {
+			usage();
+			System.exit(-1);
+		}
+		input(args[0]);
+		calculate();
+		output();
+	}
+}

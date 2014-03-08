@@ -133,9 +133,59 @@ class Solution {
 		return ops;
 	}
 	
+	// http://stackoverflow.com/questions/10013933/conversion-to-proper-postfix-notation-in-minimum-number-of-steps
+	/*
+		|
+		|         +
+		|   +   +   +
+		| +   +       +
+		|-|-|-|-|-|-|-|-
+		  x x * x x * * 
+	*/
+	private static int getMinOp2(StringBuilder expression) {
+		int[] graph = new int[expression.length()];
+		int current = 0;
+		for(int i = 0; i < expression.length(); i++) {
+			if(expression.charAt(i) == 'x') current++;
+			else current--;
+			graph[i] = current;
+		}
+		int ops = 0;
+		// remove all prev *
+		int i;
+		for(i = 0; i < graph.length && graph[i] < 0; i++) {
+			ops += 1;
+			for(int j  = i; j < graph.length; j++) {
+				graph[j] += 1;
+			}
+		}
+		// fix middle
+		for(; i < graph.length; i++) {
+			if(graph[i] <= 0) {
+				int j = i;
+				int min = 0;
+				while(graph[j] <= 0) {
+					if(graph[j] < min) min = graph[j];
+				}
+				int op = 1 - min + 1;
+				i = j;
+				for(; j < graph.length; j++) {
+					graph[j] += 1;
+				}
+				ops += op;
+			}
+		}
+		// set end to 1
+		if(graph[graph.length - 1] != 1) {
+			ops += Math.abs(1 - graph[graph.length - 1]);
+			graph[graph.length - 1] = 1;
+		}
+		return ops;
+	}
+	
 	private static int getMinOp(String expression) {
 		StringBuilder sb = new StringBuilder(expression);
-		return getMinOp(sb);
+		return getMinOp2(sb);
 	}
 	
 	private static void RPN() {

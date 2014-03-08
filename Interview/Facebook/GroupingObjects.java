@@ -161,13 +161,18 @@ class Group {
 		this.objects = new ArrayList<Integer>();
 	}
 
+	public Group(Group group) {
+		this.position = group.position;
+		this.objects = new ArrayList(group.objects);
+	}
+
 	@Override
 	public String toString() {
 		return "Group [position=" + position + ", objects=" + objects + "]";
 	}
 }
 
-// greedy solution
+// Greedy Solution
 class Solution {
 	static int T;	// number of cases
 	static ArrayList<Case> Cases = new ArrayList<Case>();
@@ -185,6 +190,161 @@ class Solution {
 				moves += move;
 			}
 			Result.add(moves);
+		}
+	}
+	
+	private static void output() {
+		for(int res : Result) {
+			System.out.println(res);
+		}
+	}
+	
+	private static void input(String filePath) {
+		// assume the file is in the right format
+		try {
+			File file = new File(filePath);
+			Scanner sc = new Scanner(file);
+			// read first line for T
+			String line = sc.nextLine();
+			T = Integer.parseInt(line);
+			// read test cases
+			while(sc.hasNext()) {
+				// read N and K
+				line = sc.nextLine();
+				String[] nodes = line.split(" ");
+				int N = Integer.parseInt(nodes[0]);
+				int K = Integer.parseInt(nodes[1]);
+				Case cas = new Case(N, K);
+				// read positions
+				line = sc.nextLine();
+				nodes = line.split(" ");
+				for(int i = 0; i < nodes.length; i++) {
+					int position = Integer.parseInt(nodes[i]);
+					cas.insertObject(i, position);
+				}
+				Cases.add(cas);
+			}
+			sc.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private static void usage() {
+		System.out.println("Usage: java Solution GroupingObjects_testcases/input000.txt.");
+	}
+	
+	public static void main(String[] args) {
+		if (args.length == 0) {
+			usage();
+			System.exit(-1);
+		}
+		input(args[0]);
+		calculate();
+		output();
+	}
+}
+
+class Status {
+	ArrayList<Group> groups;
+	int move;
+
+	public Status(LinkedList<Group> groups) {
+		this.groups = new ArrayList<Group>();
+		for(Group group : groups) {
+			this.groups.add(new Group(group));
+		}
+		move = 0;
+	}
+	
+	public Status(ArrayList<Group> groups) {
+		this.groups = groups;
+		move = 0;
+	}
+	
+	public ArrayList<Group> copyGroups(ArrayList<Group> groups) {
+		ArrayList<Group> grList = new ArrayList<Group>();
+		for(Group group : groups) {
+			grList.add(new Group(group));
+		}
+		return grList;
+	}
+	
+	public ArrayList<Status> nextStatus() {
+		ArrayList<Status> nextStatus = new ArrayList<Status>();
+		for(int i = 0; i < groups.size(); i++) {
+			ArrayList<Group> locGroups;
+			Status status;
+			Group curGroup, preGroup, nextGroup;
+			// move to left
+			if(i > 0) {
+				locGroups = copyGroups(groups);
+				
+				curGroup = locGroups.get(i);
+				preGroup = locGroups.get(i - 1);
+				int dis = curGroup.position - preGroup.position;
+				int move = dis * curGroup.objects.size();
+				preGroup.objects.addAll(curGroup.objects);
+				locGroups.remove(i);
+				
+				status = new Status(locGroups);
+				status.move = this.move + move;
+				nextStatus.add(status);
+			}
+			// move to right
+			if(i < groups.size() - 1) {
+				locGroups = copyGroups(groups);
+				
+				curGroup = locGroups.get(i);
+				nextGroup = locGroups.get(i + 1);
+				int dis = nextGroup.position - curGroup.position;
+				int move = dis * curGroup.objects.size();
+				nextGroup.objects.addAll(curGroup.objects);
+				locGroups.remove(i);
+				
+				status = new Status(locGroups);
+				status.move = this.move + move;
+				nextStatus.add(status);
+			}
+		}
+		return nextStatus;
+	}
+
+	@Override
+	public String toString() {
+		return "Status [groups=" + groups + ", move=" + move + "]";
+	}
+	
+}
+
+// BFS Solution
+// should be optimal
+class Solution2 {
+    static int T;	// number of cases
+	static ArrayList<Case> Cases = new ArrayList<Case>();
+	static ArrayList<Integer> Result = new ArrayList<Integer>();
+	
+	// store two possible moves to its neighbors
+	private static void calculate() {
+		for(Case cas : Cases) {
+			int size = cas.groups.size();
+			Status status = new Status(cas.groups);
+			ArrayList<Status> stList = new ArrayList<Status>();
+			stList.add(status);
+			while(size > cas.K) {
+				ArrayList<Status> tmpList = new ArrayList<Status>();
+				for(Status st : stList) {
+					tmpList.addAll(st.nextStatus());
+				}
+				size--;
+				stList = tmpList;
+			}
+			int minMove = Integer.MAX_VALUE;
+			for(Status st : stList) {
+				minMove = Math.min(st.move, minMove);
+			}
+			Result.add(minMove);
 		}
 	}
 	

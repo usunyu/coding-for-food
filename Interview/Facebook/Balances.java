@@ -56,19 +56,20 @@ So the output for this problem would be:
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Scanner;
 
 class Balance {
 	int leftWeight;
 	int rightWeight;
+	
 	ArrayList<Integer> leftBalances;
 	ArrayList<Integer> rightBalances;
-	boolean balanced;
-	int balanceWeight;
 	
-	int leftAddWeight;
-	int rightAddWeight;
+	int balanceWeight;	// the weight of balance, 10
+	
+	int leftAddWeight;	//	how many weight we need to add in left to make balanced
+	int rightAddWeight;	//	how many weight we need to add in right to make balanced
 
 	public Balance(int leftWeight, int rightWeight,
 			ArrayList<Integer> leftBalances, ArrayList<Integer> rightBalances) {
@@ -76,74 +77,47 @@ class Balance {
 		this.rightWeight = rightWeight;
 		this.leftBalances = leftBalances;
 		this.rightBalances = rightBalances;
-		this.balanced = false;
 		balanceWeight = 10;
 	}
 
-	public boolean isBalance(ArrayList<Balance> balances) {
-		if(balanced) return true;
-		else {	// check again
-			balanced = (getLeftTotalWeight(balances) == getRightTotalWeight(balances));
-			return balanced;
-		}
-	}
-	
-	public int getLeftTotalWeight(ArrayList<Balance> balances) {
-		int weight = leftWeight;
-		for(int id : leftBalances) {
-			weight += balances.get(id).getTotalWeight(balances);
-		}
-		return weight;
-	}
-	
-	public int getRightTotalWeight(ArrayList<Balance> balances) {
-		int weight = rightWeight;
-		for(int id : rightBalances) {
-			weight += balances.get(id).getTotalWeight(balances);
-		}
-		return weight;
-	}
-	
-	public int getTotalWeight(ArrayList<Balance> balances) {
-		return getLeftTotalWeight(balances) + getRightTotalWeight(balances) + balanceWeight;
-	}
-	
-	public boolean isLeftBalancesBalanced(ArrayList<Balance> balances) {
-		for(int id : leftBalances) {
-			if(!balances.get(id).isBalance(balances)) return false;
-		}
-		return true;
-	}
-	
-	public boolean isRightBalancesBalanced(ArrayList<Balance> balances) {
-		for(int id : rightBalances) {
-			if(!balances.get(id).isBalance(balances)) return false;
-		}
-		return true;
-	}
-	
-	public boolean isTotalBalancesBalanced(ArrayList<Balance> balances) {
-		return isLeftBalancesBalanced(balances) && isRightBalancesBalanced(balances);
+	@Override
+	public String toString() {
+		return "Balance [leftWeight=" + leftWeight + ", rightWeight="
+				+ rightWeight + ", leftBalances=" + leftBalances
+				+ ", rightBalances=" + rightBalances + "]";
 	}
 }
 
 class Solution {
-	static int T;
+	// data structure to hold all balances
 	static ArrayList<Balance> balances = new ArrayList<Balance>();
 	
+	private static int getBalancesWeight(ArrayList<Integer> balances, HashMap<Integer, Integer> balancedWeight) {
+		int weight = 0;
+		// get balances's weight if they are balanced
+		for(int balance : balances) {
+			if(balancedWeight.containsKey(balance)) {
+				weight += balancedWeight.get(balance);
+			}
+			else return -1;	// one of balances is not balanced
+		}
+		return weight;
+	}
+	
 	private static void process() {
-		HashSet<Integer> balanced = new HashSet<Integer>();
-		while(balanced.size() != balances.size()) {
+		// store the weight of balance if it is balanced
+		HashMap<Integer, Integer> balancedWeight = new HashMap<Integer, Integer>();
+		while(balancedWeight.size() != balances.size()) {	// keep make balanced
+			// try to make every balance balanced if we can
 			for(int i = 0; i < balances.size(); i++) {
 				Balance balance = balances.get(i);
-				if(balance.isBalance(balances)) {	// already balanced
-					balanced.add(i);
-				}
-				else {
+				if(!balancedWeight.containsKey(i)) {	// it is not balanced, try to make it balanced
 					// check balances its contained are balanced
-					if(balance.isTotalBalancesBalanced(balances)) {	// we can make it balanced
-						int leftTotalWeight = balance.getLeftTotalWeight(balances);
-						int rightTotalWeight = balance.getRightTotalWeight(balances);
+					int leftBalancesWeight = getBalancesWeight(balance.leftBalances, balancedWeight);
+					int rightBalancesWeight = getBalancesWeight(balance.rightBalances, balancedWeight);
+					if(leftBalancesWeight != -1 && rightBalancesWeight != -1) {	// we can make it balanced
+						int leftTotalWeight = leftBalancesWeight + balance.leftWeight;
+						int rightTotalWeight = rightBalancesWeight + balance.rightWeight;
 						if(leftTotalWeight > rightTotalWeight) {	// put weight on right
 							balance.rightAddWeight = leftTotalWeight - rightTotalWeight;
 							balance.rightWeight += balance.rightAddWeight;
@@ -152,6 +126,11 @@ class Solution {
 							balance.leftAddWeight = rightTotalWeight - leftTotalWeight;
 							balance.leftWeight += balance.leftAddWeight;
 						}
+						leftTotalWeight = leftBalancesWeight + balance.leftWeight;
+						rightTotalWeight = rightBalancesWeight + balance.rightWeight;
+						// we store the total weight of current balance in cache
+						int totalWeight = leftTotalWeight + rightTotalWeight + balance.balanceWeight;
+						balancedWeight.put(i, totalWeight);
 					}
 				}
 			}
@@ -162,7 +141,7 @@ class Solution {
 		try {
 			File file = new File(filePath);
 			Scanner sc = new Scanner(file);
-			T = Integer.parseInt(sc.nextLine());
+			int T = Integer.parseInt(sc.nextLine());
 			// for each balance
 			String line;
 			String[] nodes;
@@ -194,34 +173,41 @@ class Solution {
 	
 	private static void input() {
 		Scanner sc = new Scanner(System.in);
-		T = Integer.parseInt(sc.nextLine());
+		// test case's number
+		int T = Integer.parseInt(sc.nextLine());
 		// for each balance
 		String line;
 		String[] nodes;
 		for(int i = 0; i < T; i++) {
-			// left
+			// left part
 			line = sc.nextLine();
 			nodes = line.split(" ");
+			// read left weight
 			int leftWeight = Integer.parseInt(nodes[0]);
+			// read left balances
 			ArrayList<Integer> leftBalances = new ArrayList<Integer>();
 			for(int j = 1; j < nodes.length; j++) {
-				leftBalances.add(Integer.parseInt(nodes[i]));
+				leftBalances.add(Integer.parseInt(nodes[j]));
 			}
-			// right
+			// right part
 			line = sc.nextLine();
 			nodes = line.split(" ");
+			// read right weight
 			int rightWeight = Integer.parseInt(nodes[0]);
+			// read right balances
 			ArrayList<Integer> rightBalances = new ArrayList<Integer>();
 			for(int j = 1; j < nodes.length; j++) {
-				rightBalances.add(Integer.parseInt(nodes[i]));
+				rightBalances.add(Integer.parseInt(nodes[j]));
 			}
 			Balance balance = new Balance(leftWeight, rightWeight, leftBalances, rightBalances);
+			// add to balances list
 			balances.add(balance);
 		}
 		sc.close();
 	}
 	
 	private static void output() {
+		// output as format require
 		for(int i = 0; i < balances.size(); i++) {
 			Balance balance = balances.get(i);
 			System.out.println(i + ": " + balance.leftAddWeight + " " + balance.rightAddWeight);

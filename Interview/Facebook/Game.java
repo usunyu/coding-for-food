@@ -83,15 +83,24 @@ class Solution {
 		}
 	}
 
-	private static void usage() {
-		System.out.println("Usage: java Solution Game_testcases/input000.txt.");
+	private static void input() {
+		// assume the file is in the right format
+		Scanner sc = new Scanner(System.in);
+		// read first line for T
+		String line = sc.nextLine();
+		T = Integer.parseInt(line);
+		// read integers
+		while(sc.hasNext()) {
+			line = sc.nextLine();
+			inputList.add(Integer.parseInt(line));
+		}
+		sc.close();
 	}
 	
 	private static void output() {
 		for(int winner : winnerList) {
 			if(winner == 1) System.out.println("First Player");
 			else System.out.println("Second Player");
-			
 		}
 	}
 	
@@ -104,39 +113,41 @@ class Solution {
 		return count;
 	}
 	
-	private static boolean findK(int num, int beauty) {
+	private static int findN2K(int num, int beauty) {
 		// find K
 		int sum = 1;
 		while(sum < num) {
 			// we choose first one, actually no matter how we chose,
 			// the final result will be same
-			if(countBinOne(num - sum) == beauty) return true;
+			int n_2k = num - sum;
+			if(countBinOne(n_2k) == beauty) {
+				return n_2k;
+			}
 			sum *= 2;
 		}
-		return false;
+		return -1;
 	}
 	
 	private static void playing(int num) {
 		boolean firstPlayer = true, end = false;
 		while(!end) {
 			// num - 2^K = beauty
-			int beauty = countBinOne(num);
-			boolean success = findK(num, beauty);
+			int n_2k = findN2K(num, countBinOne(num));
 			if(firstPlayer) {
-				if(!success) {	// player two win
+				if(n_2k == -1) {	// player two win
 					winnerList.add(2);
 					end = true;
 				}
 				firstPlayer = false;
 			}
 			else {
-				if(!success) {	// player one win
+				if(n_2k == -1) {	// player one win
 					winnerList.add(1);
 					end = true;
 				}
 				firstPlayer = true;
 			}
-			num = beauty;
+			num = n_2k;
 		}
 	}
 	
@@ -147,11 +158,8 @@ class Solution {
 	}
 	
 	public static void main(String[] args) {
-		if (args.length == 0) {
-			usage();
-			System.exit(-1);
-		}
-		input(args[0]);
+		if (args.length == 0) input();
+		else input(args[0]);
 		playing();
 		output();
 	}

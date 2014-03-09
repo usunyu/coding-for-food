@@ -102,41 +102,53 @@ class Case {
 		Collections.sort(myNumbers);
 	}
 	
-	public void checkPossible(int index) {
-		HashSet<Integer> players = new HashSet<Integer>();
-		MyNumber current = myNumbers.get(index);
-		boolean before = false;
-		// make sure there are K - 1 players before
-		for(int i = 0; i < index; i++) {
-			MyNumber num = myNumbers.get(i);
-			if(num.player == current.player) continue;
-			players.add(num.player);
-			if(players.size() >= (K - 1)) {
-				before = true;
-				break;
-			}
-		}
-		// make sure there are N - K players after
-		if(before) {
-			// clear cache
-			players = new HashSet<Integer>();
-			for(int i = myNumbers.size() - 1; i >= index; i--) {
-				if(players.size() >= (N - K)) {
-					possibleNumbers.add(current.num);
-					break;
-				}
-				MyNumber num = myNumbers.get(i);
-				if(num.player == current.player) continue;
-				players.add(num.player);
-			}
-		}
-	}
-	
 	public void countPossible() {
 		possibleNumbers = new ArrayList<Integer>();
-		int size = myNumbers.size() - (N - K);
-		for(int i = K; i < size; i++) {
-			checkPossible(i);
+		HashSet<Integer> leftPlayersSet = new HashSet<Integer>();
+		// store K - 1 players from left
+		int leftNeed = K - 1, rightNeed = N - K;
+		int K_1_Start = -1, K_Start = -1;
+		for(int i = 0; i < myNumbers.size(); i++) {
+			if(leftPlayersSet.size() == leftNeed && K_1_Start != -1) {
+				if(!leftPlayersSet.contains(myNumbers.get(i).player)) {
+					K_Start = i + 1;
+					break;
+				}
+			}
+			if(leftPlayersSet.size() == leftNeed && K_1_Start == -1) {
+				K_1_Start = i;
+			}
+			leftPlayersSet.add(myNumbers.get(i).player);
+		}
+		HashSet<Integer> rightPlayersSet = new HashSet<Integer>();
+		// search from right
+		for(int j = myNumbers.size() - 1; j >= K_1_Start; j--) {
+			if(rightPlayersSet.size() == rightNeed) {
+				if(!rightPlayersSet.contains(myNumbers.get(j).player)) {
+					if(j >= K_Start) {
+						possibleNumbers.add(myNumbers.get(j).num);
+					}
+					else {
+						if(!leftPlayersSet.contains(myNumbers.get(j).player)) {
+							possibleNumbers.add(myNumbers.get(j).num);
+						}
+					}
+				}
+				rightPlayersSet.add(myNumbers.get(j).player);
+			}
+			else if(rightPlayersSet.size() == rightNeed + 1) {
+				if(j >= K_Start) {
+					possibleNumbers.add(myNumbers.get(j).num);
+				}
+				else {
+					if(!leftPlayersSet.contains(myNumbers.get(j).player)) {
+						possibleNumbers.add(myNumbers.get(j).num);
+					}
+				}
+			}
+			else {
+				rightPlayersSet.add(myNumbers.get(j).player);
+			}
 		}
 	}
 
@@ -213,7 +225,6 @@ class Solution {
 		// assume the file is in the right format
 		Scanner sc = new Scanner(System.in);
 		T = sc.nextInt();
-		T = sc.nextInt();
 		// for each case
 		for(int i = 0; i < T; i++) {
 			// read N and K
@@ -239,7 +250,7 @@ class Solution {
 	private static void output() {
 		for(Case cas : cases) {
 			System.out.println(cas.possibleNumbers.size());
-			System.out.println(cas.possibleNumbers);
+			//System.out.println(cas.possibleNumbers);
 		}
 	}
 	

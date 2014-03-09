@@ -133,10 +133,91 @@ class Solution {
 		permute(sb);
 	}
 	
+	// Greedy Solution
+	// http://www.careercup.com/question?id=14463150
+	/*
+	 * Algorithm : 
+	 * Let P[] has the required unique and beautiful string and let s[] has the input string. 
+	 * For each character c in s do the following steps :- 
+	 * check for occurrence of c in P. 
+	 * if(not found) 
+	 * 		append c in P; 
+	 * else { 
+	 * 		p1=position of c in P; 
+	 * 		find character c1 in P after p1 which is lexicographically greater than c; 
+	 * 		if(c1 found) { 
+	 * 			p2=position of c1 in P; 
+	 * 			see whether characters between p1 and p2 are repeated in input string after c; 
+	 * 			if(yes) { 
+	 * 				shift all characters from p1+1 to left by 1 position in P; 
+	 * 				P[end]=c; 
+	 * 			} 
+	 * 		} 
+	 *	} 
+	 */
+	private static void process2() {
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < input.length(); i++) {
+			char ch = input.charAt(i);
+			// check for occurrence of c in P. 
+			int pos = posInSb(ch, sb);
+			if(pos == -1) {	// if not found 
+				sb.append(ch);
+			}
+			else {
+				// find character c1 in P after p1 which is lexicographically greater than c
+				int pos2 = findLarPos(pos + 1, ch, sb);
+				if(pos2 != -1) { // if c1 found
+					// see whether characters between p1 and p2 are repeated in input string after c
+					if(repeated(i, pos, pos2, sb)) { // if yes
+						// shift all characters from p1+1 to left by 1 position in P
+						sb.deleteCharAt(pos);
+						sb.append(ch);
+					}
+				}
+			}
+		}
+		output = sb.toString();
+	}
+	
+	private static boolean repeated(int c, int pos1, int pos2, StringBuilder sb) {
+		HashSet<Character> charSet = new HashSet<Character>();
+		for(int i = c + 1; i < input.length(); i++) {
+			charSet.add(input.charAt(i));
+		}
+		for(int i = pos1 + 1; i < pos2; i++) {
+			if(!charSet.contains(sb.charAt(i))) return false;
+		}
+		return true;
+	}
+	
+	private static int findLarPos(int index, char ch, StringBuilder sb) {
+		int ret = -1;
+		for(int i = index; i < sb.length(); i++) {
+			if(sb.charAt(i) > ch) {
+				ret = i;
+				break;
+			}
+		}
+		return ret;
+	}
+	
+	private static int posInSb(char ch, StringBuilder sb) {
+		int ret = -1;
+		if(sb.length() == 0) return ret;
+		for(int i = 0; i < sb.length(); i++) {
+			if(sb.charAt(i) == ch) {
+				ret = i;
+				break;
+			}
+		}
+		return ret;
+	}
+	
 	public static void main(String[] args) {
 		if (args.length == 0) input();
 		else input(args[0]);
-		process();
+		process2();
 		output();
 	}
 }

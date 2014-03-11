@@ -240,6 +240,116 @@ class Solution {
 			System.out.println(op);
 		}
 	}
+
+	// http://www.careercup.com/question?id=5762415492857856
+	/*	Used dynamic programming.
+	Step A: for having RPN, it is enough to have (RPN)(RPN)*, so find the best K where (0,1,...K),(K+1,....,N-1)* 
+	is RPN (N is the length of the string). 
+
+	If the last character is x, you can delete it and find the best answer for (0,....,N-1) 
+	or replace it with an asterisk and go to Step A, 
+	or add an asterisk to the end and find the best K where (1,0,...K),(K+1,....N)* is RPN. 
+	*/
+	private static void RPN2() {
+		for (int i = 0; i < testCases.size(); i++) {
+			System.out.println(solve(i));	
+		}
+	}
+
+	private static int solve(int index) {
+		return solve(testCases.get(index),0,testCases.get(index).length()-1);
+	}
+
+	private static int solve(String str, int begin, int end){
+		int[][] valueArray = makeEmptyArray(str);
+
+		//already this branch is solved!
+		if(valueArray[begin][end] != Integer.MAX_VALUE){
+			return valueArray[begin][end];
+		}
+		
+		// length 1
+		if( begin == end ){
+			if(str.charAt(begin) == '*'){
+				valueArray[begin][end] = 1;
+				return valueArray[begin][end];
+			}else{
+				valueArray[begin][end] = 0;
+				return valueArray[begin][end];
+			}
+		}
+		
+		// length 2
+		if(begin == end -1){
+			String temp = str.substring(begin, end+1);
+			if(temp.equals("xx")){
+				valueArray[begin][end] = 1;
+				return valueArray[begin][end];
+			}
+			if(temp.equals("x*")){
+				valueArray[begin][end] = 1;
+				return valueArray[begin][end];
+			}
+			if(temp.equals("**")){
+				valueArray[begin][end] = 2;
+				return valueArray[begin][end];
+			}
+			if(temp.equals("*x")){
+				valueArray[begin][end] = 1;
+				return valueArray[begin][end];
+			}
+			System.out.println("Error in solve");
+			return -1;
+		}
+		
+		// find the best k where solve(begin,k) + solve(k+1,end-1) is the best
+		if(str.charAt(end) == '*'){
+			int min = Integer.MAX_VALUE;
+			for (int i = begin; i < end-1; i++) {
+				int temp = solve(str,begin,i) + solve(str,i+1,end-1);
+				if(temp < min)
+					min = temp;
+			}	
+			valueArray[begin][end] = min;
+			return min;
+		}
+		else{ // str.charAt(end)='x'
+			int min = Integer.MAX_VALUE;
+			
+			//replace it with *: similar to the previous, except that there is the cost of 1 for replacement of x with *.
+			for (int i = begin; i < end-1; i++) {
+				int temp = solve(str,begin,i) + solve(str,i+1,end-1) + 1;
+				if(temp < min)
+					min = temp;
+			}
+			
+			//insert, insert an asterisk at the end and try to find the best k where solve(begin,k) + solve(k+1,end) is the best
+			//since an asterisk is added, the last character has to be involved in the following calculations.
+			for (int i = begin; i < end; i++) {
+				int temp = solve(str,begin,i) + solve(str,i+1,end) + 1;
+				if(temp < min)
+					min = temp;
+			}
+			
+			//delete x and solve the problem for the rest.
+			int temp = solve(str,begin,end-1) + 1;
+			if(temp < min)
+				min = temp;
+			
+			valueArray[begin][end] = min;
+			return min;
+		}
+	}
+
+	public static int[][] makeEmptyArray(String str) {
+		int[][] valueArray = new int[str.length()][str.length()];
+		for (int i = 0; i < valueArray.length; i++) {
+			for (int j = 0; j < valueArray.length; j++) {
+				valueArray[i][j] = Integer.MAX_VALUE;
+			}
+		}
+		return valueArray;
+	}
 	
 	public static void main(String[] args) {
 		if (args.length == 0) {
@@ -248,7 +358,8 @@ class Solution {
 		else {
 			input(args[0]);
 		}
-		RPN();
+		// RPN();
+		RPN2();
 		output();
 	}
 }

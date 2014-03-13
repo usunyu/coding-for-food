@@ -1,16 +1,22 @@
 /*
 http://www.geeksforgeeks.org/segment-tree-set-1-sum-of-given-range/
+http://www.geeksforgeeks.org/segment-tree-set-1-range-minimum-query/
 */
 
 class SegmentTree {
 	int[] array;
-	int[] tree;
+	int[] tree; // for sum
+	int[] tree2; // for min
 
+	/* Function to construct segment tree from given array. This function
+	   allocates memory for segment tree and calls constructSTUtil() to
+	   fill the allocated memory */
 	public SegmentTree(int[] array) {
 		this.array = array;
 		double x = Math.ceil(Math.log(array.length) / Math.log(2));
 		int size = (int)(2 * Math.pow(2, x) - 1);
 		tree = new int[size];
+		tree2 = new int[size];
 		construct(0, array.length - 1, 0);
 	}
 
@@ -20,6 +26,7 @@ class SegmentTree {
 		if(left == right) {	// If there is one element in array, store it in current node of
 							// segment tree and return
 			tree[st] = array[left];
+			tree2[st] = array[left];
 		}
 		else if(left < right) {	// If there are more than one elements, then recur for left and
 								// right subtrees and store the sum of values in this node
@@ -27,6 +34,7 @@ class SegmentTree {
 			construct(left, mid, stl);
 			construct(mid + 1, right, str);
 			tree[st] = tree[stl] + tree[str];
+			tree2[st] = Math.min(tree[stl], tree[str]);
 		}
 	}
 
@@ -59,6 +67,37 @@ class SegmentTree {
 		if(left < 0 || right > array.length - 1 || left > right)
 			return -1;
 		return sum(0, array.length - 1, left, right, 0);
+	}
+
+	/*  A recursive function to get the minimum value in a given range of array
+	    indexes. The following are parameters for this function.
+	 
+	    st    --> Pointer to segment tree
+	    index --> Index of current node in the segment tree. Initially 0 is
+	             passed as root is always at index 0
+	    ss & se  --> Starting and ending indexes of the segment represented by
+	                 current node, i.e., st[index]
+	    qs & qe  --> Starting and ending indexes of query range */
+	private int min(int ss, int se, int qs, int qe, int index) {
+		// If segment of this node is a part of given range, then return the 
+    	// min of the segment
+    	if(qs <= ss && qe >= se)
+        	return tree2[index];
+        // If segment of this node is outside the given range
+    	if(se < qs || ss > qe)
+        	return Integer.MAX_VALUE;
+        // If a part of this segment overlaps with the given range
+        int mid = ss + (se - ss) / 2;
+        return Math.min(min(ss, mid, qs, qe, 2 * index + 1), min(mid + 1, se, qs, qe, 2 * index + 2));
+	}
+
+	// Return minimum of elements in range from index qs (quey start) to
+	// qe (query end).  It mainly uses RMQUtil()
+	public int min(int left, int right) {
+		// Check for erroneous input values
+		if(left < 0 || right > array.length - 1 || left > right)
+			return -1;
+		return min(0, array.length - 1, left, right, 0);
 	}
 
 	/* A recursive function to update the nodes which have the given index in
@@ -109,5 +148,8 @@ class Main {
  
     	// Find sum after the value is updated
     	System.out.println("Updated sum of values in given range = " + segmentTree.sum(1, 3));
+
+    	// Print minimum value in arr[qs..qe]
+    	System.out.println("Minimum of values in range [1, 5] is = " + segmentTree.min(1, 5));
 	}
 }

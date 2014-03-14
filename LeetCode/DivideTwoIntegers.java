@@ -47,11 +47,31 @@ class Solution {
             return 0 - result;
         }
     }
+    /*
+        Second Round
+    */
+    public int divide3(int dividend, int divisor) {
+        if(divisor == 0) return Integer.MAX_VALUE;
+        long divid = Math.abs((long)dividend), divis = Math.abs((long)divisor);
+        int ret = 0;
+        while(divid >= divis) {
+            long div = divis;
+            int quot = 1;
+            while((div << 1) < divid) {
+                div <<= 1;
+                quot <<= 1;
+            }
+            divid -= div;
+            ret += quot;
+        }
+        if(dividend > 0 && divisor > 0 || dividend < 0 && divisor < 0) return ret;
+        else return 0 - ret;
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        System.out.println(solution.divide2(92, 3));
+        System.out.println(solution.divide3(-1010369383, -2147483648));
     }
 }

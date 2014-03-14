@@ -1,3 +1,14 @@
+/*
+Given two words word1 and word2, find the minimum number of steps required to convert word1 to word2. 
+(each operation is counted as 1 step.)
+
+You have the following 3 operations permitted on a word:
+
+a) Insert a character
+b) Delete a character
+c) Replace a character
+*/
+
 import java.util.*;
 
 class Edit {
@@ -82,13 +93,39 @@ class Solution {
         }
         return space[m][n];
     }
+    /*
+        Second Round
+    */
+    public int minDistance3(String word1, String word2) {
+        int m = word1.length(), n = word2.length();
+        if(m == 0 || n == 0) return m + n;
+        int[][] dp = new int[n + 1][m + 1];
+        // initial
+        for(int i = 0; i <= n; i++) dp[i][0] = i;
+        for(int i = 0; i <= m; i++) dp[0][i] = i;
+        // dp
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= m; j++) {
+                if(word2.charAt(i - 1) == word1.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
+                else {
+                    int add = dp[i][j - 1] + 1;
+                    int del = dp[i - 1][j] + 1;
+                    int rep = dp[i - 1][j - 1] + 1;
+                    dp[i][j] = Math.min(rep, Math.min(add, del));
+                }
+            }
+        }
+        return dp[n][m];
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         String word1 = "sea", word2 = "ate";
-        System.out.println(solution.minDistance2(word1, word2));
+        System.out.println(solution.minDistance3(word1, word2));
     }
 }
 

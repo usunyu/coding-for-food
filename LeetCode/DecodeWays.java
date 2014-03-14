@@ -1,3 +1,18 @@
+/*
+A message containing letters from A-Z is being encoded to numbers using the following mapping:
+
+'A' -> 1
+'B' -> 2
+...
+'Z' -> 26
+Given an encoded message containing digits, determine the total number of ways to decode it.
+
+For example,
+Given encoded message "12", it could be decoded as "AB" (1 2) or "L" (12).
+
+The number of ways decoding "12" is 2.
+*/
+
 class Solution {
     public int numDecodings2(String s, int start) {
         if(start == s.length()) {
@@ -113,11 +128,50 @@ class Solution {
         }
         return prev1;
     }
+    /*
+        Second Round
+        DP: p[i] = p[i - 2] (if 1 <= s[i - 1, i] <= 26)
+                 + p[i - 1] (if 1 <= s[i] <= 9)
+    */
+    public int numDecodings4(String s) {
+        // initial
+        int ret = 0, p1 = 0, p2 = 0;
+        if(s.length() >= 1) {
+            int val1 = s.charAt(0) - '0';
+            if(val1 >= 1 && val1 <= 9) p1 = 1;
+            ret = p1;
+            if(s.length() >= 2) {
+                int val2 = s.charAt(1) - '0';
+                if(val1 == 1) p2 = 1;
+                else if(val1 == 2 && val2 >= 0 && val2 <= 6) p2 = 1;
+                if(val2 >= 1 && val2 <= 9) {
+                    p2 += p1;
+                }
+                ret = p2;
+            }
+        }
+        // dp
+        for(int i = 2; i < s.length(); i++) {
+            // check current digit
+            int p3 = 0;
+            int val1 = s.charAt(i) - '0';
+            if(val1 >= 1 && val1 <= 9) p3 += p2;
+            // check prev digit
+            int val2 = s.charAt(i - 1) - '0';
+            if(val2 == 1) p3 += p1;
+            else if(val2 == 2 && val1 >= 0 && val1 <= 6) p3 += p1;
+            // pass
+            p1 = p2;
+            p2 = p3;
+            ret = p2;
+        }
+        return ret;
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        System.out.println(solution.numDecodings("012"));
+        System.out.println(solution.numDecodings4("17"));
     }
 }

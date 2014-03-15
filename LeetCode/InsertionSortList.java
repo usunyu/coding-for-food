@@ -1,3 +1,6 @@
+/*
+Sort a linked list using insertion sort.
+*/
 
 class ListNode {
     int val;
@@ -41,6 +44,45 @@ class Solution {
         }
         return head;
     }
+    /*
+        Second Round
+    */
+    public ListNode insertionSortList2(ListNode head) {
+        ListNode head2 = null, cur = head, cur2 = null, prev = null, next = null;
+        while(cur != null) {
+            next = cur.next;
+            cur.next = null;
+            // find insert place
+            if(head2 == null) {
+                head2 = cur;
+            }
+            else {
+                cur2 = head2;
+                prev = null;
+                while(cur2 != null) {
+                    if(cur2.val > cur.val) {
+                        // insert
+                        if(prev == null) {
+                            head2 = cur;
+                            head2.next = cur2;
+                        }
+                        else {
+                            prev.next = cur;
+                            cur.next = cur2;
+                        }
+                        break;
+                    }
+                    prev = cur2;
+                    cur2 = cur2.next;
+                }
+                if(cur2 == null) {
+                    prev.next = cur;
+                }
+            }
+            cur = next;
+        }
+        return head2;
+    }
 }
 
 class Main {
@@ -54,13 +96,13 @@ class Main {
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        ListNode node1 = new ListNode(1);
-        ListNode node2 = new ListNode(2);
+        ListNode node1 = new ListNode(2);
+        ListNode node2 = new ListNode(1);
         node1.next = node2;
         ListNode node3 = new ListNode(3);
         node2.next = node3;
         print(node1);
-        print(solution.insertionSortList(node1));
+        print(solution.insertionSortList2(node1));
     }
 }
 

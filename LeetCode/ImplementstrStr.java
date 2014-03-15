@@ -1,3 +1,9 @@
+/*
+Implement strStr().
+
+Returns a pointer to the first occurrence of needle in haystack, or null if needle is not part of haystack.
+*/
+
 class Solution {
 	// time complexity: O(N^2)
     // space complexity: O(1)

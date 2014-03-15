@@ -5,6 +5,11 @@ class Interval {
     int end;
     Interval() { start = 0; end = 0; }
     Interval(int s, int e) { start = s; end = e; }
+    
+    @Override
+    public String toString() {
+        return "Interval [start=" + start + ", end=" + end + "]";
+    }
 }
 
 class Solution {
@@ -98,6 +103,42 @@ class Solution {
         }
         return result;
     }
+
+    /*
+        Second Round
+    */
+    public boolean isOverlap(Interval i1, Interval i2) {
+        if(i1.start >= i2.start && i1.start <= i2.end
+            || i1.end >= i2.start && i1.end <= i2.end
+            || i1.start <= i2.start && i1.end >= i2.end
+            || i1.start >= i2.start && i1.end <= i2.end)
+            return true;
+        else
+            return false;
+    }
+    
+    public ArrayList<Interval> insert3(ArrayList<Interval> intervals, Interval newInterval) {
+        ArrayList<Interval> result = new ArrayList<Interval>();
+        boolean inserted = false;
+        for(int i = 0; i < intervals.size(); i++) {
+            Interval current = intervals.get(i);
+            // check if current is overlap
+            if(isOverlap(current, newInterval)) {
+                // merge to new
+                newInterval.start = Math.min(newInterval.start, current.start);
+                newInterval.end = Math.max(newInterval.end, current.end);
+            }
+            else {
+                if(newInterval.end < current.start && !inserted) {
+                    result.add(newInterval);
+                    inserted = true;
+                }
+                result.add(current);
+            }
+        }
+        if(!inserted) result.add(newInterval);
+        return result;
+    }
 }
 
 class Main {
@@ -125,7 +166,7 @@ class Main {
         print(intervals);
         Interval newInterval = new Interval(2, 3);
         print(newInterval);
-        intervals = solution.insert2(intervals, newInterval);
+        intervals = solution.insert3(intervals, newInterval);
         print(intervals);
     }
 }

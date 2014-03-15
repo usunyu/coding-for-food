@@ -74,6 +74,23 @@ class Solution {
             flatten2(root.right);
         }
     }
+    // non recursive
+    public void flatten3(TreeNode root) {
+        if(root == null) return;
+        TreeNode cur = root;
+        while(cur != null) {
+            TreeNode tmp = cur.right;
+            if(cur.left != null) {
+                cur.right = cur.left;
+                cur.left = null;
+                TreeNode trav = cur;
+                while(trav.right != null) 
+                    trav = trav.right;
+                trav.right = tmp;
+            }
+            cur = cur.right;
+        }
+    }
 }
 
 class Main {
@@ -96,7 +113,7 @@ class Main {
         root.right = rc1;
         TreeNode lc2 = new TreeNode(3);
         rc1.left = lc2;
-        solution.flatten2(root);
+        solution.flatten3(root);
         print(root);
     }
 }

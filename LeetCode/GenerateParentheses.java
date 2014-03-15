@@ -63,6 +63,30 @@ class Solution {
         generateParenthesis2(n, n, "", parenthesisList);
         return parenthesisList;
     }
+    /*
+        Second Round
+    */
+    private void generateParenthesis3(int left, int right, StringBuilder path, ArrayList<String> result) {
+        if(left < 0 || right < 0) return;
+        if(left == 0 && right == 0) {
+            result.add(path.toString());
+            return;
+        }
+        if(left < right) {
+            path.append(')');
+            generateParenthesis3(left, right - 1, path, result);
+            path.deleteCharAt(path.length() - 1);
+        }
+        path.append('(');
+        generateParenthesis3(left - 1, right, path, result);
+        path.deleteCharAt(path.length() - 1);
+    }
+    
+    public ArrayList<String> generateParenthesis3(int n) {
+        ArrayList<String> result = new ArrayList<String>();
+        generateParenthesis3(n, n, new StringBuilder(), result);
+        return result;
+    }
 }
 
 class Main {
@@ -75,7 +99,7 @@ class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         int n = 3;
-        ArrayList<String> parenthesisList = solution.generateParenthesis2(n);
+        ArrayList<String> parenthesisList = solution.generateParenthesis3(n);
         print(parenthesisList);
     }
 }

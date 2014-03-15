@@ -37,7 +37,7 @@ class Main {
 				j = lps[j - 1];
 			}
 			else i++;
-			if(j == pattern.length() - 1) {
+			if(j == pattern.length()) {
 				System.out.println("Found pattern at index " + (i - j));
 				j = lps[j - 1];
 			}
@@ -45,7 +45,7 @@ class Main {
 	}
 
 	public static void main(String[] args) {
-		String text = "AABAACAADAABAAABAA", pattern = "AABA";
+		String text = "AABAACAABDAABAAABAA", pattern = "AABA";
 		print(computeLPSArray(pattern));
 		KMPSearch(text, pattern);
 	}

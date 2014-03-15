@@ -1,4 +1,12 @@
 /*
+Preprocessing
+Examples:
+For the pattern “AABAACAABAA”, lps[] is [0, 1, 0, 1, 2, 0, 1, 2, 3, 4, 5]
+For the pattern “ABCDE”, lps[] is [0, 0, 0, 0, 0]
+For the pattern “AAAAA”, lps[] is [0, 1, 2, 3, 4]
+For the pattern “AAABAAA”, lps[] is [0, 1, 2, 0, 1, 2, 3]
+For the pattern “AAACAAAAAC”, lps[] is [0, 1, 2, 0, 1, 2, 3, 3, 3, 4]
+
 http://www.geeksforgeeks.org/searching-for-patterns-set-2-kmp-algorithm/
 */
 

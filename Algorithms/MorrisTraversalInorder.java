@@ -27,7 +27,7 @@ class TreeNode {
 }
 
 class Main {
-	public static ArrayList<Integer> inorderMorrisTraversal(TreeNode root) {
+	public static ArrayList<Integer> morrisInorder(TreeNode root) {
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		TreeNode cur = root;
 		while(cur != null) {
@@ -61,7 +61,7 @@ class Main {
         TreeNode node2 = new TreeNode(3); root.right = node2;
         TreeNode node3 = new TreeNode(4); node2.left = node3;
 
-        ArrayList<Integer> result = inorderMorrisTraversal(root);
+        ArrayList<Integer> result = morrisInorder(root);
         System.out.println(result);
     }
 }

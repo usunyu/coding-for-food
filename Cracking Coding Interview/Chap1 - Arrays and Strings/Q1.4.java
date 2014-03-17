@@ -60,10 +60,46 @@ class Solution {
 	/*
 		Second Round
 	*/
-		
-	
+	public static String charArrayToString(char[] array) {
+		StringBuilder buffer = new StringBuilder(array.length);
+		for (char c : array) {
+			if (c == 0) {
+				break;
+			}
+			buffer.append(c);
+		}
+		return buffer.toString();
+	}
+
+	public static void replaceSpaces(char[] str, int length) {
+		// count chars and space
+		int chars = 0, spaces = 0;
+		for(int i = 0; i < length; i++) {
+			if(str[i] == ' ') spaces++;
+			else chars++;
+		}
+		// calculate last index
+		int last = chars + 3 * spaces;
+		int i = last - 1, j = length - 1;
+		while(j >= 0) {
+			if(str[j] == ' ') {	// replace ' ' with '%20'
+				str[i--] = '0';
+				str[i--] = '2';
+				str[i--] = '%';
+			}
+			else str[i--] = str[j];	// copy charcter
+			j--;
+		}
+	}
+
 	public static void main(String[] args) {
-		
+		String str = "abc d e f";
+		char[] arr = new char[str.length() + 3 * 2 + 1];
+		for (int i = 0; i < str.length(); i++) {
+			arr[i] = str.charAt(i);
+		}
+		replaceSpaces(arr, str.length());	
+		System.out.println("\"" + charArrayToString(arr) + "\"");
 	}
 }
 

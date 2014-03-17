@@ -13,13 +13,7 @@ Return 6.
 */
 
 import java.util.*;
-
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
-}
+import LCLibrary.*;
 
 class Solution {
     // list[0] store max total sum, list[1] store max height sum
@@ -132,11 +126,7 @@ class Solution {
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        TreeNode root = new TreeNode(1);
-        TreeNode t1 = new TreeNode(2);
-        root.left = t1;
-        TreeNode t2 = new TreeNode(3);
-        root.right = t2;
+        TreeNode root = Input.buildExampleTree2();
         System.out.println(solution.maxPathSum4(root));
     }
 }

@@ -5,7 +5,12 @@ Return a deep copy of the list.
 */
 
 import java.util.HashMap;
-import LCLibrary.*;
+
+class RandomListNode {
+    int label;
+    RandomListNode next, random;
+    RandomListNode(int x) { this.label = x; }
+};
 
 class Solution {
     public RandomListNode copyRandomList(RandomListNode head) {

@@ -112,23 +112,16 @@ class Solution {
 }
 
 class Main {
-    public static void print(ListNode head) {
-        while(head != null) {
-            System.out.print(head.val + " ");
-            head = head.next;
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
         Solution solution = new Solution();
 
         ListNode head1 = Input.buildExampleList();
         ListNode head2 = Input.buildExampleList2();
 
-        print(head1);
-        print(head2);
-        print(solution.addTwoNumbers2(head1, head2));
+        Output.printList(head1);
+        Output.printList(head2);
+
+        Output.printList(solution.addTwoNumbers2(head1, head2));
     }
 }
 

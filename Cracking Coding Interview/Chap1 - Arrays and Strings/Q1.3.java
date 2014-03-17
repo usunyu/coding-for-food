@@ -1,6 +1,11 @@
+/*
+Given two strings,write a method to decide if one is a permutation of the other.
+*/
+
 import java.util.*;
 
-class Q1_3App {
+class Solution {
+	/*
 	// test if str1 is permutation of str2
 	public static boolean permutation(String str1, String str2) {
 		int length = str1.length();
@@ -32,4 +37,31 @@ class Q1_3App {
 		else
 			System.out.println("False");
 	}
+	*/
+	/*
+		Second Round
+	*/
+	public static boolean permutation(String s, String t) {
+		if(s.length() != t.length()) return false;
+		// compare hash value
+		int add1 = 0, mul1 = 1, add2 = 0, mul2 = 1;
+		for(int i = 0; i < s.length(); i++) {
+			int v1 = s.charAt(i) - 'a', v2 = t.charAt(i) - 'a';
+			add1 += v1; add2 += v2;
+			mul1 *= v1; mul2 *= v2;
+		}
+		int hash1 = add1 + mul1, hash2 = add2 + mul2;
+		return hash1 == hash2;
+	}
+
+	public static void main(String[] args) {
+		String[][] pairs = {{"apple", "papel"}, {"carrot", "tarroc"}, {"hello", "llloh"}, {"aaaa", "bbbb"}};
+		for (String[] pair : pairs) {
+			String word1 = pair[0];
+			String word2 = pair[1];
+			boolean anagram = permutation(word1, word2);
+			System.out.println(word1 + ", " + word2 + ": " + anagram);
+		}
+	}
 }
+

@@ -1,6 +1,15 @@
+/*
+Write a method to replace all spaces in a string with '%20'. 
+You may assume that the string has sufficient space at the end of the string to hold 
+the additional characters, and that you are given the "true" length of the string. 
+(Note: if implementing in Java, please usea character array so that you can perform this 
+operation inplace.)
+*/
+
 import java.util.*;
 
-class Q1_4App {
+class Solution {
+	/*
 	public static String replaceSpace(String str) {
 		char[] charArray = str.toCharArray();
 		// first count space number
@@ -47,4 +56,16 @@ class Q1_4App {
 		testStr = replaceSpace(testStr);
 		System.out.println(testStr);
 	}
+	*/
+	/*
+		Second Round
+	*/
+		
+	
+	public static void main(String[] args) {
+		
+	}
 }
+
+
+

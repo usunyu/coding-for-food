@@ -2,14 +2,7 @@
 Sort a linked list using insertion sort.
 */
 
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) {
-        val = x;
-        next = null;
-    }
-}
+import LCLibrary.*;
 
 class Solution {
     public ListNode insertionSortList(ListNode head) {
@@ -96,13 +89,9 @@ class Main {
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        ListNode node1 = new ListNode(2);
-        ListNode node2 = new ListNode(1);
-        node1.next = node2;
-        ListNode node3 = new ListNode(3);
-        node2.next = node3;
-        print(node1);
-        print(solution.insertionSortList2(node1));
+        ListNode head = Input.buildExampleList2();
+        Output.printList(head);
+        Output.printList(solution.insertionSortList2(head));
     }
 }
 

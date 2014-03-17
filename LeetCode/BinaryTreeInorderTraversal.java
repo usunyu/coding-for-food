@@ -29,13 +29,7 @@ The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
 */
 
 import java.util.*;
-
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
-}
+import LCLibrary.*;
 
 class Solution {
     public void inorderTraversal(TreeNode root, ArrayList<Integer> result) {
@@ -100,17 +94,9 @@ class Solution {
 
 class Main {
     public static void main(String[] args) {
-        TreeNode root = new TreeNode(1);
-        TreeNode node1 = new TreeNode(2);
-        root.right = node1;
-        TreeNode node2 = new TreeNode(3);
-        node1.left = node2;
         Solution solution = new Solution();
-        ArrayList<Integer> result = solution.inorderTraversal3(root);
-        for(int i : result) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
+        TreeNode root = Input.buildExampleTree();
+        System.out.println(solution.inorderTraversal3(root));
     }
 }
 

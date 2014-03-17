@@ -56,4 +56,16 @@ public class Output {
         }
         printLevelLists(levels);
     }
+
+    public static void printFlattenTree(TreeNode root) {
+        TreeNode current = root;
+        while(current != null) {
+            if(current.left != null) {
+                System.err.print("err ");
+            }
+            System.out.print(current.val + " ");
+            current = current.right;
+        }
+        System.out.println();
+    }
 }

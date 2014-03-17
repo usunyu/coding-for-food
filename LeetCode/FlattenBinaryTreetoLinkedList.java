@@ -26,13 +26,7 @@ click to show hints.
 Hints:
 If you notice carefully in the flattened tree, each node's right child points to the next node of a pre-order traversal.
 */
-
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
-}
+import LCLibrary.*;
 
 class Solution {
     public void flatten(TreeNode root) {
@@ -94,26 +88,10 @@ class Solution {
 }
 
 class Main {
-    public static void print(TreeNode root) {
-        TreeNode current = root;
-        while(current != null) {
-            if(current.left != null) {
-                System.err.print("err ");
-            }
-            System.out.print(current.val + " ");
-            current = current.right;
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
         Solution solution = new Solution();
-        TreeNode root = new TreeNode(1);
-        TreeNode rc1 = new TreeNode(2);
-        root.right = rc1;
-        TreeNode lc2 = new TreeNode(3);
-        rc1.left = lc2;
+        TreeNode root = Input.buildExampleTree2();
         solution.flatten3(root);
-        print(root);
+        Output.printFlattenTree(root);
     }
 }

@@ -4,13 +4,7 @@ Given a binary tree, determine if it is height-balanced.
 For this problem, a height-balanced binary tree is defined as a binary tree in which the 
 depth of the two subtrees of every node never differ by more than 1.
 */
-
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
-}
+import LCLibrary.*;
 
 class Solution {
     private int getHeight(TreeNode root) {
@@ -47,19 +41,11 @@ class Solution {
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        TreeNode root = new TreeNode(1);
-        TreeNode t1 = new TreeNode(2);
-        root.left = t1;
-        TreeNode t2 = new TreeNode(2);
-        root.right = t2;
-        TreeNode t3 = new TreeNode(3);
-        t1.left = t3;
-        TreeNode t4 = new TreeNode(4);
-        t1.right = t4;
-        TreeNode t5 = new TreeNode(4);
-        t2.left = t5;
-        TreeNode t6 = new TreeNode(3);
-        t2.right = t6;
-        System.out.println(solution.isBalanced2(root));
+
+        TreeNode root1 = Input.buildExampleTree();
+        System.out.println("Unbalanced Tree: " + solution.isBalanced2(root1));
+
+        TreeNode root2 = Input.buildExampleTree2();
+        System.out.println("Balanced Tree: " + solution.isBalanced2(root2));
     }
 }

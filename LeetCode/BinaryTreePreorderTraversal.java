@@ -15,13 +15,7 @@ Note: Recursive solution is trivial, could you do it iteratively?
 
 import java.util.ArrayList;
 import java.util.Stack;
-
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
-}
+import LCLibrary.*;
 
 class Solution {
     private void preorderTraversal(TreeNode root, ArrayList<Integer> traversal) {
@@ -74,11 +68,7 @@ class Solution {
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        TreeNode root = new TreeNode(1);
-        TreeNode node1 = new TreeNode(2);
-        TreeNode node2 = new TreeNode(3);
-        root.left = node1;
-        root.right = node2;
+        TreeNode root = Input.buildExampleTree();
         System.out.println(solution.preorderTraversal2(root));
     }
 }

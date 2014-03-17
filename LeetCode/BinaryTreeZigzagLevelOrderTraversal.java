@@ -32,13 +32,7 @@ The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
 */
 
 import java.util.*;
-
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
-}
+import LCLibrary.*;
 
 class Solution {
     public ArrayList<ArrayList<Integer>> zigzagLevelOrder(TreeNode root) {
@@ -127,22 +121,8 @@ class Solution {
 
 class Main {
     public static void main(String[] args) {
-        TreeNode root = new TreeNode(1);
-        TreeNode node1 = new TreeNode(2);
-        root.left = node1;
-        TreeNode node2 = new TreeNode(3);
-        root.right = node2;
-        TreeNode node3 = new TreeNode(4);
-        node1.left = node3;
-        TreeNode node4 = new TreeNode(5);
-        node2.right = node4;
         Solution solution = new Solution();
-        ArrayList<ArrayList<Integer>> result = solution.zigzagLevelOrder2(root);
-        for(ArrayList<Integer> level : result) {
-            for(int i : level) {
-                System.out.print(i + " ");
-            }
-            System.out.println();
-        }
+        TreeNode root = Input.buildExampleTree2();
+        System.out.println(solution.zigzagLevelOrder2(root));
     }
 }

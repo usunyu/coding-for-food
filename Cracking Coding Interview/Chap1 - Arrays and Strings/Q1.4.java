@@ -7,6 +7,7 @@ operation inplace.)
 */
 
 import java.util.*;
+import CtCILibrary.AssortedMethods;
 
 class Solution {
 	/*
@@ -60,17 +61,6 @@ class Solution {
 	/*
 		Second Round
 	*/
-	public static String charArrayToString(char[] array) {
-		StringBuilder buffer = new StringBuilder(array.length);
-		for (char c : array) {
-			if (c == 0) {
-				break;
-			}
-			buffer.append(c);
-		}
-		return buffer.toString();
-	}
-
 	public static void replaceSpaces(char[] str, int length) {
 		// count chars and space
 		int chars = 0, spaces = 0;
@@ -99,7 +89,7 @@ class Solution {
 			arr[i] = str.charAt(i);
 		}
 		replaceSpaces(arr, str.length());	
-		System.out.println("\"" + charArrayToString(arr) + "\"");
+		System.out.println("\"" + AssortedMethods.charArrayToString(arr) + "\"");
 	}
 }
 

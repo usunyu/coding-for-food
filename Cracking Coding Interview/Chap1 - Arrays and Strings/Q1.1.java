@@ -1,6 +1,11 @@
+/*
+Implement an algorithm to determine if a string has all unique characters. What if you cannot use additional data structures?
+*/
+
 import java.util.*;
 
-class Q1_1App {
+class Solution {
+	/*
 	static String testStr = "ABCDEFGD";
 	public static void main(String[] args) {
 		System.out.println(testStr);
@@ -38,4 +43,28 @@ class Q1_1App {
 		else
 			System.out.println("This is not a string has all unique characters.");
 	}
+	*/
+	/*
+		Second Round
+	*/
+	public static boolean isUniqueChars(String str) {	// assume all the char is in lower case
+		int bits = 0;
+		for(int i = 0; i < str.length(); i++) {
+			int shift = str.charAt(i) - 'a';
+			int digit = 1 << shift;
+			if((bits & digit) != 0) return false;	// we have same char before
+			bits |= digit;
+		}
+		return true;
+	}
+
+	public static void main(String[] args) {
+		String[] words = {"abcde", "hello", "apple", "kite", "padle"};
+		for (String word : words) {
+			System.out.println(word + ": " + isUniqueChars(word));
+		}
+	}
 }
+
+
+

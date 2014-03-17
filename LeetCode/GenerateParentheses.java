@@ -89,17 +89,10 @@ class Solution {
     }
 }
 
-class Main {
-    public static void print(ArrayList<String> parenthesisList) {
-        for(String parenthesis : parenthesisList) {
-            System.out.println(parenthesis);
-        }
-    }
-    
+class Main {    
     public static void main(String[] args) {
         Solution solution = new Solution();
         int n = 3;
-        ArrayList<String> parenthesisList = solution.generateParenthesis3(n);
-        print(parenthesisList);
+        System.out.println(solution.generateParenthesis3(n));
     }
 }

@@ -78,17 +78,9 @@ class Solution {
 }
 
 class Main {
-    public static void print(ArrayList<String> list) {
-        for(String str : list) {
-            System.out.print(str + " ");
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
         Solution solution = new Solution();
         String[] strs = {"abc", "loy", "cba", "tt", "dd", "yol", "yol"};
-        ArrayList<String> result = solution.anagrams2(strs);
-        print(result);
+        System.out.println(solution.anagrams2(strs));
     }
 }

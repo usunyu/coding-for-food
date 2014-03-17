@@ -7,15 +7,7 @@ Output: 7 -> 0 -> 8
 */
 
 import java.util.*;
-
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) {
-        val = x;
-        next = null;
-    }
-}
+import LCLibrary.*;
 
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
@@ -131,17 +123,8 @@ class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
 
-        ListNode head1 = new ListNode(2);
-        ListNode node1 = new ListNode(4);
-        head1.next = node1;
-        ListNode node2 = new ListNode(3);
-        node1.next = node2;
-
-        ListNode head2 = new ListNode(5);
-        ListNode node3 = new ListNode(6);
-        head2.next = node3;
-        ListNode node4 = new ListNode(4);
-        node3.next = node4;
+        ListNode head1 = Input.buildExampleList();
+        ListNode head2 = Input.buildExampleList2();
 
         print(head1);
         print(head2);

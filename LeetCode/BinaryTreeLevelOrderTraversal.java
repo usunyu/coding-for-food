@@ -33,14 +33,7 @@ The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
 */
 
 import java.util.*;
-
-// Definition for binary tree
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
-}
+import LCLibrary.*;
 
 class Solution {
     // time complexity : O(N)
@@ -95,24 +88,10 @@ class Solution {
 }
 
 class Main {
-    public static void print(ArrayList<ArrayList<Integer>> levels) {
-        for(ArrayList<Integer> level : levels) {
-            for(int val : level) {
-                System.out.print(val + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
         Solution solution = new Solution();
-        TreeNode root = new TreeNode(3);
-        TreeNode left = new TreeNode(9);
-        TreeNode right = new TreeNode(20);
-        root.left = left;
-        root.right = right;
-        print(solution.levelOrder2(root));
+        TreeNode root = Input.buildExampleTree();
+        System.out.println(solution.levelOrder2(root));
     }
 }
 

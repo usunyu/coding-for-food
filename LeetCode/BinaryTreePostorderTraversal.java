@@ -16,7 +16,7 @@ Note: Recursive solution is trivial, could you do it iteratively?
 import java.util.ArrayList;
 import java.util.Stack;
 import LCLibrary.TreeNode;
-import LCLibrary.Input;
+import LCLibrary.*;
 
 class Solution {
     private void postorderTraversal(TreeNode root, ArrayList<Integer> traversal) {

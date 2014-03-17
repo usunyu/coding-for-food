@@ -1,4 +1,5 @@
 package LCLibrary;
+import java.util.ArrayList;
 
 public class UndirectedGraphNode {
     public int label;

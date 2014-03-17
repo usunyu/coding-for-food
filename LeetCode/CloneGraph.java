@@ -25,12 +25,7 @@ Visually, the graph looks like the following:
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-class UndirectedGraphNode {
-    int label;
-    ArrayList<UndirectedGraphNode> neighbors;
-    UndirectedGraphNode(int x) { label = x; neighbors = new ArrayList<UndirectedGraphNode>(); }
-};
+import LCLibrary.*;
 
 class Solution {
     private UndirectedGraphNode cloneGraph(UndirectedGraphNode node, HashMap<UndirectedGraphNode, UndirectedGraphNode> nodeMap) {
@@ -78,12 +73,7 @@ class Solution {
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        UndirectedGraphNode node0 = new UndirectedGraphNode(0);
-        UndirectedGraphNode node1 = new UndirectedGraphNode(1);
-        UndirectedGraphNode node2 = new UndirectedGraphNode(2);
-        node0.neighbors.add(node1); node0.neighbors.add(node2);
-        node1.neighbors.add(node2);
-        node2.neighbors.add(node2);
-        solution.cloneGraph(node0);
+        UndirectedGraphNode node = Input.buildExampleUndirectedGraph();
+        solution.cloneGraph(node);
     }
 }

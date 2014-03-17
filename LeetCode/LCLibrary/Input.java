@@ -18,4 +18,24 @@ public class Input {
         TreeNode node5 = new TreeNode(5); node4.right = node5;
         return node1;
 	}
+
+	/*
+		2 -> 4 -> 3
+	*/
+	public static ListNode buildExampleList() {
+		ListNode node1 = new ListNode(2);
+        ListNode node2 = new ListNode(4); node1.next = node2;
+        ListNode node3 = new ListNode(3); node2.next = node3;
+        return node1;
+	}
+
+	/*
+		5 -> 6 -> 4
+	*/
+	public static ListNode buildExampleList2() {
+		ListNode node1 = new ListNode(5);
+        ListNode node2 = new ListNode(6); node1.next = node2;
+        ListNode node3 = new ListNode(4); node2.next = node3;
+        return node1;
+	}
 }

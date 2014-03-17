@@ -102,19 +102,8 @@ class Solution {
 }
 
 class Main {
-    public static void print(ArrayList<ArrayList<Integer>> lists) {
-        for(ArrayList<Integer> list : lists) {
-            for(int n : list) {
-                System.out.print(n + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
         Solution solution = new Solution();
-        ArrayList<ArrayList<Integer>> result = solution.combine3(4, 2);
-        print(result);
+        System.out.println(solution.combine3(4, 2));
     }
 }

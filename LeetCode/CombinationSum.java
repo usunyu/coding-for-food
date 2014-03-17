@@ -78,20 +78,9 @@ class Solution {
 }
 
 class Main {
-    public static void print(ArrayList<ArrayList<Integer>> combinations) {
-        for(ArrayList<Integer> combination : combinations) {
-            for(int i : combination) {
-                System.out.print(i + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
         Solution solution = new Solution();
         int[] candidates = {2,3,6,7};
-        ArrayList<ArrayList<Integer>> combinations = solution.combinationSum2(candidates, 7);
-        print(combinations);
+        System.out.println(solution.combinationSum2(candidates, 7));
     }
 }

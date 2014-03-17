@@ -78,20 +78,9 @@ class Solution {
 }
 
 class Main {
-    public static void print(ArrayList<ArrayList<Integer>> combinations) {
-        for(ArrayList<Integer> combination : combinations) {
-            for(int i : combination) {
-                System.out.print(i + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
         Solution solution = new Solution();
         int[] candidates = {10,1,2,2,7,6,1,5};
-        ArrayList<ArrayList<Integer>> combinations = solution.combinationSum(candidates, 8);
-        print(combinations);
+        System.out.println(solution.combinationSum(candidates, 8));
     }
 }

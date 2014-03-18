@@ -1,3 +1,8 @@
+/*
+Write code to remove duplicates from an unsorted linked list. FOLLOW UP
+How would you solve this problem if a temporary buffer is not allowed?
+*/
+
 import java.util.*; 
 
 class MyNode {
@@ -38,10 +43,26 @@ class MyLinkedList {
 			current = current.next;
 		}
 	}
+
+	public void removeDuplicate2() {
+		MyNode current = head;
+		while(current != null) {
+			MyNode next = current.next, prev = current;
+			while(next != null) {
+				if(next.ch == current.ch) {	// need remove
+					prev.next = next.next;
+				}
+				else {
+					prev = next;
+				}
+				next = next.next;
+			}
+			current = current.next;
+		}
+	}
 }
 
-class Q2_1App {
-
+class Solution {
 	public static void initialList(String str, LinkedList<Character> list) {
 		for(int i = 0; i < str.length(); i++) {
 			char ch = str.charAt(i);
@@ -80,19 +101,26 @@ class Q2_1App {
 					list.remove(j--);
 	}
 
+	/*
+		Second Round
+	*/
 	public static void main(String[] args) {
-		String testStr = "ABSNDAASXK";
+		String listStr = "ABSNDAASXK";
 		System.out.println("Use LinkedList:");
+
 		LinkedList<Character> list = new LinkedList<Character>();
-		initialList(testStr, list);
+		initialList(listStr, list);
 		displayList(list);
 		removeDuplicate(list);
 		displayList(list);
+
 		System.out.println("Use My LinkedList:");
 		MyLinkedList myList = new MyLinkedList();
-		initialList(testStr, myList);
+		initialList(listStr, myList);
 		displayList(myList);
-		myList.removeDuplicate();
+		// myList.removeDuplicate();
+		myList.removeDuplicate2();
 		displayList(myList);
 	}
 }
+

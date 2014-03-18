@@ -1,6 +1,12 @@
-import java.util.*;
+/*
+Given an image represented by an NxN matrix, where each pixel in the image is 4 bytes, 
+write a method to rotate the image by 90 degrees. Canyou do this in place?
+*/
 
-class Q1_6App {
+import CtCILibrary.*;
+
+class Solution {
+	/*
 	static int N = 10;
 	static char[][] matrixImage = new char[N][N];
 
@@ -47,5 +53,33 @@ class Q1_6App {
 		System.out.println("Rotate:");
 		rotate();
 		display();
+	}
+	*/
+	/*
+		Second Round
+	*/
+	public static void rotate(int[][] matrix) {
+		int N = matrix.length;
+		for(int i = 0; i < N / 2; i++) {
+			for(int j = i; j < N - i - 1; j++) {
+				int tmp = matrix[i][j];
+				// right --> top
+				matrix[i][j] = matrix[i + j][N - i - 1];
+				// bottom --> right
+				matrix[i + j][N - i - 1] = matrix[N - i - 1][N - j - 1];
+				// left --> bottom
+				matrix[N - i - 1][N - j - 1] = matrix[N - j - 1][i];
+				// top --> left
+				matrix[N - j - 1][i] = tmp;
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		int[][] matrix = AssortedMethods.randomMatrix(10, 10, 0, 9);
+		AssortedMethods.printMatrix(matrix);
+		rotate(matrix);
+		System.out.println();
+		AssortedMethods.printMatrix(matrix);
 	}
 }

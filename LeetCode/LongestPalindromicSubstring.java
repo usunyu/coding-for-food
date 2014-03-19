@@ -69,12 +69,15 @@ class Solution {
     private String preProcess(String s) {
         int n = s.length();
         if (n == 0) return "^$";
-        String ret = "^";
+        StringBuilder ret = new StringBuilder();
+        ret.append('^');
         for(int i = 0; i < n; i++) {
-            ret += "#" + s.charAt(i);
+            ret.append('#');
+            ret.append(s.charAt(i));
         }
-        ret += "#$";
-        return ret;
+        ret.append('#');
+        ret.append('$');
+        return ret.toString();
     }
 
     // time complexity: O(N)
@@ -138,12 +141,13 @@ class Solution {
         }
         return s.substring(maxLeft, maxRight);
     }
-    // TODO: http://www.akalin.cx/longest-palindrome-linear-time
+    // An O(N) Solution (Manacher's Algorithm)
+    // http://discuss.leetcode.com/questions/178/longest-palindromic-substring
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        System.out.println(solution.longestPalindrome4("aaaa"));
+        System.out.println(solution.longestPalindrome3("babcbabcbaccba"));
     }
 }

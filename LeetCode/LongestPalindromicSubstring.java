@@ -107,11 +107,43 @@ class Solution {
         }
         return s.substring((centerIndex - 1 - maxLen)/2, (centerIndex - 1 + maxLen)/2);
     }
+    /*
+        Second Round
+    */
+    public String longestPalindrome4(String s) {
+        if(s == null || s.length() == 0) return "";
+        int maxLeft = 0, maxRight = 1, maxLength = 1;
+        int left, right, length;
+        for(int i = 0; i < s.length() - maxLength / 2; i++) {
+            // even
+            left = i; right = i + 1;
+            while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                left--; right++;
+            }
+            left++;
+            length = right - left;
+            if(length > maxLength) {
+                maxLeft = left; maxRight = right; maxLength = length;
+            }
+            // odd
+            left = i - 1; right = i + 1;
+            while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                left--; right++;
+            }
+            left++;
+            length = right - left;
+            if(length > maxLength) {
+                maxLeft = left; maxRight = right; maxLength = length;
+            }
+        }
+        return s.substring(maxLeft, maxRight);
+    }
+    // TODO: http://www.akalin.cx/longest-palindrome-linear-time
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        System.out.println(solution.longestPalindrome3("cabbad"));
+        System.out.println(solution.longestPalindrome4("aaaa"));
     }
 }

@@ -1,3 +1,12 @@
+/*
+Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and set.
+
+get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+
+set(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate 
+the least recently used item before inserting a new item.
+*/
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,7 +23,7 @@ class CacheNode {
 }
 
 class LRUCache {
-    static int capacity;
+    int capacity;
     HashMap<Integer, CacheNode> cache;
     CacheNode head, current;
     
@@ -55,7 +64,7 @@ class LRUCache {
     
     public LRUCache(int capacity) {
         this.capacity = capacity;
-        cache = new HashMap<Integer, CacheNode>();
+        this.cache = new HashMap<Integer, CacheNode>();
     }
     
     public int get(int key) {
@@ -95,10 +104,102 @@ class LRUCache {
         }
     }
 }
+/*
+    Second Round
+*/
+class LRUCache2 {
+    int capacity;
+    HashMap<Integer, CacheNode> cache;
+    CacheNode head, last;
+    
+    public LRUCache2(int capacity) {
+        this.capacity = capacity;
+        this.cache = new HashMap<Integer, CacheNode>();
+    }
+    
+    private void disconnect(CacheNode node) {
+        CacheNode prev = node.prev, next = node.next;
+        // disconnect prev
+        if(prev != null) {
+            prev.next = next;
+        }
+        else {  // it is head
+            head = next;
+            if(head != null) head.prev = null;
+        }
+        // disconnect next
+        if(next != null) {
+            next.prev = prev;
+        }
+        else {  // it is last
+            last = prev;
+            if(last != null) last.next = null;
+        }
+        // clean node
+        node.next = null;
+        node.prev = null;
+    }
+    
+    private void push(CacheNode node) {
+        if(head != null) {
+            node.next = head;
+            head.prev = node;
+        }
+        else {
+            last = node;
+        }
+        head = node;
+    }
+    
+    private void add(CacheNode node) {
+        cache.put(node.key, node);
+        push(node);
+    }
+    
+    private void remove() {
+        if(last != null) {
+            cache.remove(last.key);
+            disconnect(last);
+        }
+    }
+    
+    public int get(int key) {
+        int value = -1;
+        if(cache.containsKey(key)) {   // it is in the cache
+            CacheNode node = cache.get(key);
+            value = node.value;
+            // increase its priority
+            disconnect(node);
+            push(node);
+        }
+        return value;
+    }
+    
+    public void set(int key, int value) {
+        if(cache.containsKey(key)) {   // it is in the cache
+            CacheNode node = cache.get(key);
+            node.value = value;
+            // increase its priority
+            disconnect(node);
+            push(node);
+        }
+        else {  // create a new one
+            CacheNode node = new CacheNode(key, value);
+            if(cache.size() == capacity) {  // size overflow
+                remove();   // remove last one
+            }
+            add(node);
+        }
+    }
+}
 
 class Main {
     public static void main(String[] args) {
-        LRUCache cache = new LRUCache(105);
+        LRUCache2 cache = new LRUCache2(105);
+        System.out.println(processCache(cache));
+    }
+
+    public static ArrayList<Integer> processCache(LRUCache2 cache) {
         ArrayList<Integer> result = new ArrayList<Integer>();
         cache.set(33,219);
         result.add(cache.get(39));
@@ -532,6 +633,6 @@ class Main {
         result.add(cache.get(81));
         cache.set(126,148);
         result.add(cache.get(107));
-        System.out.println(result);
+        return result;
     }
 }

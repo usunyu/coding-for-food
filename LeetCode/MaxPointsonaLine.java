@@ -1,3 +1,7 @@
+/*
+Given n points on a 2D plane, find the maximum number of points that lie on the same straight line.
+*/
+
 import java.util.ArrayList;
 
 class Point {
@@ -40,11 +44,47 @@ class Solution {
         }
         return max;
     }
+    /*
+        Second Round
+    */
+    public int maxPoints2(Point[] points) {
+        if(points.length <= 2) return points.length;
+        int max = 0;
+        // calculate every possible K
+        for(int i = 0; i < points.length - 1; i++) {
+            for(int j = i + 1; j < points.length; j++) {
+                int count = 0;
+                int deltaX = points[j].x - points[i].x;
+                if(deltaX != 0) {   // K is normal
+                    int deltaY = points[j].y - points[i].y;
+                    double K = (double) deltaY / deltaX;
+                    double b = (double)points[j].y - K * points[j].x;
+                    // check every point
+                    for(int x = 0; x < points.length; x++) {
+                        if(x == i || x == j) count++;
+                        else if(Math.abs(points[x].y - K * points[x].x - b) < 0.000001) count++;
+                    }
+                }
+                else {  // K is infinity
+                    for(int x = 0; x < points.length; x++) {
+                        if(points[x].x == points[i].x) count++;
+                    }
+                }
+                max = Math.max(count, max);
+                if(max == points.length) return max;
+            }
+        }
+        return max;
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
+        System.out.println((solution.maxPoints2(buildExamplePoints())));
+    }
+
+    public static Point[] buildExamplePoints() {
         ArrayList<Point> list = new ArrayList<Point>();
         list.add(new Point(3,1));
         list.add(new Point(12,3));
@@ -54,6 +94,6 @@ class Main {
         for(int i = 0; i < points.length; i++) {
             points[i] = list.get(i);
         }
-        System.out.println((solution.maxPoints(points)));
+        return points;
     }
 }

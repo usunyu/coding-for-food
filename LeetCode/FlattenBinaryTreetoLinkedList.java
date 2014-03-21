@@ -28,6 +28,16 @@ If you notice carefully in the flattened tree, each node's right child points to
 */
 import LCLibrary.*;
 
+class NodePair {
+    TreeNode first;
+    TreeNode last;
+    
+    public NodePair(TreeNode f, TreeNode l) {
+        first = f;
+        last = l;
+    }
+}
+
 class Solution {
     public void flatten(TreeNode root) {
         if(root != null) {
@@ -84,6 +94,30 @@ class Solution {
             }
             cur = cur.right;
         }
+    }
+
+    public NodePair flattenRec(TreeNode root) {
+        NodePair currentPart = new NodePair(root, root);
+        TreeNode left = root.left, right = root.right;
+        if(left != null) {
+            NodePair leftPart = flattenRec(left);
+            root.left = null;
+            // merge
+            root.right = leftPart.first;
+            currentPart.last = leftPart.last;
+        }
+        if(right != null) {
+            NodePair rightPart = flattenRec(right);
+            // merge
+            currentPart.last.right = rightPart.first;
+            currentPart.last = rightPart.last;
+        }
+        return currentPart;
+    }
+    // node pair solution
+    public void flatten4(TreeNode root) {
+        if(root == null) return;
+        flattenRec(root);
     }
 }
 

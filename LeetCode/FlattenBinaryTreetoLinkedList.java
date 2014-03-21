@@ -119,13 +119,30 @@ class Solution {
         if(root == null) return;
         flattenRec(root);
     }
+
+    public void flatten5(TreeNode root) {
+        if(root == null) return;
+        TreeNode current = root;
+        while(current != null) {
+            if(current.left != null) {
+                TreeNode tmp = current.right;
+                current.right = current.left;
+                current.left = null;
+                // find predecessor
+                TreeNode cur = current;
+                while(cur.right != null) cur = cur.right;
+                cur.right = tmp;
+            }
+            current = current.right;
+        }
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         TreeNode root = Input.buildExampleTree2();
-        solution.flatten3(root);
+        solution.flatten5(root);
         Output.printFlattenTree(root);
     }
 }

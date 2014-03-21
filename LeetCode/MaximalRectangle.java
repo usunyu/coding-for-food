@@ -2,6 +2,8 @@
 Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle containing all ones and return its area.
 */
 
+import java.util.Stack;
+
 class Pair {
     int x;
     int y;
@@ -81,17 +83,58 @@ class Solution {
     /*
         Second Round
     */
+    private int largestRectangle(int[] height) {
+        Stack<Integer> stack = new Stack<Integer>();
+        stack.push(0);
+        int largest = 0;
+        for(int i = 1; i < height.length; i++) {
+            if(!stack.isEmpty() && height[i] < height[stack.peek()]) {
+                int last = stack.peek();
+                while(!stack.isEmpty() && height[i] < height[stack.peek()]) {
+                    int cur = stack.pop();
+                    int prev = (stack.isEmpty() ? -1 : stack.peek());
+                    largest = Math.max(largest, (last - prev) * height[cur]);
+                }
+            }
+            stack.push(i);
+        }
+        if(!stack.isEmpty()) {
+            int last = stack.peek();
+            while(!stack.isEmpty()) {
+                int cur = stack.pop();
+                int prev = (stack.isEmpty() ? -1 : stack.peek());
+                largest = Math.max(largest, (last - prev) * height[cur]);
+            }
+        }
+        return largest;
+    }
     
+    public int maximalRectangle3(char[][] matrix) {
+        if(matrix.length == 0 || matrix[0].length == 0) return 0;
+        int m = matrix.length, n = matrix[0].length;
+        int[] height = new int[n];
+        int max = 0;
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                height[j] = (matrix[i][j] == '1' ? height[j] + 1 : 0);
+            }
+            max = Math.max(largestRectangle(height), max);
+        }
+        return max;
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         char[][] matrix = {
-            {'0','1','1','1','0'},
-            {'0','1','1','1','1'},
-            {'0','0','1','0','0'}
+            {'0', '1', '1', '0', '1'},
+            {'1', '1', '0', '1', '0'},
+            {'0', '1', '1', '1', '0'},
+            {'1', '1', '1', '1', '0'},
+            {'1', '1', '1', '1', '1'},
+            {'0', '0', '0', '0', '0'}
         };
-        System.out.println(solution.maximalRectangle2(matrix));
+        System.out.println(solution.maximalRectangle3(matrix));
     }
 }

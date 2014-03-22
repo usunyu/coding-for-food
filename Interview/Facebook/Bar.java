@@ -98,16 +98,23 @@ class Case {
 		this.K = K;
 	}
 	
+	// O(nlogn)
 	public void sortMyNumbers() {
 		Collections.sort(myNumbers);
 	}
-	
+
+	// O(n)
 	public void countPossible() {
 		possibleNumbers = new ArrayList<Integer>();
 		HashSet<Integer> leftPlayersSet = new HashSet<Integer>();
 		// store K - 1 players from left
 		int leftNeed = K - 1, rightNeed = N - K;
+		// K_1_Start: the index of number whcih have (K - 1) different players in the left
+		// K_Start: the index of number whcih have K different players in the left,
+		//			in the area of Kth player may valid may not, so we also record that for later use
 		int K_1_Start = -1, K_Start = -1;
+		// go iterate until we have enough players in the left
+		// then all the numbers left is satisfy the left condition
 		for(int i = 0; i < myNumbers.size(); i++) {
 			if(leftPlayersSet.size() == leftNeed && K_1_Start != -1) {
 				if(!leftPlayersSet.contains(myNumbers.get(i).player)) {
@@ -122,26 +129,28 @@ class Case {
 		}
 		HashSet<Integer> rightPlayersSet = new HashSet<Integer>();
 		// search from right
+		// go iterate until we have enough players in the right
+		// then all the numbers left is satisfy all the condition
 		for(int j = myNumbers.size() - 1; j >= K_1_Start; j--) {
-			if(rightPlayersSet.size() == rightNeed) {
-				if(!rightPlayersSet.contains(myNumbers.get(j).player)) {
-					if(j >= K_Start) {
+			if(rightPlayersSet.size() == rightNeed) {	// may not satisfy right condition
+				if(!rightPlayersSet.contains(myNumbers.get(j).player)) {	// satisfy
+					if(j >= K_Start) {	// guarantee satisfy left condition
 						possibleNumbers.add(myNumbers.get(j).num);
 					}
-					else {
-						if(!leftPlayersSet.contains(myNumbers.get(j).player)) {
+					else {	// we need check if the number's holder is already in the left players set
+						if(!leftPlayersSet.contains(myNumbers.get(j).player)) {	// satisfy
 							possibleNumbers.add(myNumbers.get(j).num);
 						}
 					}
 				}
 				rightPlayersSet.add(myNumbers.get(j).player);
 			}
-			else if(rightPlayersSet.size() == rightNeed + 1) {
-				if(j >= K_Start) {
+			else if(rightPlayersSet.size() == rightNeed + 1) {	// guarantee satisfy right condition
+				if(j >= K_Start) {	// guarantee satisfy left condition
 					possibleNumbers.add(myNumbers.get(j).num);
 				}
 				else {
-					if(!leftPlayersSet.contains(myNumbers.get(j).player)) {
+					if(!leftPlayersSet.contains(myNumbers.get(j).player)) {	// satisfy
 						possibleNumbers.add(myNumbers.get(j).num);
 					}
 				}
@@ -158,6 +167,8 @@ class Case {
 	}
 }
 
+// integer wrapper, have a player in class
+// so we can see this number's holder easily
 class MyNumber implements Comparable<MyNumber> {
 	int num;
 	int player;
@@ -179,8 +190,8 @@ class MyNumber implements Comparable<MyNumber> {
 }
 
 class Solution {
-	static int T;
-	static ArrayList<Case> cases = new ArrayList<Case>();
+	static int T;	// test case number
+	static ArrayList<Case> cases = new ArrayList<Case>();	// each test case
 	
 	private static void process() {
 		for(Case cas : cases) {

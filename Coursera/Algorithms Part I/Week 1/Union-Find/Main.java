@@ -4,7 +4,8 @@ public class Main {
 		int N = 10;
 
 		// QuickFindUF uf = new QuickFindUF(N);
-        QuickUnionUF uf = new QuickUnionUF(N);
+        // QuickUnionUF uf = new QuickUnionUF(N);
+        WeightedQuickUnionUF uf = new WeightedQuickUnionUF(N);
         uf.printIdArray();
 
         System.out.println("union(4, 3)");

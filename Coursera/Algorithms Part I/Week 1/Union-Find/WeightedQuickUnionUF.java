@@ -12,7 +12,10 @@ public class WeightedQuickUnionUF {
 	}
 
 	private int root(int i) {
-		while(i != id[i]) i = id[i];
+		while(i != id[i]) {
+			id[i] = id[id[i]];	// path compression
+			i = id[i];
+		}
 		return i;
 	}
 

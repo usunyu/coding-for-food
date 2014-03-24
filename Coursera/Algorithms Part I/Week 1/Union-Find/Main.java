@@ -1,5 +1,5 @@
-// driver class
 public class Main {
+	// driver class
 	public static void main(String[] args) {
 		int N = 10;
 

@@ -56,11 +56,13 @@ class Solution {
 			set.add(parent);
 			p1 = parent;
 		}
+		int distance = 0;
 		// find common ancestor
 		int p2 = n2;
 		int common = -1;
 		while(p2 != 0) {
 			int parent = (p2 - 1) / 2;
+			distance++;
 			if(parent == n1) {	// n1 is common ancestor
 				common = n1;
 				break;
@@ -72,17 +74,11 @@ class Solution {
 			p2 = parent;
 		}
 		// cal distance
-		int distance = 0;
 		p1 = n1;
-		while(p1 != common) {
-			distance++;
-			p1 = (p1 - 1) / 2;
-		}
 		if(common != n1) {
-			p2 = n2;
-			while(p2 != common) {
+			while(p1 != common) {
 				distance++;
-				p2 = (p2 - 1) / 2;
+				p1 = (p1 - 1) / 2;
 			}
 		}
 		distance++;
@@ -118,7 +114,7 @@ class Solution {
 	
 	public static void main(String[] args) {
 		TreeNode root = buildExampleTree();
-		ArrayList<NodePair> pairs = solve(root, 5);
+		ArrayList<NodePair> pairs = solve(root, 3);
 		printPairs(pairs);
 	}
 	

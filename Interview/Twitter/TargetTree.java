@@ -26,6 +26,8 @@ class NodePair {
 }
 
 class Solution {
+	// TODO: Optimization: preprocess every two node's common ancestor
+	// reduce the runtime to O(N^2)
 	public static ArrayList<NodePair> solve(TreeNode root, int target) {
 		ArrayList<NodePair> pairs = new ArrayList<NodePair>();
 		// get height of tree

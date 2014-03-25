@@ -68,4 +68,11 @@ public class Output {
         }
         System.out.println();
     }
+
+    public static void printIntervals(ArrayList<Interval> intervals) {
+        for(Interval interval : intervals) {
+            System.out.print(interval + " ");
+        }
+        System.out.println();
+    }
 }

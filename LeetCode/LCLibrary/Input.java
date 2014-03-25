@@ -1,5 +1,7 @@
 package LCLibrary;
 
+import java.util.ArrayList;
+
 public class Input {
 	/*
 		   1
@@ -54,6 +56,19 @@ public class Input {
         ListNode node2 = new ListNode(6); node1.next = node2;
         ListNode node3 = new ListNode(4); node2.next = node3;
         return node1;
+	}
+
+	/*
+		[1,2],[3,5],[6,7],[8,10],[12,16]
+	*/
+	public static ArrayList<Interval> buildExampleIntervals() {
+		ArrayList<Interval> intervals = new ArrayList<Interval>();
+		intervals.add(new Interval(1, 5));
+        intervals.add(new Interval(3, 5));
+        intervals.add(new Interval(6, 7));
+        intervals.add(new Interval(8, 10));
+        intervals.add(new Interval(12, 16));
+		return intervals;
 	}
 
 	/*

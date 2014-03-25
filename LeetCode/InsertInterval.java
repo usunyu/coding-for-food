@@ -13,18 +13,7 @@ This is because the new interval [4,9] overlaps with [3,5],[6,7],[8,10].
 */
 
 import java.util.*;
-
-class Interval {
-    int start;
-    int end;
-    Interval() { start = 0; end = 0; }
-    Interval(int s, int e) { start = s; end = e; }
-    
-    @Override
-    public String toString() {
-        return "Interval [start=" + start + ", end=" + end + "]";
-    }
-}
+import LCLibrary.*;
 
 class Solution {
     public ArrayList<Interval> insert(ArrayList<Interval> intervals, Interval newInterval) {
@@ -156,32 +145,14 @@ class Solution {
 }
 
 class Main {
-    public static void print(ArrayList<Interval> intervals) {
-        for(Interval interval : intervals) {
-            System.out.print("[" + interval.start + "," + interval.end + "] ");
-        }
-        System.out.println();
-    }
-
-    public static void print(Interval interval) {
-        System.out.println("Insert: [" + interval.start + "," + interval.end + "] ");
-    }
-
     public static void main(String[] args) {
         Solution solution = new Solution();
-        ArrayList<Interval> intervals = new ArrayList<Interval>();
-        intervals.add(new Interval(1, 5));
-        // intervals.add(new Interval(3, 5));
-        // intervals.add(new Interval(6, 7));
-        // intervals.add(new Interval(8, 10));
-        // intervals.add(new Interval(12, 16));
-        // intervals.add(new Interval(1, 5));
-        // intervals.add(new Interval(6, 8));
-        print(intervals);
-        Interval newInterval = new Interval(2, 3);
-        print(newInterval);
+        ArrayList<Interval> intervals = Input.buildExampleIntervals();
+        Output.printIntervals(intervals);
+        Interval newInterval = new Interval(4, 9);
+        System.out.println("Insert: " + newInterval);
         intervals = solution.insert3(intervals, newInterval);
-        print(intervals);
+        Output.printIntervals(intervals);
     }
 }
 

@@ -60,6 +60,7 @@ public class Input {
 
 	/*
 		[1,2],[3,5],[6,7],[8,10],[12,16]
+		no overlap
 	*/
 	public static ArrayList<Interval> buildExampleIntervals() {
 		ArrayList<Interval> intervals = new ArrayList<Interval>();
@@ -68,6 +69,33 @@ public class Input {
         intervals.add(new Interval(6, 7));
         intervals.add(new Interval(8, 10));
         intervals.add(new Interval(12, 16));
+		return intervals;
+	}
+
+	/*
+		[1,3],[2,6],[8,10],[15,18]
+		with overlap
+	*/
+	public static ArrayList<Interval> buildExampleIntervals2() {
+		ArrayList<Interval> intervals = new ArrayList<Interval>();
+		intervals.add(new Interval(1, 3));
+        intervals.add(new Interval(2, 6));
+        intervals.add(new Interval(8, 10));
+        intervals.add(new Interval(15, 18));
+		return intervals;
+	}
+
+	/*
+		[15,18],[1,4],[2,6],[1,3],[8,10]
+		with overlap, random order
+	*/
+	public static ArrayList<Interval> buildExampleIntervals3() {
+		ArrayList<Interval> intervals = new ArrayList<Interval>();
+		intervals.add(new Interval(15, 18));
+		intervals.add(new Interval(1, 4));
+		intervals.add(new Interval(2, 6));
+		intervals.add(new Interval(1, 3));
+        intervals.add(new Interval(8, 10));
 		return intervals;
 	}
 

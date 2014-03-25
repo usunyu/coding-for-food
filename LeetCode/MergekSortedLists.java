@@ -1,14 +1,9 @@
+/*
+Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+*/
+
 import java.util.*;
-
-class ListNode {
-	int val;
-	ListNode next;
-
-	ListNode(int x) {
-		val = x;
-		next = null;
-	}
-}
+import LCLibrary.*;
 
 class NodeInQ {
 	int val;
@@ -115,37 +110,106 @@ class Solution {
 		}
 		return head;
 	}
+	/*
+		Second Round
+	*/
+	// O(nlogk)
+	public ListNode mergeKLists3(ArrayList<ListNode> lists) {
+		if(lists == null || lists.size() == 0) return null;
+        MinHeap minHeap = new MinHeap(lists.size());
+        ArrayList<ListNode> ptr = new ArrayList<ListNode>(lists);
+        // initial
+        for(int i = 0; i < ptr.size(); i++) {
+        	ListNode node = ptr.get(i);
+        	if(node != null)
+        		minHeap.add(node);
+        }
+        ListNode head = null, prev = null;
+        while(!minHeap.isEmpty()) {
+        	ListNode node = minHeap.extract();
+        	if(head == null) {
+        		head = node;
+        		prev = node;
+        	}
+        	else {
+        		prev.next = node;
+        		prev = node;
+        	}
+        	ListNode next = node.next;
+        	if(next != null) {
+        		minHeap.add(next);
+        	}
+        }
+        return head;
+    }
+}
+
+class MinHeap {
+	ListNode[] heap;
+    int size = 0;
+
+    public MinHeap(int capacity) {
+    	heap = new ListNode[capacity];
+    }
+
+    public boolean isFull() {
+    	return size == heap.length;
+    }
+
+    public boolean isEmpty() {
+    	return size == 0;
+    }
+
+    public void add(ListNode node) {
+    	heap[size] = node;
+    	upHeapify(size++);
+    }
+
+	public ListNode extract() {
+		ListNode top = heap[0];
+		heap[0] = heap[--size];
+		downHeapify(0);
+		return top;
+    }
+
+    private void swap(int i, int j) {
+    	ListNode tmp = heap[i];
+    	heap[i] = heap[j];
+    	heap[j] = tmp;
+    }
+
+    private void upHeapify(int index) {
+    	while(index > 0) {
+    		int parent = (index - 1) / 2;
+    		if(heap[parent].val > heap[index].val)
+    			swap(parent, index);
+    		else
+    			break;
+    		index = parent;
+    	}
+    }
+
+    private void downHeapify(int index) {
+    	while(index < size) {
+    		int left = 2 * index + 1, right = 2 * index + 2;
+    		int child;
+    		if(right < size)
+    			child = heap[left].val < heap[right].val ? left : right;
+    		else if(left < size)
+    			child = left;
+    		else break;
+    		if(heap[child].val < heap[index].val)
+    			swap(child, index);
+    		else break;
+    		index = child;
+    	}
+    }
 }
 
 class Main {
-	public static void print(ListNode head) {
-		while(head != null) {
-			System.out.print(head.val + " ");
-			head = head.next;
-		}
-		System.out.println();
-	}
-	
 	public static void main(String[] args) {
 		Solution solution = new Solution();
-		int n = 5;
-		int length = 10;
-		ArrayList<ListNode> lists = new ArrayList<ListNode>();
-		for(int i =0; i < n; i++) {
-			ListNode head = null ;
-			for(int j = length; j > 0; j--) {
-				ListNode temp = new ListNode(j);
-				if(head == null) {
-					head = temp;
-				}
-				else {
-					temp.next = head;
-					head = temp;
-				}
-			}
-			lists.add(head);
-		}
-		ListNode merge = solution.mergeKLists2(lists);
-		print(merge);
+		ListNode head = solution.mergeKLists3(Input.buildExampleLists());
+		Output.printList(head);
 	}
 }

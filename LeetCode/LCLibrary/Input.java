@@ -59,6 +59,34 @@ public class Input {
 	}
 
 	/*
+		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
+		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
+		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
+		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
+		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
+	*/
+	public static ArrayList<ListNode> buildExampleLists() {
+		ArrayList<ListNode> lists = new ArrayList<ListNode>();
+		int n = 5;
+		int length = 10;
+		for(int i =0; i < n; i++) {
+			ListNode head = null ;
+			for(int j = length; j > 0; j--) {
+				ListNode temp = new ListNode(j);
+				if(head == null) {
+					head = temp;
+				}
+				else {
+					temp.next = head;
+					head = temp;
+				}
+			}
+			lists.add(head);
+		}
+		return lists;
+	}
+
+	/*
 		[1,2],[3,5],[6,7],[8,10],[12,16]
 		no overlap
 	*/

@@ -67,6 +67,47 @@ expected worst-case space complexity is O(N), beyond input storage (not counting
 Elements of input arrays can be modified.
  */
 
+/*
+Test Report												Score: 73 of 100
+test													time		result
+example 
+example test											0.660 s.	OK
+extreme_one 
+only one boat											0.650 s.	OK
+extreme_small_boat 
+small size of the boat									0.660 s.	OK
+extreme_ring 
+rings in the same place									0.650 s.	OK
+extreme_no_space 
+size of boats grater than port							0.650 s.	OK
+simple1 
+small boats												0.660 s.	OK
+simple2 
+sequences of length 6									0.660 s.	OK
+multiple_junctions 
+Test composed against the bug in wrong5					0.660 s.	OK
+short_bollards_on_right 
+short sequence with the poles on the right				0.660 s.	OK
+medium_random_ring 
+medium random, ring in the same place, length = ~500	0.680 s.	WRONG ANSWER 
+																	got 3509 expected 2955
+port_big 
+small sequence, big port								0.650 s.	OK
+medium 
+medium sequence, length = ~3000							0.660 s.	OK
+medium_arithmetic 
+medium arithmetic sequence, length = ~7000				2.370 s.	TIMEOUT ERROR 
+																	running time: >2.37 sec., time limit: 1.00 sec.
+large_random 
+3 large random sequences, length = ~100,000				2.450 s.	TIMEOUT ERROR 
+																	running time: >2.45 sec., time limit: 1.88 sec.
+extreme_large 
+all rings in position 0 and M, length = ~100,000		0.880 s.	OK
+large 
+large sequence, length = ~100,000						2.410 s.	TIMEOUT ERROR 
+																	running time: >2.41 sec., time limit: 1.36 sec.
+*/
+
 // you can also use imports, for example:
 // import java.math.*;
 import java.util.Arrays;

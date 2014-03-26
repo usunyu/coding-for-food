@@ -70,7 +70,36 @@ Elements of input arrays can be modified.
 // you can also use imports, for example:
 // import java.math.*;
 class Solution {
+  // greedy solution
     public int solution(int[] R, int X, int M) {
         // write your code in Java SE 7
+      int N = R.length;
+      if(N * X * 2 > M) return -1;  // If it is not possible to tie all the boats, the function should return -1.
+      int[] P = new int[N];
+      // place boat from left first
+      int left;
+      for(left = 0; left < N; left++) {
+        int fromLeft = X * (2 * left + 1);
+        if(R[left] <= fromLeft) {
+          P[left] = fromLeft; // we have no choice
+        }
+        else break;
+      }
+      // adjust boat from right
+      for(int i = N - 1; i >= left; i--) {
+        
+      }
+      // calculate
+      int distance = 0;
+      for(int i = 0; i < N; i++) {
+        distance += Math.abs(P[i] - R[i]);
+      }
+      return distance;
     }
+}
+
+class Main {
+  public static void main(String[] args) {
+    
+  }
 }

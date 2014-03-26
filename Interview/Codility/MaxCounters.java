@@ -108,9 +108,69 @@ class Solution {
     }
 }
 
+/*
+Test Report                                             Score: 100 of 100
+test                                                    time    result
+example 
+example test                                            0.660 s.    OK
+extreme_small 
+all max_counter operations                              0.650 s.    OK
+single 
+only one counter                                        0.650 s.    OK
+small_random1 
+small random test, 6 max_counter operations             0.660 s.    OK
+small_random2 
+small random test, 10 max_counter operations            0.660 s.    OK
+medium_random1 
+medium random test, 50 max_counter operations           0.670 s.    OK
+medium_random2 
+medium random test, 500 max_counter operations          0.670 s.    OK
+large_random1 
+large random test, 2120 max_counter operations          1.060 s.    OK
+large_random2 
+large random test, 10000 max_counter operations         1.180 s.    OK
+extreme_large 
+all max_counter operations                              1.850 s.    OK
+*/
+class Solution2 {
+    public int[] solution(int N, int[] A) {
+        if(N == 0) return null;
+        // write your code in Java SE 7
+        int[] counters = new int[N];
+        // find last N + 1
+        int last;
+        for(last = A.length - 1; last >= 0; last--) {
+            if(A[last] == N + 1) break;
+        }
+        // calculate max
+        int max = 0, lowbound = 0;
+        for(int i = 0; i < last; i++) {
+            int X = A[i];
+            if(X >= 1 && X <= N) {  // counter X is increased by 1
+                if(counters[X - 1] < lowbound) counters[X - 1] = lowbound;
+                counters[X - 1]++;
+                max = Math.max(max, counters[X - 1]);
+            }
+            else if(X == N + 1) {   // all counters are set to the maximum value of any counter.
+                lowbound = max;
+            }
+        }
+        // change all to max
+        for(int i = 0; i < N; i++) {
+            counters[i] = max;
+        }
+        // do the left
+        for(int i = last + 1; i < A.length; i++) {
+            int X = A[i];
+            counters[X - 1]++;  // counter X is increased by 1
+        }
+        return counters;
+    }
+}
+
 class Main {
     public static void main(String[] args) {
-        Solution s = new Solution();
+        Solution2 s = new Solution2();
         int[] A = {3, 4, 4, 6, 1, 4, 4};
         System.out.println(Arrays.toString(s.solution(5, A)));
     }

@@ -65,41 +65,101 @@ Complexity:
 expected worst-case time complexity is O(N);
 expected worst-case space complexity is O(N), beyond input storage (not counting the storage required for input arguments).
 Elements of input arrays can be modified.
-*/
+ */
 
 // you can also use imports, for example:
 // import java.math.*;
+import java.util.Arrays;
+
 class Solution {
-  // greedy solution
-    public int solution(int[] R, int X, int M) {
-        // write your code in Java SE 7
-      int N = R.length;
-      if(N * X * 2 > M) return -1;  // If it is not possible to tie all the boats, the function should return -1.
-      int[] P = new int[N];
-      // place boat from left first
-      int left;
-      for(left = 0; left < N; left++) {
-        int fromLeft = X * (2 * left + 1);
-        if(R[left] <= fromLeft) {
-          P[left] = fromLeft; // we have no choice
-        }
-        else break;
-      }
-      // adjust boat from right
-      for(int i = N - 1; i >= left; i--) {
-        
-      }
-      // calculate
-      int distance = 0;
-      for(int i = 0; i < N; i++) {
-        distance += Math.abs(P[i] - R[i]);
-      }
-      return distance;
-    }
+	// greedy solution
+	public int solution(int[] R, int X, int M) {
+		// write your code in Java SE 7
+		int N = R.length;
+		if (N * X * 2 > M)
+			return -1; // If it is not possible to tie all the boats, the function should return -1.
+		int[] P = new int[N];
+		// place boat from left first
+		int left;
+		for (left = 0; left < N; left++) {
+			int fromLeft = X * (2 * left + 1);
+			if (R[left] <= fromLeft) {
+				P[left] = fromLeft; // we have no choice
+			} else
+				break;
+		}
+		// adjust boat from left
+		int boats = N - left - 1;	// boats right waiting for place
+		for (int i = left; i < N; i++) {
+			if(M - (boats * 2 + 1) * X > R[i]) {	// we have enough space on right
+				if(i == left || P[i - 1] + 2 * X <= R[i]) {	// i == left, no need to check
+					P[i] = R[i];
+				}
+				else {
+					P[i] = P[i - 1] + 2 * X;
+				}
+				boats--;
+			}
+			else {
+				while(i < N) {
+					P[i++] = M - (boats * 2 + 1) * X;
+					boats--;
+				}
+			}
+		}
+		// re-adjust, find all continues boats
+		int current = 0;
+		int leftBorder = X;
+		while(current < N) {
+			int ptr = current + 1;
+			int localMax = Math.abs(P[current] - R[current]);
+			while(ptr < N) {
+				if(P[ptr] == P[ptr - 1] + 2 * X) {	// continue
+					localMax = Math.max(localMax, Math.abs(P[ptr] - R[ptr]));
+					ptr++;
+				}
+				else 
+					break;
+			}
+			// try move left and recalculate
+			if(localMax > 1) {
+				while(P[current] > leftBorder) {	// we can move left
+					int curMax = 0;
+					for(int i = current; i < ptr; i++) {
+						P[i]--;
+						curMax = Math.max(curMax, Math.abs(P[i] - R[i]));
+					}
+					if(curMax > localMax) {	// no need to continue
+						// one step back;
+						for(int i = current; i < ptr; i++) {
+							P[i]++;
+						}
+						break;
+					}
+					localMax = curMax;
+				}
+			}
+			current = ptr;
+			leftBorder = P[ptr - 1] + X;
+		}
+		
+		// calculate
+		int max = 0;
+		for (int i = 0; i < N; i++) {
+			max = Math.max(max, Math.abs(P[i] - R[i]));
+		}
+		// debug
+		System.out.println("R: " + Arrays.toString(R));
+		System.out.println("P: " + Arrays.toString(P));
+		return max;
+	}
 }
 
 class Main {
-  public static void main(String[] args) {
-    
-  }
+	public static void main(String[] args) {
+		int[] R = {4, 7, 9, 11, 14, 21, 21, 22, 22, 23};
+		int X = 1, M = 37;
+		Solution s = new Solution();
+		System.out.println(s.solution(R, X, M));
+	}
 }

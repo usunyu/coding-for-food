@@ -42,31 +42,6 @@ expected worst-case space complexity is O(N), beyond input storage (not counting
 Elements of input arrays can be modified.
 */
 
-/*
-Test Report                                             Score: 62 of 100
-example 
-example test											0.660 s.	OK
-extreme_sinlge 
-single character string									0.660 s.	OK
-extreme_double 
-double character string									0.660 s.	OK
-simple 
-simple tests											0.660 s.	OK
-small_length_string 
-small length simple string								0.660 s.	OK
-small_random 
-small random string, length = ~300						0.660 s.	OK
-almost_all_same_letters 
-GGGGGG..??..GGGGGG..??..GGGGGG							4.360 s.	TIMEOUT ERROR 
-																	running time: >4.36 sec., time limit: 3.52 sec.
-large_random 
-large random string, length								4.390 s.	TIMEOUT ERROR 
-																	running time: >4.39 sec., time limit: 3.48 sec.
-extreme_large 
-all max ranges											4.360 s.	TIMEOUT ERROR 
-														running time: >4.36 sec., time limit: 3.96 sec.
-*/
-
 // you can also use imports, for example:
 // import java.math.*;
 import java.util.Arrays;
@@ -89,7 +64,31 @@ class Solution {
         }
         return ret;
     }
-    
+
+    /*
+    Test Report                                             Score: 62 of 100
+    example 
+    example test                                            0.660 s.    OK
+    extreme_sinlge 
+    single character string                                 0.660 s.    OK
+    extreme_double 
+    double character string                                 0.660 s.    OK
+    simple 
+    simple tests                                            0.660 s.    OK
+    small_length_string 
+    small length simple string                              0.660 s.    OK
+    small_random 
+    small random string, length = ~300                      0.660 s.    OK
+    almost_all_same_letters 
+    GGGGGG..??..GGGGGG..??..GGGGGG                          4.360 s.    TIMEOUT ERROR 
+                                                                        running time: >4.36 sec., time limit: 3.52 sec.
+    large_random 
+    large random string, length                             4.390 s.    TIMEOUT ERROR 
+                                                                        running time: >4.39 sec., time limit: 3.48 sec.
+    extreme_large 
+    all max ranges                                          4.360 s.    TIMEOUT ERROR 
+                                                            running time: >4.36 sec., time limit: 3.96 sec.
+    */
     public int[] solution(String S, int[] P, int[] Q) {
         // write your code in Java SE 7
     	// get smallest value
@@ -109,6 +108,57 @@ class Solution {
                 if(min == MIN) break;
             }
             mins[i] = min;
+        }
+        return mins;
+    }
+
+    /*
+    Test Report                                             Score: 100 of 100
+    test                                                    time    result
+    example 
+    example test                                            0.640 s.    OK
+    extreme_sinlge 
+    single character string                                 0.650 s.    OK
+    extreme_double 
+    double character string                                 0.650 s.    OK
+    simple 
+    simple tests                                            0.650 s.    OK
+    small_length_string 
+    small length simple string                              0.650 s.    OK
+    small_random 
+    small random string, length = ~300                      0.670 s.    OK
+    almost_all_same_letters 
+    GGGGGG..??..GGGGGG..??..GGGGGG                          0.780 s.    OK
+    large_random 
+    large random string, length                             1.350 s.    OK
+    extreme_large 
+    all max ranges                                          1.470 s.    OK
+
+    */
+    // reference: http://rafal.io/posts/codility-genomic-range-query.html
+    public int[] solution2(String S, int[] P, int[] Q) {
+        // write your code in Java SE 7
+        int[][] table = new int[S.length()][4];
+        // initial
+        table[0][getInt(S.charAt(0)) - 1] = 1;
+        for(int i = 1; i < S.length(); i++) {
+            int id = getInt(S.charAt(i)) - 1;
+            table[i][id] = table[i - 1][id] + 1;
+            for(int j = 0; j < 4; j++) {
+                if(j != id) table[i][j] = table[i - 1][j];
+            }
+        }
+        // query
+        int[] mins = new int[P.length];
+        for(int i = 0; i < P.length; i++) {
+            int x = P[i], y = Q[i];
+            for(int j = 0; j < 4; j++) {
+                int pre = x - 1 >= 0 ? table[x - 1][j] : 0;
+                if(table[y][j] - pre > 0) {
+                    mins[i] = j + 1;
+                    break;
+                }
+            }
         }
         return mins;
     }

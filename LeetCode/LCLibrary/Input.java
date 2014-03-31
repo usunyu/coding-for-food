@@ -59,6 +59,26 @@ public class Input {
 	}
 
 	/*
+		1 -> 2 -> 3
+	*/
+	public static ListNode buildExampleList3() {
+		ListNode node1 = new ListNode(1);
+        ListNode node2 = new ListNode(2); node1.next = node2;
+        ListNode node3 = new ListNode(3); node2.next = node3;
+        return node1;
+	}
+
+	/*
+		4 -> 5 -> 6
+	*/
+	public static ListNode buildExampleList4() {
+		ListNode node1 = new ListNode(4);
+        ListNode node2 = new ListNode(5); node1.next = node2;
+        ListNode node3 = new ListNode(6); node2.next = node3;
+        return node1;
+	}
+
+	/*
 		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10

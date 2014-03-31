@@ -1,12 +1,9 @@
-class ListNode {
-	int val;
-	ListNode next;
+/*
+Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together 
+the nodes of the first two lists.
+*/
 
-	ListNode(int x) {
-		val = x;
-		next = null;
-	}
-}
+import LCLibrary.*;
 
 class Solution {
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
@@ -61,23 +58,48 @@ class Solution {
         }
         return head;
     }
+    /*
+        Second Round
+    */
+    public ListNode mergeTwoLists2(ListNode l1, ListNode l2) {
+        if(l1 == null) return l2;
+        if(l2 == null) return l1;
+        ListNode head = null, prev = null;
+        while(l1 != null && l2 != null) {
+            ListNode next;
+            if(l1.val < l2.val) {
+                next = l1;
+                l1 = l1.next;
+            }
+            else {
+                next = l2;
+                l2 = l2.next;
+            }
+            if(head == null) {
+                head = next;
+                prev = next;
+            }
+            else {
+                prev.next = next;
+                prev = next;
+            }
+            next.next = null;
+        }
+        if(l1 != null) {
+            prev.next = l1;
+        }
+        if(l2 != null) {
+            prev.next = l2;
+        }
+        return head;
+    }
 }
 
 class Main {
-
-	public static void print(ListNode list) {
-		while(list != null) {
-			System.out.print(list.val + " ");
-			list = list.next;
-		}
-		System.out.println();
-	}
-
     public static void main(String[] args) {
-    	ListNode l1 = new ListNode(2);
-    	ListNode l2 = new ListNode(1);
+    	ListNode l1 = Input.buildExampleList3();
+    	ListNode l2 = Input.buildExampleList4();
         Solution solution = new Solution();
-        ListNode merge = solution.mergeTwoLists(l1, l2);
-        print(merge);
+        Output.printList(solution.mergeTwoLists2(l1, l2));
     }
 }

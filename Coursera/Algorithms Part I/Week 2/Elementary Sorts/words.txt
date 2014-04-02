@@ -1,0 +1,1 @@
+Welcome to Week 2 of Algorithms, Part I. We have released the course materials for the week: two lectures, two sets of exercises, a programming assignment, and two sets of job interview questions.

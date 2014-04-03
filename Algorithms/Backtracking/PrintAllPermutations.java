@@ -5,6 +5,8 @@ Source: Mathword(http://mathworld.wolfram.com/Permutation.html)
 
 Below are the permutations of string ABC.
 ABC, ACB, BAC, BCA, CAB, CBA
+
+http://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/
 */
 
 import java.util.ArrayList;

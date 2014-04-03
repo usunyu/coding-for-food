@@ -1,3 +1,12 @@
+/*
+Given two sorted integer arrays A and B, merge B into A as one sorted array.
+
+Note:
+You may assume that A has enough space (size that is greater or equal to m + n) to hold additional elements from B. 
+The number of elements initialized in A and B are m and n respectively.
+*/
+import java.util.Arrays;
+
 class Solution {
     public void shift(int[] A, int pA, int shift, int m) {
         for(int i = m + shift - 1; i >= (pA + shift); i--) {
@@ -81,22 +90,33 @@ class Solution {
             A[index--] = B[pB--];
         }
     }
+    /*
+        Second Round
+    */
+    public void merge3(int A[], int m, int B[], int n) {
+        // from end to start
+        int pa = m - 1, pb = n - 1, end = m + n - 1;
+        while (pa >= 0 && pb >= 0) {
+            if(A[pa] > B[pb]) {
+                A[end--] = A[pa--];
+            }
+            else {
+                A[end--] = B[pb--];
+            }
+        }
+        while(pb >= 0) {
+            A[end--] = B[pb--];
+        }
+    }
 }
 
 class Main {
-    public static void print(int[] A) {
-        for(int i = 0; i < A.length; i++) {
-            System.out.print(A[i] + " ");
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
         Solution solution = new Solution();
         int[] A = {1, 0, 0, 0, 0};
         int[] B = {2, 0, 0, 0};
-        solution.merge2(A, 1, B, 1);
-        print(A);
+        solution.merge3(A, 1, B, 1);
+        System.out.println(Arrays.toString(A));
     }
 }
 

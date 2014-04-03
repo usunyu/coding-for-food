@@ -59,6 +59,54 @@ public class Input {
 	}
 
 	/*
+		1 -> 2 -> 3
+	*/
+	public static ListNode buildExampleList3() {
+		ListNode node1 = new ListNode(1);
+        ListNode node2 = new ListNode(2); node1.next = node2;
+        ListNode node3 = new ListNode(3); node2.next = node3;
+        return node1;
+	}
+
+	/*
+		4 -> 5 -> 6
+	*/
+	public static ListNode buildExampleList4() {
+		ListNode node1 = new ListNode(4);
+        ListNode node2 = new ListNode(5); node1.next = node2;
+        ListNode node3 = new ListNode(6); node2.next = node3;
+        return node1;
+	}
+
+	/*
+		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
+		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
+		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
+		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
+		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
+	*/
+	public static ArrayList<ListNode> buildExampleLists() {
+		ArrayList<ListNode> lists = new ArrayList<ListNode>();
+		int n = 5;
+		int length = 10;
+		for(int i =0; i < n; i++) {
+			ListNode head = null ;
+			for(int j = length; j > 0; j--) {
+				ListNode temp = new ListNode(j);
+				if(head == null) {
+					head = temp;
+				}
+				else {
+					temp.next = head;
+					head = temp;
+				}
+			}
+			lists.add(head);
+		}
+		return lists;
+	}
+
+	/*
 		[1,2],[3,5],[6,7],[8,10],[12,16]
 		no overlap
 	*/

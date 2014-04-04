@@ -74,7 +74,7 @@ class Solution {
             root.left = null;
             flatten2(root.right);
         }
-        if(root.right != null) {
+        else if(root.right != null) {
             flatten2(root.right);
         }
     }

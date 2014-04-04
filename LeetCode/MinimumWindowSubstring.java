@@ -231,6 +231,43 @@ class Solution {
         }
         return minWindow;
     }
+    // https://github.com/AnnieKim/LeetCode/blob/master/MinimumWindowSubstring.h
+    /*
+    Solution: 1. Use two pointers: start and end. 
+                 First, move 'end'. After finding all the needed characters, move 'start'.
+              2. Use array as hashtable.
+    */
+    public String minWindow4(String S, String T) {
+        if(S.length() < T.length()) return "";
+        int[] need = new int[256];
+        int[] found = new int[256];
+        int unique = 0;
+        for(int i = 0; i < T.length(); i++) {
+            need[T.charAt(i)]++;
+            if(need[T.charAt(i)] == 1) unique++;
+        }
+        String minWin = "";
+        int count = 0;
+        for(int start = 0, end = 0; end < S.length(); end++) {
+            // expand
+            if(need[S.charAt(end)] == 0) continue;
+            found[S.charAt(end)]++;
+            if(found[S.charAt(end)] == need[S.charAt(end)]) count++;
+            if(count < unique) continue;
+            if(minWin.equals("") || end - start + 1 < minWin.length())
+                minWin = S.substring(start, end + 1);
+            // shrink
+            for(; start < end; start++) {
+                if(need[S.charAt(start)] == 0) continue;
+                if(found[S.charAt(start)] > need[S.charAt(start)])
+                    found[S.charAt(start)]--;
+                else break;
+            }
+            if(end - start + 1 < minWin.length())
+                minWin = S.substring(start, end + 1);
+        }
+        return minWin;
+    }
 }
 
 class Main {
@@ -245,6 +282,6 @@ class Main {
         Solution solution = new Solution();
         String S = "ADOBECODEBANC";
         String T = "ABC";
-        System.out.println(solution.minWindow3(S, T));
+        System.out.println(solution.minWindow4(S, T));
     }
 }

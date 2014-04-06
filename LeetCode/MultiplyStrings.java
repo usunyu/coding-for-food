@@ -111,8 +111,7 @@ class Solution {
         for(int i = 0; i < N1; i++) n1[i] = num1.charAt(i) - '0';
         for(int i = 0; i < N2; i++) n2[i] = num2.charAt(i) - '0';
         // middle result
-        ArrayList<ArrayList<Integer>> middle = new ArrayList<ArrayList<Integer>>();
-        int maxLen = 0;
+        ArrayList<Integer> result = null;
         for(int i = N1 - 1; i >= 0; i--) {
             int carry = 0;
             ArrayList<Integer> res = new ArrayList<Integer>();
@@ -126,23 +125,24 @@ class Solution {
                 res.add(dig);
             }
             if(carry != 0) res.add(carry);
-            maxLen = Math.max(maxLen, res.size());
-            middle.add(res);
+            if(result == null)  // first
+                result = res;
+            else {  // calculate result
+                int c = 0;
+                for(int j = 0; j < res.size(); j++) {
+                    int v = res.get(j) + (j >= result.size() ? 0 : result.get(j)) + c;
+                    int d = v % 10;
+                    c = v / 10;
+                    res.set(j, d);
+                }
+                if(c != 0) res.add(c);
+                result = res;
+            }
         }
         // calculate result
         StringBuilder ret = new StringBuilder();
-        int carry = 0;
-        for(int i = 0; i < maxLen; i++) {
-            int val = carry;
-            for(int j = 0; j < middle.size(); j++) {
-                val += (middle.get(j).size() > i ? middle.get(j).get(i) : 0);
-            }
-            int dig = val % 10;
-            carry = val / 10;
-            ret.append(dig);
-        }
-        if(carry != 0) ret.append(carry);
-        ret.reverse();
+        for(int i = result.size() - 1; i >= 0; i--)
+            ret.append(result.get(i));
         return ret.toString();
     }
 }

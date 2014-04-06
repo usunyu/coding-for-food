@@ -84,4 +84,9 @@ public class Output {
             System.out.println();
         }
     }
+
+    public static void printStringList(ArrayList<ArrayList<String>> lists) {
+        for(ArrayList<String> list : lists)
+            System.out.println(list);
+    }
 }

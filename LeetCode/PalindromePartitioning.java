@@ -199,6 +199,7 @@ class Solution3 {
 /*
     Second Round
 */
+// Bottom up
 class Solution4 {
     public ArrayList<ArrayList<String>> partition(String s) {
         if(s == null || s.length() == 0) return null;
@@ -249,10 +250,56 @@ class Solution4 {
     }
 }
 
+// DP + DP
+class Solution5 {
+    public ArrayList<ArrayList<String>> partition(String s) {
+        if(s == null || s.length() == 0) return null;
+        int n = s.length();
+        // dp[i][j] = true, if s[i...j] is palindrome
+        boolean[][] dp = new boolean[n][n];
+        for(int i = 0; i < n; i++) {
+            dp[i][i] = true;
+            int left = i - 1, right = i + 1;
+            // odd case
+            while(left >= 0 && right < n && s.charAt(left) == s.charAt(right))
+                dp[left--][right++] = true;
+            // even case
+            left = i; right = i + 1;
+            while(left >= 0 && right < n && s.charAt(left) == s.charAt(right))
+                dp[left--][right++] = true;
+        }
+        // this map is used to store previous results  
+        // cache.get(i) is all partitions of s[0...i]  
+        HashMap<Integer, ArrayList<ArrayList<String>>> cache = new HashMap<Integer, ArrayList<ArrayList<String>>>();
+        for(int i = 0; i < n; i++) {
+            ArrayList<ArrayList<String>> temp = new ArrayList<ArrayList<String>>();
+            for(int j = i; j >= 0; j--) {
+                if(dp[j][i]) {  // it is palindrome
+                    if(j > 0) { // we can use previous cache
+                        ArrayList<ArrayList<String>> previous = cache.get(j - 1);
+                        for(ArrayList<String> list : previous) {
+                            ArrayList<String> current = new ArrayList<String>(list);
+                            current.add(s.substring(j, i + 1));
+                            temp.add(current);
+                        }
+                    }
+                    else {
+                        ArrayList<String> first = new ArrayList<String>();
+                        first.add(s.substring(j, i + 1));
+                        temp.add(first);
+                    }
+                }
+            }
+            cache.put(i, temp);
+        }
+        return cache.get(n - 1);
+    }
+}
+
 class Main {
     public static void main(String[] args) {
-        Solution4 solution = new Solution4();
-        ArrayList<ArrayList<String>> result = solution.partition("seeslaveidemonstrateyetartsnomedievalsees");
+        Solution5 solution = new Solution5();
+        ArrayList<ArrayList<String>> result = solution.partition("fff");
         Output.printStringList(result);
     }
 }

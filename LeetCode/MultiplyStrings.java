@@ -1,3 +1,9 @@
+/*
+Given two numbers represented as strings, return multiplication of the numbers as a string.
+
+Note: The numbers can be arbitrarily large and are non-negative.
+*/
+
 import java.util.*;
 
 class Solution {
@@ -93,12 +99,58 @@ class Solution {
         String s = strBuff.reverse().toString();
         return (s.isEmpty()) ? "0" : s;
     }
+    /*
+        Second Round
+    */
+    public String multiply3(String num1, String num2) {
+        int N1 = num1.length(), N2 = num2.length();
+        if(N1 == 0 || N2 == 0) return "";
+        if(num1.equals("0") || num2.equals("0")) return "0";
+        int[] n1 = new int[N1];
+        int[] n2 = new int[N2];
+        for(int i = 0; i < N1; i++) n1[i] = num1.charAt(i) - '0';
+        for(int i = 0; i < N2; i++) n2[i] = num2.charAt(i) - '0';
+        // middle result
+        ArrayList<ArrayList<Integer>> middle = new ArrayList<ArrayList<Integer>>();
+        int maxLen = 0;
+        for(int i = N1 - 1; i >= 0; i--) {
+            int carry = 0;
+            ArrayList<Integer> res = new ArrayList<Integer>();
+            // initial, easy to cal result
+            for(int j = N1 - 1; j > i; j--)
+                res.add(0);
+            for(int j = N2 - 1; j >= 0; j--) {
+                int val = n1[i] * n2[j] + carry;
+                int dig = val % 10;
+                carry = val / 10;
+                res.add(dig);
+            }
+            if(carry != 0) res.add(carry);
+            maxLen = Math.max(maxLen, res.size());
+            middle.add(res);
+        }
+        // calculate result
+        StringBuilder ret = new StringBuilder();
+        int carry = 0;
+        for(int i = 0; i < maxLen; i++) {
+            int val = carry;
+            for(int j = 0; j < middle.size(); j++) {
+                val += (middle.get(j).size() > i ? middle.get(j).get(i) : 0);
+            }
+            int dig = val % 10;
+            carry = val / 10;
+            ret.append(dig);
+        }
+        if(carry != 0) ret.append(carry);
+        ret.reverse();
+        return ret.toString();
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         String num1 = "123", num2 = "456";
-        System.out.println(solution.multiply2(num1, num2));
+        System.out.println(solution.multiply3(num1, num2));
     }
 }

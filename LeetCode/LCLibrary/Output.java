@@ -75,4 +75,13 @@ public class Output {
         }
         System.out.println();
     }
+
+    public static void printStringArray(ArrayList<String[]> list) {
+        for(String[] strings : list) {
+            for(String str : strings) {
+                System.out.println(str);
+            }
+            System.out.println();
+        }
+    }
 }

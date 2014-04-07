@@ -1,12 +1,14 @@
+/*
+Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
 
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) {
-        val = x;
-        next = null;
-    }
-}
+You should preserve the original relative order of the nodes in each of the two partitions.
+
+For example,
+Given 1->4->3->2->5->2 and x = 3,
+return 1->2->2->4->3->5.
+*/
+
+import LCLibrary.*;
 
 class Solution {
     public ListNode partition(ListNode head, int x) {
@@ -42,28 +44,44 @@ class Solution {
     }
 }
 
-class Main {
-    public static void print(ListNode head) {
-        while(head != null) {
-            System.out.print(head.val + " ");
-            head = head.next;
+/*
+    Second Round
+*/
+class Solution2 {
+    public ListNode partition(ListNode head, int x) {
+        ListNode lessHead = null, lessPrev = null, greaterHead = null, greaterPrev = null, ptr = head;
+        while(ptr != null) {
+            ListNode next = ptr.next;
+            ptr.next = null;    // clean
+            if(ptr.val < x) {
+                if(lessHead == null) {
+                    lessHead = ptr; lessPrev = ptr;
+                }
+                else {
+                    lessPrev.next = ptr; lessPrev = ptr;
+                }
+            }
+            else {
+                if(greaterHead == null) {
+                    greaterHead = ptr; greaterPrev = ptr;
+                }
+                else {
+                    greaterPrev.next = ptr; greaterPrev = ptr;
+                }
+            }
+            ptr = next;
         }
-        System.out.println();
+        // connect
+        if(lessPrev == null) return greaterHead;
+        lessPrev.next = greaterHead;
+        return lessHead;
     }
+}
 
+class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        ListNode head = new ListNode(1);
-        // ListNode node1 = new ListNode(4);
-        // head.next = node1;
-        // ListNode node2 = new ListNode(3);
-        // node1.next = node2;
-        // ListNode node3 = new ListNode(2);
-        // node2.next = node3;
-        // ListNode node4 = new ListNode(5);
-        // node3.next = node4;
-        // ListNode node5 = new ListNode(2);
-        // node4.next = node5;
-        print(solution.partition(head, 0));
+        Solution2 solution = new Solution2();
+        ListNode head = Input.buildExampleList5();
+        Output.printList(solution.partition(head, 3));
     }
 }

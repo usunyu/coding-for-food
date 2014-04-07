@@ -1,3 +1,17 @@
+/*
+Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+
+For example,
+S = "ADOBECODEBANC"
+T = "ABC"
+Minimum window is "BANC".
+
+Note:
+If there is no such window in S that covers all characters in T, return the emtpy string "".
+
+If there are multiple such windows, you are guaranteed that there will always be only one unique minimum window in S.
+*/
+
 import java.util.*;
 
 class Solution {
@@ -147,6 +161,113 @@ class Solution {
         }
         return S.substring(minStart, minEnd + 1);
     }
+    /*
+        Second Round
+    */
+    public String minWindow3(String S, String T) {
+        if(S.length() < T.length()) return "";
+        // preprocess
+        HashMap<Character, Integer> charNeed = new HashMap<Character, Integer>();
+        for(int i = 0; i < T.length(); i++) {
+            char ch = T.charAt(i);
+            if(charNeed.containsKey(ch))
+                charNeed.put(ch, charNeed.get(ch) + 1);
+            else
+                charNeed.put(ch, 1);
+        }
+        HashMap<Character, Integer> charFound = new HashMap<Character, Integer>();
+        // find min window
+        String minWindow = "";
+        int start;
+        // go to first valid char
+        for(start = 0; start < S.length(); start++) {
+            char ch = S.charAt(start);
+            if(charNeed.containsKey(ch)) break;
+        }
+        int end = start, found = 0;
+        // find a match
+        while(end < S.length()) {
+            char ch = S.charAt(end);
+            if(charNeed.containsKey(ch)) {
+                if(charFound.containsKey(ch))
+                    charFound.put(ch, charFound.get(ch) + 1);
+                else
+                    charFound.put(ch, 1);
+                if(charFound.get(ch) == charNeed.get(ch)) found++;
+                if(found == charNeed.size()) {
+                    minWindow = S.substring(start, end + 1);
+                    break;
+                }
+            }
+            end++;
+        }
+        if(found != charNeed.size()) return "";
+        while(true) {
+            while(start < end) {    // shrink
+                char ch = S.charAt(start);
+                if(charFound.containsKey(ch)) {
+                    if(charFound.get(ch) > charNeed.get(ch)) {
+                        charFound.put(ch, charFound.get(ch) - 1);
+                        start++;
+                    }
+                    else {
+                        break;
+                    }
+                }
+                else start++;
+            }
+            // update
+            if(end - start + 1 < minWindow.length()) minWindow = S.substring(start, end + 1);
+            if(end == S.length()) break;
+            while(end < S.length()) {   // expand
+                end++;
+                if(end == S.length()) break;
+                char ch = S.charAt(end);
+                if(charFound.containsKey(ch)) {
+                    charFound.put(ch, charFound.get(ch) + 1);
+                    break;
+                }
+            }
+        }
+        return minWindow;
+    }
+    // https://github.com/AnnieKim/LeetCode/blob/master/MinimumWindowSubstring.h
+    /*
+    Solution: 1. Use two pointers: start and end. 
+                 First, move 'end'. After finding all the needed characters, move 'start'.
+              2. Use array as hashtable.
+    */
+    public String minWindow4(String S, String T) {
+        if(S.length() < T.length()) return "";
+        int[] need = new int[256];
+        int[] found = new int[256];
+        int unique = 0;
+        for(int i = 0; i < T.length(); i++) {
+            need[T.charAt(i)]++;
+            if(need[T.charAt(i)] == 1) unique++;
+        }
+        String minWin = "";
+        int count = 0;
+        for(int start = 0, end = 0; end < S.length(); end++) {
+            // expand
+            if(need[S.charAt(end)] == 0) continue;
+            found[S.charAt(end)]++;
+            if(found[S.charAt(end)] == need[S.charAt(end)]) count++;
+            if(count < unique) continue;
+            if(minWin.equals("") || end - start + 1 < minWin.length())
+                minWin = S.substring(start, end + 1);
+            // shrink
+            for(; start < end; start++) {
+                if(need[S.charAt(start)] == 0) continue;
+                if(found[S.charAt(start)] > need[S.charAt(start)])
+                    found[S.charAt(start)]--;
+                else break;
+            }
+            if(end - start + 1 < minWin.length())
+                minWin = S.substring(start, end + 1);
+        }
+        return minWin;
+    }
 }
 
 class Main {
@@ -161,6 +282,6 @@ class Main {
         Solution solution = new Solution();
         String S = "ADOBECODEBANC";
         String T = "ABC";
-        System.out.println(solution.minWindow2(S, T));
+        System.out.println(solution.minWindow4(S, T));
     }
 }

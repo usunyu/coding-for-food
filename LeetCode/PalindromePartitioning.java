@@ -1,4 +1,19 @@
+/*
+Given a string s, partition s such that every substring of the partition is a palindrome.
+
+Return all possible palindrome partitioning of s.
+
+For example, given s = "aab",
+Return
+
+  [
+    ["aa","b"],
+    ["a","a","b"]
+  ]
+*/
+
 import java.util.*;
+import LCLibrary.*;
 
 class PalindromeSet {
     int lastIndex;
@@ -84,7 +99,10 @@ class Solution {
         }
         return result;
     }
+}
 
+// DP + recursion
+class Solution2 {
     private boolean[][] buildPalindromeTable(String s) {
         // table[i][j] == true iff s[i..j] is a palindrome
         boolean table[][] = new boolean[s.length()][s.length()];
@@ -119,15 +137,35 @@ class Solution {
         }
     }
 
-    // DP + recursion
-    public ArrayList<ArrayList<String>> partition2(String s) {
+    public ArrayList<ArrayList<String>> partition(String s) {
         ArrayList<ArrayList<String>> results = new ArrayList<ArrayList<String>>();
         partitionHelper(s, 0, buildPalindromeTable(s), new ArrayList<String>(),results);
         return results;
     }
+}
 
-    // DP + DP
-    public ArrayList<ArrayList<String>> partition3(String s) {
+// DP + DP
+class Solution3 {
+    private boolean[][] buildPalindromeTable(String s) {
+        // table[i][j] == true iff s[i..j] is a palindrome
+        boolean table[][] = new boolean[s.length()][s.length()];
+        for(int i = 0; i < s.length(); i++) {
+            table[i][i] = true;
+            // odd case
+            int left = i - 1, right = i + 1;
+            while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                table[left--][right++] = true;
+            }
+            // even case
+            left = i; right = i + 1;
+            while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                table[left--][right++] = true;
+            }
+        }
+        return table;
+    }
+
+    public ArrayList<ArrayList<String>> partition(String s) {
         // build up a table for palindrome substrings  
         boolean[][] table = buildPalindromeTable(s);  
    
@@ -158,21 +196,110 @@ class Solution {
         return preRes.get(0);
     }
 }
+/*
+    Second Round
+*/
+// Bottom up
+class Solution4 {
+    public ArrayList<ArrayList<String>> partition(String s) {
+        if(s == null || s.length() == 0) return null;
+        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+        // initial base case
+        ArrayList<String> base = new ArrayList<String>();
+        for(int i = 0; i < s.length(); i++) {
+            base.add(s.substring(i, i + 1));
+        }
+        result.add(base);
+        // bottom up
+        ArrayList<ArrayList<String>> temp = new ArrayList<ArrayList<String>>(result);
+        HashSet<ArrayList<String>> set = new HashSet<ArrayList<String>>();
+        while(temp.size() != 0) {
+            ArrayList<ArrayList<String>> cache = new ArrayList<ArrayList<String>>();
+            for(ArrayList<String> list : temp) {
+                for(int i = 0; i < list.size() - 1; i++) {
+                    String left = i > 0 ? list.get(i - 1) : "", mid = list.get(i), right = list.get(i + 1);
+                    // even case
+                    if(mid.equals(right)) {
+                        ArrayList<String> tmp = new ArrayList<String>();
+                        for(int j = 0; j < i; j++) tmp.add(list.get(j));
+                        tmp.add(mid + right);
+                        for(int j = i + 2; j < list.size(); j++) tmp.add(list.get(j));
+                        if(!set.contains(tmp)) {
+                            cache.add(tmp);
+                            result.add(tmp);
+                            set.add(tmp);
+                        }
+                    }
+                    // odd case
+                    if(left.equals(right)) {
+                        ArrayList<String> tmp = new ArrayList<String>();
+                        for(int j = 0; j < i - 1; j++) tmp.add(list.get(j));
+                        tmp.add(left + mid + right);
+                        for(int j = i + 2; j < list.size(); j++) tmp.add(list.get(j));
+                        if(!set.contains(tmp)) {
+                            cache.add(tmp);
+                            result.add(tmp);
+                            set.add(tmp);
+                        }
+                    }
+                }
+            }
+            temp = cache;
+        }
+        return result;
+    }
+}
+
+// DP + DP
+class Solution5 {
+    public ArrayList<ArrayList<String>> partition(String s) {
+        if(s == null || s.length() == 0) return null;
+        int n = s.length();
+        // dp[i][j] = true, if s[i...j] is palindrome
+        boolean[][] dp = new boolean[n][n];
+        for(int i = 0; i < n; i++) {
+            dp[i][i] = true;
+            int left = i - 1, right = i + 1;
+            // odd case
+            while(left >= 0 && right < n && s.charAt(left) == s.charAt(right))
+                dp[left--][right++] = true;
+            // even case
+            left = i; right = i + 1;
+            while(left >= 0 && right < n && s.charAt(left) == s.charAt(right))
+                dp[left--][right++] = true;
+        }
+        // this map is used to store previous results  
+        // cache.get(i) is all partitions of s[0...i]  
+        HashMap<Integer, ArrayList<ArrayList<String>>> cache = new HashMap<Integer, ArrayList<ArrayList<String>>>();
+        for(int i = 0; i < n; i++) {
+            ArrayList<ArrayList<String>> temp = new ArrayList<ArrayList<String>>();
+            for(int j = i; j >= 0; j--) {
+                if(dp[j][i]) {  // it is palindrome
+                    if(j > 0) { // we can use previous cache
+                        ArrayList<ArrayList<String>> previous = cache.get(j - 1);
+                        for(ArrayList<String> list : previous) {
+                            ArrayList<String> current = new ArrayList<String>(list);
+                            current.add(s.substring(j, i + 1));
+                            temp.add(current);
+                        }
+                    }
+                    else {
+                        ArrayList<String> first = new ArrayList<String>();
+                        first.add(s.substring(j, i + 1));
+                        temp.add(first);
+                    }
+                }
+            }
+            cache.put(i, temp);
+        }
+        return cache.get(n - 1);
+    }
+}
 
 class Main {
-    public static void print(ArrayList<ArrayList<String>> lists) {
-        for(ArrayList<String> list : lists) {
-            for(String s : list) {
-                System.out.print(s + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        ArrayList<ArrayList<String>> result = solution.partition3("aab");
-        print(result);
+        Solution5 solution = new Solution5();
+        ArrayList<ArrayList<String>> result = solution.partition("fff");
+        Output.printStringList(result);
     }
 }

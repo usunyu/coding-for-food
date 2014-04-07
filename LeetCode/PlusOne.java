@@ -1,3 +1,11 @@
+/*
+Given a non-negative number represented as an array of digits, plus one to the number.
+
+The digits are stored such that the most significant digit is at the head of the list.
+*/
+
+import java.util.Arrays;
+
 class Solution {
     public int[] plusOne(int[] digits) {
         int i;
@@ -16,19 +24,34 @@ class Solution {
         return digits;
     }
 }
+/*
+    Second Round
+*/
+class Solution2 {
+    public int[] plusOne(int[] digits) {
+        int carry = 1;
+        for(int i = digits.length - 1; i >= 0; i--) {
+            int digit = digits[i];
+            int val = digit + carry;
+            digits[i] = val % 10;
+            carry = val / 10;
+        }
+        if(carry != 0) {
+            int[] copy = new int[digits.length + 1];
+            copy[0] = carry;
+            for(int i = 0; i < digits.length; i++)
+                copy[i + 1] = digits[i];
+            return copy;
+        }
+        else return digits;
+    }
+}
 
 class Main {
-    public static void print(int[] num) {
-        for(int i : num) {
-            System.out.print(i);
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution2 solution = new Solution2();
         int[] digits = {8,9,9,9,9};
-        print(solution.plusOne(digits));
+        System.out.println(Arrays.toString(solution.plusOne(digits)));
     }
 }
 

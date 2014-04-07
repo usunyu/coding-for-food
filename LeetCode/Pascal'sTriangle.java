@@ -1,4 +1,20 @@
+/*
+Given numRows, generate the first numRows of Pascal's triangle.
+
+For example, given numRows = 5,
+Return
+
+[
+     [1],
+    [1,1],
+   [1,2,1],
+  [1,3,3,1],
+ [1,4,6,4,1]
+]
+*/
+
 import java.util.ArrayList;
+import LCLibrary.*;
 
 class Solution {
     public ArrayList<ArrayList<Integer>> generate(int numRows) {
@@ -15,15 +31,31 @@ class Solution {
         return result;
     }
 }
+/*
+    Second Round
+*/
+class Solution2 {
+    public ArrayList<ArrayList<Integer>> generate(int numRows) {
+        ArrayList<ArrayList<Integer>> triangle = new ArrayList<ArrayList<Integer>>();
+        if(numRows <= 0) return triangle;
+        for(int level = 0; level < numRows; level++) {
+            ArrayList<Integer> current = new ArrayList<Integer>();
+            for(int col = 0; col <= level; col++) {
+                if(col == 0 || level == col) current.add(1);
+                else {
+                    ArrayList<Integer> previous = triangle.get(level - 1);
+                    current.add(previous.get(col - 1) + previous.get(col));
+                }
+            }
+            triangle.add(current);
+        }
+        return triangle;
+    }
+}
 
 class Main {
-    public static void print(ArrayList<ArrayList<Integer>> result) {
-        for(ArrayList<Integer> list : result)
-            System.out.println(list);
-    }
-
     public static void main(String[] args) {
         Solution solution = new Solution();
-        print(solution.generate(5));
+        Output.printLevelLists(solution.generate(5));
     }
 }

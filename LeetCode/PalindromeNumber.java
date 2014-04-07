@@ -1,3 +1,18 @@
+/*
+Determine whether an integer is a palindrome. Do this without extra space.
+
+click to show spoilers.
+
+Some hints:
+Could negative integers be palindromes? (ie, -1)
+
+If you are thinking of converting the integer to string, note the restriction of using extra space.
+
+You could also try reversing an integer. However, if you have solved the problem "Reverse Integer", you know that the reversed integer might overflow. How would you handle such case?
+
+There is a more generic way of solving this problem.
+*/
+
 class Solution {
     public boolean isPalindrome(int x) {
         if(x < 0) return false;
@@ -41,11 +56,31 @@ class Solution {
         }
         return true;
     }
+    /*
+        Second Round
+    */
+    public boolean isPalindrome3(int x) {
+        if(x < 0) return false;
+        long left = 1, right = 1, num = x;
+        while(num >= 10) {
+            num /= 10;
+            left *= 10;
+        }
+        while(left > right) {
+            long lv = (x % (left * 10)) / left;
+            long rv = (x / right) % 10;
+            if(lv != rv) return false;
+            // for next
+            left /= 10;
+            right *= 10;
+        }
+        return true;
+    }
 }
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        System.out.println(solution.isPalindrome2(1221));
+        System.out.println(solution.isPalindrome3(1410110141));
     }
 }

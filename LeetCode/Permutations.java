@@ -1,4 +1,13 @@
+/*
+Given a collection of numbers, return all possible permutations.
+
+For example,
+[1,2,3] have the following permutations:
+[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], and [3,2,1].
+*/
+
 import java.util.*;
+import LCLibrary.*;
 
 class Solution {
     public void shift(int[] num, int start) {
@@ -41,7 +50,9 @@ class Solution {
         permute(num, 0, result);
         return result;
     }
+}
 
+class Solution2 {
     public ArrayList<ArrayList<Integer>> insert(ArrayList<ArrayList<Integer>> lists, int n) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>(); 
         for(ArrayList<Integer> list : lists) {
@@ -71,21 +82,41 @@ class Solution {
     }
 }
 
-class Main {
-    public static void print(ArrayList<ArrayList<Integer>> lists) {
-        for(ArrayList<Integer> list : lists) {
-            for(int i : list) {
-                System.out.print(i + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
+/*
+Second Round
+*/
+class Solution3 {
+    private void swap(int[] num, int i, int j) {
+        int tmp = num[i];
+        num[i] = num[j];
+        num[j] = tmp;
     }
+    
+    private void permute(int[] num, int index, ArrayList<ArrayList<Integer>> permutations) {
+        if(index == num.length - 1) {
+            ArrayList<Integer> p = new ArrayList<Integer>();
+            for(int i = 0; i < num.length; i++) p.add(num[i]);
+            permutations.add(p);
+            return;
+        }
+        for(int i = index; i < num.length; i++) {
+            swap(num, i, index);
+            permute(num, index + 1, permutations);
+            swap(num, i, index); // backtracking
+        }
+    }
+    
+    public ArrayList<ArrayList<Integer>> permute(int[] num) {
+        ArrayList<ArrayList<Integer>> permutations = new ArrayList<ArrayList<Integer>>();
+        permute(num, 0, permutations);
+        return permutations;
+    }
+}
 
+class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution3 solution = new Solution3();
         int[] num = {1, 2, 3};
-        ArrayList<ArrayList<Integer>> result = solution.permute2(num);
-        print(result);
+        Output.printLevelLists(solution.permute(num));
     }
 }

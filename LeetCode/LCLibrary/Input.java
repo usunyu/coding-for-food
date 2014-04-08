@@ -37,6 +37,13 @@ public class Input {
         TreeNode node7 = new TreeNode(7); node3.right = node7;
         return node1;
 	}
+	/*
+		     1
+	       /  \
+	      2    3
+	     / \  / \
+	    4  5  6  7
+	*/
 	public static TreeLinkNode buildExampleTreeLink() {
 		TreeLinkNode node1 = new TreeLinkNode(1);
         TreeLinkNode node2 = new TreeLinkNode(2); node1.left = node2;
@@ -47,7 +54,40 @@ public class Input {
         TreeLinkNode node7 = new TreeLinkNode(7); node3.right = node7;
         return node1;
 	}
-
+	/*
+		     1
+	       /  \
+	      2    3
+	     /      \
+	    4        7
+	*/
+	public static TreeLinkNode buildExampleTreeLink2() {
+		TreeLinkNode node1 = new TreeLinkNode(1);
+        TreeLinkNode node2 = new TreeLinkNode(2); node1.left = node2;
+        TreeLinkNode node3 = new TreeLinkNode(3); node1.right = node3;
+        TreeLinkNode node4 = new TreeLinkNode(4); node2.left = node4;
+        TreeLinkNode node7 = new TreeLinkNode(7); node3.right = node7;
+        return node1;
+	}
+	/*
+		    1
+	       /
+	      2
+	     /
+	    3
+	   /
+	  4
+	 /
+	5
+	*/
+	public static TreeLinkNode buildExampleTreeLink3() {
+		TreeLinkNode node1 = new TreeLinkNode(1);
+        TreeLinkNode node2 = new TreeLinkNode(2); node1.left = node2;
+        TreeLinkNode node3 = new TreeLinkNode(3); node2.left = node3;
+        TreeLinkNode node4 = new TreeLinkNode(4); node3.left = node4;
+        TreeLinkNode node5 = new TreeLinkNode(5); node4.left = node5;
+        return node1;
+	}
 	/*
 		2 -> 4 -> 3
 	*/

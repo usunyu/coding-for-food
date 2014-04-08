@@ -135,9 +135,54 @@ class Solution3 {
     }
 }
 
+// Morris using O(1) space
+class Solution4 {
+    public void recoverTree(TreeNode root) {
+        TreeNode cur = root, prev, small = null;
+        TreeNode n1 = null, n2 = null;  // for swap
+        while(cur != null) {
+            if(cur.left == null) {  
+                if(small != null && small.val > cur.val) {  // compare
+                    if(n1 == null) n1 = small;
+                    n2 = cur;
+                }
+                small = cur;    // record
+                cur = cur.right;
+            }
+            else {
+                // find predecessor
+                prev = cur.left;
+                while(prev.right != null && prev.right != cur)
+                    prev = prev.right;
+                if(prev.right == null) {    // connect
+                    prev.right = cur;
+                    cur = cur.left;
+                }
+                if(prev.right == cur) {     // disconnect
+                    prev.right = null;
+                    if(small != null && small.val > cur.val) {  // compare
+                        if(n1 == null) n1 = small;
+                        n2 = cur;
+                    }
+                    small = cur;    // record
+                    cur = cur.right;
+                }
+            }
+        }
+        swap(n1, n2);
+    }
+
+    private void swap(TreeNode a, TreeNode b) {
+        if (a == null || b == null)  return;
+        int tmp = a.val;
+        a.val = b.val;
+        b.val = tmp;
+    }
+}
+
 class Main {
     public static void main(String[] args) {
-        Solution3 solution = new Solution3();
+        Solution4 solution = new Solution4();
         TreeNode root = Input.buildExampleBadBST();
         Output.levelOrderTraversalTree(root);
         solution.recoverTree(root);

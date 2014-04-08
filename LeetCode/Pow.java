@@ -1,3 +1,7 @@
+/*
+Implement pow(x, n).
+*/
+
 import java.util.*;
 
 class Solution {
@@ -27,9 +31,11 @@ class Solution {
         }
         return sum;
     }
+}
 
+class Solution2 {
     // exceed time limit
-    public double pow2(double x, int n) {
+    public double pow(double x, int n) {
         // Note: The Solution object is instantiated only once and is reused by each test case.
         if(n == 0) {
             return 1;
@@ -62,11 +68,12 @@ class Solution {
         }
         return sum;
     }
+}
 
-    // 700 ms
+class Solution3 {
     // time complexity : O(logN)
     // space complexity : O(1)
-    public double pow3(double x, int n) {
+    public double pow(double x, int n) {
         // Note: The Solution object is instantiated only once and is reused by each test case.
         if(n == 0) {
             return 1;
@@ -96,12 +103,13 @@ class Solution {
         }
         return sum;
     }
+}
 
-    // 720 ms
+class Solution4 {
     // time complexity : O(logN)
     // space complexity : O(1)
     // using recursion
-    public double pow4(double x, int n) {
+    public double pow(double x, int n) {
         if (n == 0) return 1.0;
         // Compute x^{n/2} and store the result into a temporary
         // variable to avoid unnecessary computing
@@ -113,12 +121,13 @@ class Solution {
         else
             return half * half / x;
     }
+}
 
-    // 748 ms
+class Solution5 {
     // time complexity : O(logN)
     // space complexity : O(1)
     // using bit
-    public double pow5(double x, int n) {
+    public double pow(double x, int n) {
         int m = Math.abs(n);
         double ret = 1;
         for ( ; m > 0; x *= x, m >>= 1) {
@@ -130,10 +139,40 @@ class Solution {
     }
 }
 
+/*
+    Second Round
+*/
+class Solution6 {
+    // time complexity : O(logN)
+    // space complexity : O(logN)
+    public double pow(double x, int n) {
+        int m = Math.abs(n), power = 1;
+        double ret = 1.0, val = x;
+        // preprocess
+        ArrayList<Integer> powers = new ArrayList<Integer>();
+        while(m > 0) {
+            if(m % 2 == 1)
+                powers.add(power);
+            power *= 2;
+            m /= 2;
+        }
+        // calculate
+        power = 1;
+        for(int i = 0; i < powers.size(); i++) {
+            while(power < powers.get(i)) {
+                val *= val;
+                power *= 2;
+            }
+            ret *= val;
+        }
+        return n > 0 ? ret : 1.0 / ret;
+    }
+}
+
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        double result = solution.pow5(0.00001, 2147483647);
+        Solution6 solution = new Solution6();
+        double result = solution.pow(0.00001, 2147483647);
         System.out.println(result);
     }
 }

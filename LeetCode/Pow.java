@@ -169,10 +169,27 @@ class Solution6 {
     }
 }
 
+class Solution7 {
+    // time complexity : O(logN)
+    // space complexity : O(1)
+    public double pow(double x, int n) {
+        int m = Math.abs(n);
+        double ret = 1.0, val = x;
+        while(m > 0) {
+            if(m % 2 == 1) {    // need count
+                ret *= val;
+            }
+            val *= val;
+            m /= 2;
+        }
+        return n > 0 ? ret : 1.0 / ret;
+    }
+}
+
 class Main {
     public static void main(String[] args) {
-        Solution6 solution = new Solution6();
-        double result = solution.pow(0.00001, 2147483647);
+        Solution7 solution = new Solution7();
+        double result = solution.pow(1.72777, 7);
         System.out.println(result);
     }
 }

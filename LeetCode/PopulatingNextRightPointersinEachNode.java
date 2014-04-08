@@ -55,7 +55,10 @@ class Solution {
         }
     }
 }
-
+/*
+    Second Round
+*/
+// recursion
 class Solution2 {
     private void connect(TreeLinkNode parent, TreeLinkNode root) {
         if(root == null) return;
@@ -75,9 +78,29 @@ class Solution2 {
     }
 }
 
+// non-recursion
+class Solution3 {
+    public void connect(TreeLinkNode root) {
+        TreeLinkNode ptr = root, next = null;
+        while(ptr != null) {
+            next = ptr.left;
+            while(ptr != null) {
+                // connect its own childrens
+                if(ptr.left != null)
+                    ptr.left.next = ptr.right;
+                // connect other childrens
+                if(ptr.right != null && ptr.next != null)
+                    ptr.right.next = ptr.next.left;
+                ptr = ptr.next;
+            }
+            ptr = next;
+        }
+    }
+}
+
 class Main {
     public static void main(String[] args) {
-        Solution2 solution = new Solution2();
+        Solution3 solution = new Solution3();
         TreeLinkNode root = Input.buildExampleTreeLink();
         solution.connect(root);
     }

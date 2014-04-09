@@ -164,6 +164,7 @@ class Solution3 {
 /*
     Second Round
 */
+// DP solution
 class Solution4 {
     public boolean isMatch(String s, String p) {
         if(s == null) return p == null;
@@ -203,11 +204,32 @@ class Solution4 {
     }
 }
 
+// http://leetcode.com/2011/09/regular-expression-matching.html
+class Solution5 {
+	private boolean match(String s, String p, int sIt, int pIt) {
+		int N = s.length(), M = p.length();
+		if(pIt == M) return sIt == N;
+		// next char is not '*': must match current character
+		if(pIt + 1 == M || p.charAt(pIt + 1) != '*')
+			return sIt < N && (s.charAt(sIt) == p.charAt(pIt) || p.charAt(pIt) == '.') && match(s, p, sIt + 1, pIt + 1);
+		// next char is '*'
+		while(sIt < N && (s.charAt(sIt) == p.charAt(pIt) || p.charAt(pIt) == '.')) {
+			if(match(s, p, sIt, pIt + 2)) return true;
+			sIt++;
+		}
+		return match(s, p, sIt, pIt + 2);	// skip case
+	}
+
+	public boolean isMatch(String s, String p) {
+		return match(s, p, 0, 0);
+	}
+}
+
 class Main {
 	public static void main(String[] args) {
-		Solution4 solution = new Solution4();
+		Solution5 solution = new Solution5();
 		long start = System.currentTimeMillis();
-		System.out.println(solution.isMatch("ba", ".*."));
+		System.out.println(solution.isMatch("aasdfasdfasdfasdfas", "aasdf.*asdf.*asdf.*asdf.*s"));
 		long end = System.currentTimeMillis();
 		System.out.println("cost: " + (end - start) + " ms");
 	}

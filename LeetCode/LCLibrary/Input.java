@@ -158,6 +158,9 @@ public class Input {
         return node1;
 	}
 
+	/*
+		1->2->2->3->3->4->5->5
+	*/
 	public static ListNode buildExampleListWithDup() {
 		ListNode head = new ListNode(1);
         ListNode node1 = new ListNode(2); head.next = node1;

@@ -36,6 +36,28 @@ public class Quick {
     }
 
     /**
+     * Rearranges the array so that a[k] contains the kth smallest key;
+     * a[0] through a[k-1] are less than (or equal to) a[k]; and
+     * a[k+1] through a[N-1] are greater than (or equal to) a[k].
+     * @param a the array
+     * @param k find the kth smallest
+     */
+    public static Comparable select(Comparable[] a, int k) {
+        if (k < 0 || k >= a.length) {
+            throw new IndexOutOfBoundsException("Selected element out of bounds");
+        }
+        StdRandom.shuffle(a);
+        int lo = 0, hi = a.length - 1;
+        while (hi > lo) {
+            int i = partition(a, lo, hi);
+            if      (i > k) hi = i - 1;
+            else if (i < k) lo = i + 1;
+            else return a[i];
+        }
+        return a[lo];
+    }
+
+    /**
      * Rearranges the array in ascending order, using the natural order.
      * @param a the array to be sorted
      */

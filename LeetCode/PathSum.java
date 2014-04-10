@@ -1,10 +1,20 @@
+/*
+Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path 
+equals the given sum.
 
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
-}
+For example:
+Given the below binary tree and sum = 22,
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \      \
+        7    2      1
+return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
+*/
+
+import LCLibrary.*;
 
 class Solution {
     public boolean hasPathSum(TreeNode root, int sum) {
@@ -19,15 +29,23 @@ class Solution {
         return res;
     }
 }
+/*
+    Second Round
+*/
+class Solution2 {
+    public boolean hasPathSum(TreeNode root, int sum) {
+        if(root == null) return false;
+        if(root.val == sum && root.left == null && root.right == null) return true;
+        if(hasPathSum(root.left, sum - root.val)) return true;
+        if(hasPathSum(root.right, sum - root.val)) return true;
+        return false;
+    }
+}
 
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        TreeNode root = new TreeNode(-2);
-        TreeNode lc1 = new TreeNode(4);
-        root.left = lc1;
-        TreeNode rc1 = new TreeNode(-3);
-        root.right = rc1;
-        System.out.println(solution.hasPathSum(root, -5));
+        TreeNode root = Input.buildExampleTree2();
+        System.out.println(solution.hasPathSum(root, 7));
     }
 }

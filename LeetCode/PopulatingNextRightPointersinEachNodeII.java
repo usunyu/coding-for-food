@@ -1,10 +1,28 @@
-import java.util.*;
+/*
+Follow up for problem "Populating Next Right Pointers in Each Node".
 
-class TreeLinkNode {
-    int val;
-    TreeLinkNode left, right, next;
-    TreeLinkNode(int x) { val = x; }
-}
+What if the given tree could be any binary tree? Would your previous solution still work?
+
+Note:
+
+You may only use constant extra space.
+For example,
+Given the following binary tree,
+         1
+       /  \
+      2    3
+     / \    \
+    4   5    7
+After calling your function, the tree should look like:
+         1 -> NULL
+       /  \
+      2 -> 3 -> NULL
+     / \    \
+    4-> 5 -> 7 -> NULL
+*/
+
+import java.util.*;
+import LCLibrary.*;
 
 class Solution {
     // my solution for Populating Next Right Pointers in Each Node
@@ -31,14 +49,37 @@ class Solution {
     }
 }
 
+class Solution2 {
+    public void connect(TreeLinkNode root) {
+        TreeLinkNode ptr = root, next, prev;
+        while(ptr != null) {
+            next = null; prev = null;    // reset
+            while(ptr != null) {
+                if(ptr.left != null) {
+                    if(prev != null)
+                        prev.next = ptr.left;
+                    if(next == null)
+                        next = ptr.left;
+                    prev = ptr.left;
+                }
+                if(ptr.right != null) {
+                    if(prev != null)
+                        prev.next = ptr.right;
+                    if(next == null)
+                        next = ptr.right;
+                    prev = ptr.right;
+                }
+                ptr = ptr.next;
+            }
+            ptr = next;
+        }
+    }
+}
+
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        TreeLinkNode root = new TreeLinkNode(1);
-        TreeLinkNode lc1 = new TreeLinkNode(2);
-        root.left = lc1;
-        TreeLinkNode rc1 = new TreeLinkNode(3);
-        root.right = rc1;
+        Solution2 solution = new Solution2();
+        TreeLinkNode root = Input.buildExampleTreeLink3();
         solution.connect(root);
     }
 }

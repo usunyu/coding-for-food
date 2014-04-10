@@ -1,3 +1,9 @@
+/*
+Implement int sqrt(int x).
+
+Compute and return the square root of x.
+*/
+
 class Solution {
 	// time complexity : O(logN)
     // space complexity : O(1)
@@ -23,11 +29,13 @@ class Solution {
         }
         return left;
     }
+}
 
+class Solution2 {
     // Babylonian method
     // time complexity : O(loglogN)
     // space complexity : O(1)
-    public int sqrt2(int x) {
+    public int sqrt(int x) {
         // Note: The Solution object is instantiated only once and is reused by each test case.
         if(x < 2) {
             return x;
@@ -38,6 +46,24 @@ class Solution {
         	r1 = (x / r0 + r0) / 2;
         }
         return (int)r1;
+    }
+}
+
+/*
+    Second Round
+*/
+class Solution3 {
+    public int sqrt(int x) {
+        if(x < 2) return x;
+        int left = 0, right = x;
+        while(left + 1 < right) {
+            int mid = left + (right - left) / 2;
+            int div = x / mid;
+            if(mid == div) return mid;
+            else if(mid < div) left = mid;
+            else right = mid;
+        }
+        return left;
     }
 }
 

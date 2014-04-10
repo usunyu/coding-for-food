@@ -57,10 +57,47 @@ class Solution {
 		list.last.right = list.first;
 		return list.first;
 	}
+}
 
+class Solution2 {
+	// morris solution
+	public static Node convert(Node root) {
+		Node cur = root, head = null, prev = null;
+		while(cur != null) {
+			if(cur.left == null) {
+				Node tmp = cur.right;
+				if(cur.right != null && cur.right.left == cur)
+					cur.right.left = null;	// cut
+				cur.right = null;	// clean
+				if(head == null) {
+					head = cur; prev = cur;
+				}
+				else {
+					prev.right = cur;
+					cur.left = prev;
+					prev = cur;
+				}
+				cur = tmp;
+			}
+			else {
+				Node prec = cur.left;
+				while(prec.right != null) prec = prec.right;
+				prec.right = cur;
+				cur = cur.left;
+			}
+		}
+		if(head != null) {
+			head.left = prev;
+			prev.right = head;
+		}
+		return head;
+	}
+}
+
+class Main {
 	public static void main(String[] args) {
 		Node root = buildExampleBT();
-		Node head = convert(root);
+		Node head = Solution2.convert(root);
 		printDLL(head);		// print
 		printDLLR(head);	// print reverse
 	}
@@ -97,3 +134,5 @@ class Solution {
         return node1;
 	}
 }
+
+

@@ -1,3 +1,15 @@
+/*
+Follow up for "Remove Duplicates":
+What if duplicates are allowed at most twice?
+
+For example,
+Given sorted array A = [1,1,1,2,2,3],
+
+Your function should return length = 5, and A is now [1,1,2,2,3].
+*/
+
+import java.util.Arrays;
+
 class Solution {
     public int removeDuplicates(int[] A) {
         int fast = 0, slow = 0;
@@ -13,15 +25,28 @@ class Solution {
         return slow;
     }
 }
+/*
+    Second Round
+*/
+class Solution2 {
+    public int removeDuplicates(int[] A) {
+        int prev = -1, count = 1;
+        for(int i = 0; i < A.length; i++) {
+            if(prev > -1 && A[prev] != A[i]) count = 1;
+            if(prev > -1 && A[prev] == A[i]) count++;
+            if(prev == -1 || A[prev] != A[i] || count <= 2) {
+                A[++prev] = A[i];
+            }
+        }
+        return prev + 1;
+    }
+}
 
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution2 solution = new Solution2();
         int[] A = {1,1,1,2,2,3};
-        int size = solution.removeDuplicates(A);
-        for(int i = 0; i < size; i++) {
-            System.out.print(A[i] + " ");
-        }
-        System.out.println();
+        System.out.println(solution.removeDuplicates(A));
+        System.out.println(Arrays.toString(A));
     }
 }

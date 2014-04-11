@@ -64,9 +64,11 @@ class Solution {
         // check scramble
         return isScrambleRec(s1, s2, charMap);
     }
+}
 
+class Solution2 {
     // DP solution
-    public boolean isScramble2(String s1, String s2) {  
+    public boolean isScramble(String s1, String s2) {  
         int len = s1.length();
         if(len != s2.length()) return false;
         if (s1.equals(s2)) return true;
@@ -99,9 +101,42 @@ class Solution {
     }
 }
 
+/*
+    Second Round
+*/
+// recursion
+class Solution3 {
+    private boolean isSameChars(String s1, String s2) {
+        int[] chars1 = new int[256], chars2 = new int[256];
+        for(int i = 0; i < s1.length(); i++) {
+            chars1[s1.charAt(i)]++;
+            chars2[s2.charAt(i)]++;
+        }
+        for(int i = 0; i < 256; i++) {
+            if(chars1[i] != chars2[i])
+                return false;
+        }
+        return true;
+    }
+    
+    public boolean isScramble(String s1, String s2) {
+        if(s1.length() != s2.length()) return false;
+        if(s1.equals(s2)) return true;
+        if(!isSameChars(s1, s2)) return false;
+        for(int i = 0; i < s1.length() - 1; i++) {
+            String part1 = s1.substring(0, i + 1);
+            String part2 = s1.substring(i + 1);
+            if(isScramble(part1, s2.substring(0, i + 1)) && isScramble(part2, s2.substring(i + 1))
+            || isScramble(part2, s2.substring(0, s1.length() - i - 1)) && isScramble(part1, s2.substring(s1.length() - i - 1)))
+                return true;
+        }
+        return false;
+    }
+}
+
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution3 solution = new Solution3();
         System.out.println(solution.isScramble("hobobyrqd", "hbyorqdbo"));
     }
 }

@@ -260,6 +260,17 @@ public class Input {
         return head;
 	}
 
+	public static int[][] buildMatrix(int N) {
+		int[][] matrix = new int[N][N];
+		int val = 0;
+		for(int i = 0; i < N; i++) {
+			for(int j = 0; j < N; j++) {
+				matrix[i][j] = ++val;
+			}
+		}
+		return matrix;
+	}
+
 	/*
 		   1
 	      / \

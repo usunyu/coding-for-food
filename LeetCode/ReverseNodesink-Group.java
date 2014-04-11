@@ -1,14 +1,22 @@
-import java.util.*;
+/*
+Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.
 
-// Definition for singly-linked list.
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) {
-        val = x;
-        next = null;
-    }
-}
+If the number of nodes is not a multiple of k then left-out nodes in the end should remain as it is.
+
+You may not alter the values in the nodes, only nodes itself may be changed.
+
+Only constant memory is allowed.
+
+For example,
+Given this linked list: 1->2->3->4->5
+
+For k = 2, you should return: 2->1->4->3->5
+
+For k = 3, you should return: 3->2->1->4->5
+*/
+
+import java.util.*;
+import LCLibrary.*;
 
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
@@ -48,30 +56,48 @@ class Solution {
     }
 }
 
-class Main {
-    public static void print(ListNode node) {
-        while(node != null) {
-            System.out.print(node.val + " ");
-            node = node.next;
+/*
+    Second Round
+*/
+class Solution2 {
+    private void reverse(ListNode first, ListNode end) {
+        ListNode cur = first, pivot = null, finish = end.next;
+        while(cur != finish) {
+            ListNode tmp = cur.next;
+            cur.next = pivot;
+            pivot = cur;
+            cur = tmp;
         }
-        System.out.println();
     }
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        ListNode head = null, current = null;
-        for(int i = 0; i < 2; i++) {
-            ListNode node = new ListNode(i + 1);
-            if(head == null) {
-                head = node;
-                current = node;
+    
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode cur = head, prev = null, last = null;
+        while(cur != null) {
+            ListNode first = cur, end = cur;
+            int l = 0;
+            while(l < k && cur != null) {
+                end = cur;
+                cur = cur.next;
+                l++;
             }
-            else {
-                current.next = node;
-                current = node;
+            if(l == k) {    // reverse
+                last = end.next;
+                reverse(first, end);
+                if(prev == null) head = end;
+                else prev.next = end;
+                first.next = last;
+                prev = first;
             }
         }
-        print(head);
-        print(solution.reverseKGroup(head, 2));
+        return head;
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        Solution2 solution = new Solution2();
+        ListNode head = Input.buildExampleList5();
+        Output.printList(head);
+        Output.printList(solution.reverseKGroup(head, 2));
     }
 }

@@ -75,17 +75,9 @@ class Main {
 
     public static void main(String[] args) {
         Solution2 solution = new Solution2();
-        ListNode head = null, prev = null;
-        for(int i = 0; i < 3; i++) {
-            ListNode node = new ListNode(i + 1);
-            if(head == null) head = node;
-            else {
-                prev.next = node;
-            }
-            prev = node;
-        }
-        print(head);
-        print(solution.reverseBetween(head, 2, 3));
+        ListNode head = Input.buildExampleList3();
+        Output.printList(head);
+        Output.printList(solution.reverseBetween(head, 2, 3));
     }
 }
 

@@ -64,7 +64,7 @@ class Solution2 {
             res = (res * 10) + x % 10;  
             x /= 10;  
         }
-       
+
         return (int)res;
     }
 }

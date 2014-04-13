@@ -85,6 +85,26 @@ class Solution3 {
     }
 }
 
+class Solution4 {
+    public int reverse(int x) {
+        int ret = 0;
+        while(x != 0) {
+            int digit = x % 10;
+            ret = ret * 10 + digit;
+            if((ret > Integer.MAX_VALUE / 10 && x > 0) ||
+                ret == Integer.MAX_VALUE / 10 && x == Integer.MAX_VALUE % 10) {  // over flow
+                return Integer.MAX_VALUE;
+            }
+            if((ret < Integer.MIN_VALUE / 10 && x < 0) ||
+                ret == Integer.MIN_VALUE / 10 && x == Integer.MIN_VALUE % 10) {  // over flow
+                return Integer.MIN_VALUE;
+            }
+            x /= 10;
+        }
+        return ret;
+    }
+}
+
 class Main {
 	public static void main(String[] args) {
 		Solution solution = new Solution();

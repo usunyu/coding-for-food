@@ -24,16 +24,18 @@ class Solution {
         preorderTraversal(root.left, traversal);
         preorderTraversal(root.right, traversal);
     }
-    
+
     // recursive
     public ArrayList<Integer> preorderTraversal(TreeNode root) {
         ArrayList<Integer> traversal = new ArrayList<Integer>();
         preorderTraversal(root, traversal);
         return traversal;
     }
+}
 
+class Solution2 {
     // iteratively
-    public ArrayList<Integer> preorderTraversal2(TreeNode root) {
+    public ArrayList<Integer> preorderTraversal(TreeNode root) {
         ArrayList<Integer> traversal = new ArrayList<Integer>();
         if(root == null) return traversal;
         Stack<TreeNode> stack = new Stack<TreeNode>();
@@ -46,11 +48,12 @@ class Solution {
         }
         return traversal;
     }
-
-    /*
-        Second Round
-    */
-    public ArrayList<Integer> preorderTraversal3(TreeNode root) {
+}
+/*
+    Second Round
+*/
+class Solution3 {
+    public ArrayList<Integer> preorderTraversal(TreeNode root) {
         ArrayList<Integer> result = new ArrayList<Integer>();
         if(root == null) return result;
         Stack<TreeNode> stack = new Stack<TreeNode>();
@@ -65,10 +68,39 @@ class Solution {
     }
 }
 
+// Morris Solution
+// O(1) space
+class Solution4 {
+    public ArrayList<Integer> preorderTraversal(TreeNode root) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        TreeNode cur = root;
+        while(cur != null) {
+            if(cur.left == null) {
+                result.add(cur.val);    // visit
+                cur = cur.right;
+            }
+            else {
+                TreeNode prec = cur.left;
+                while(prec.right != null && prec.right != cur) prec = prec.right;
+                if(prec.right == null) {    // not traversaled
+                    result.add(cur.val);    // visit
+                    prec.right = cur;
+                    cur = cur.left;
+                }
+                if(prec.right == cur) {    // already traversaled
+                    prec.right = null;
+                    cur = cur.right;
+                }
+            }
+        }
+        return result;
+    }
+}
+
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution4 solution = new Solution4();
         TreeNode root = Input.buildExampleTree();
-        System.out.println(solution.preorderTraversal2(root));
+        System.out.println(solution.preorderTraversal(root));
     }
 }

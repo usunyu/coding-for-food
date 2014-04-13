@@ -15,6 +15,7 @@ Note: Recursive solution is trivial, could you do it iteratively?
 
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.Collections;
 import LCLibrary.TreeNode;
 import LCLibrary.*;
 
@@ -32,9 +33,11 @@ class Solution {
         postorderTraversal(root, traversal);
         return traversal;
     }
+}
 
+class Solution2 {
     // iteratively
-    public ArrayList<Integer> postorderTraversal2(TreeNode root) {
+    public ArrayList<Integer> postorderTraversal(TreeNode root) {
         ArrayList<Integer> traversal = new ArrayList<Integer>();
         TreeNode pointer = root;
         Stack<TreeNode> stack = new Stack<TreeNode>();
@@ -59,11 +62,13 @@ class Solution {
         }
         return traversal;
     }
+}
 
-    /*
-        Second Round
-    */
-    public ArrayList<Integer> postorderTraversal3(TreeNode root) {
+/*
+    Second Round
+*/
+class Solution3 {
+    public ArrayList<Integer> postorderTraversal(TreeNode root) {
         ArrayList<Integer> result = new ArrayList<Integer>();
         if(root == null) return result;
         TreeNode ptr = root, last = null;
@@ -91,10 +96,37 @@ class Solution {
     }
 }
 
+// post-order: left -> right -> curr
+// pre-order: curr -> left -> right
+// mirror of pre-order: curr -> right -> left. Reverse to get the post-order
+class Solution4 {
+    public ArrayList<Integer> postorderTraversal(TreeNode root) {
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        if (root == null) return res;
+        Stack<TreeNode> st = new Stack<TreeNode>();
+        while (root != null){
+            st.push(root);
+            res.add(root.val);
+            root = root.right;
+        }
+        while (!st.isEmpty()){
+            TreeNode curr = st.pop();
+            curr = curr.left;
+            while (curr != null){
+                st.push(curr);
+                res.add(curr.val);
+                curr = curr.right;
+            }
+        }
+        Collections.reverse(res);
+        return res;
+    }
+}  
+
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution4 solution = new Solution4();
         TreeNode root = Input.buildExampleTree();
-        System.out.println(solution.postorderTraversal3(root));
+        System.out.println(solution.postorderTraversal(root));
     }
 }

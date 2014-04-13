@@ -39,8 +39,9 @@ class Solution2 {
         if(carry != 0) {
             int[] copy = new int[digits.length + 1];
             copy[0] = carry;
-            for(int i = 0; i < digits.length; i++)
-                copy[i + 1] = digits[i];
+            // we don't need this for loop
+            // for(int i = 0; i < digits.length; i++)
+            //     copy[i + 1] = digits[i];
             return copy;
         }
         else return digits;

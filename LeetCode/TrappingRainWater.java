@@ -1,3 +1,11 @@
+/*
+Given n non-negative integers representing an elevation map where the width of each bar is 1, 
+compute how much water it is able to trap after raining.
+
+For example, 
+Given [0,1,0,2,1,0,1,3,2,1,2,1], return 6.
+*/
+
 class Solution {
     public int trap(int[] A) {
         int left = 0;
@@ -48,8 +56,10 @@ class Solution {
         }
         return V;
     }
+}
 
-    public int trap2(int[] A) {
+class Solution2 {
+    public int trap(int[] A) {
         if(A.length == 0) return 0;
         // find left
         int left = 1, prev = A[0];
@@ -110,10 +120,76 @@ class Solution {
     }
 }
 
+/*
+    Second Round
+*/
+class Solution3 {
+    public int trap(int[] A) {
+        if(A == null || A.length == 0) return 0;
+        // skip zeros
+        int left = 0;
+        while(left < A.length && A[left] == 0) left++;
+        // traversal array
+        int current = left + 1;
+        int temp = 0, sum = 0;
+        while(current < A.length) {
+            if(A[current] < A[left]) 
+                temp += A[left] - A[current];
+            else {
+                sum += temp;
+                left = current;
+                temp = 0;
+            }
+            current++;
+        }
+        // reverse traversal array
+        if(left < A.length) {
+            int right = A.length - 1;
+            while(right >= left && A[right] == 0) right--;
+            current = right - 1;
+            temp = 0;
+            while(current >= left) {
+                if(A[current] < A[right]) 
+                    temp += A[right] - A[current];
+                else {
+                    sum += temp;
+                    right = current;
+                    temp = 0;
+                }
+                current--;
+            }
+        }
+        return sum;
+    }
+}
+
+class Solution4 {
+    public int trap(int[] A) {
+        if(A == null || A.length == 0) return 0;
+        int N = A.length;
+        int[] leftBound = new int[N], rightBound = new int[N];
+        int lmax = A[0];
+        for(int i = 0; i < N; i++) {
+            lmax = Math.max(A[i], lmax);
+            leftBound[i] = lmax;
+        }
+        int rmax = A[N - 1];
+        for(int i = N - 1; i >= 0; i--) {
+            rmax = Math.max(A[i], rmax);
+            rightBound[i] = rmax;
+        }
+        int sum = 0;
+        for(int i = 0; i < N; i++) {
+            sum += Math.min(leftBound[i], rightBound[i]) - A[i];
+        }
+        return sum;
+    }
+}
+
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        int[] A = {0,7,1,4,6};
-        System.out.println(solution.trap2(A));
+        Solution3 solution = new Solution3();
+        int[] A = {5,4,1,2};
+        System.out.println(solution.trap(A));
     }
 }

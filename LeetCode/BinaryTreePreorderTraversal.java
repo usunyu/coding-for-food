@@ -68,9 +68,33 @@ class Solution3 {
     }
 }
 
+class Solution4 {
+    public ArrayList<Integer> preorderTraversal(TreeNode root) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        if(root == null) return result;
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        TreeNode cur = root;
+        while(cur != null) {
+            result.add(cur.val);
+            stack.push(cur);
+            cur = cur.left;
+        }
+        while(!stack.isEmpty()) {
+            cur = stack.pop();
+            cur = cur.right;
+            while(cur != null) {
+                result.add(cur.val);
+                stack.push(cur);
+                cur = cur.left;
+            }
+        }
+        return result;
+    }
+}
+
 // Morris Solution
 // O(1) space
-class Solution4 {
+class Solution5 {
     public ArrayList<Integer> preorderTraversal(TreeNode root) {
         ArrayList<Integer> result = new ArrayList<Integer>();
         TreeNode cur = root;
@@ -86,8 +110,7 @@ class Solution4 {
                     result.add(cur.val);    // visit
                     prec.right = cur;
                     cur = cur.left;
-                }
-                if(prec.right == cur) {    // already traversaled
+                } else {                    // already traversaled
                     prec.right = null;
                     cur = cur.right;
                 }

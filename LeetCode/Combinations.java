@@ -48,9 +48,11 @@ class Solution {
         }
         return result;
     }
+}
 
+class Solution2 {
     // iterative implementation
-    public ArrayList<ArrayList<Integer>> combine2(int n, int k) {
+    public ArrayList<ArrayList<Integer>> combine(int n, int k) {
         // Note: The Solution object is instantiated only once and is reused by each test case.
         ArrayList<ArrayList<Integer>> results = new ArrayList<ArrayList<Integer>>();
         for(; k > 0; k--) {
@@ -76,11 +78,12 @@ class Solution {
         }
         return results;
     }
-
-    /*
-        Second Round
-    */
-    private void combine3(int n, int k, int index, ArrayList<Integer> path, ArrayList<ArrayList<Integer>> result) {
+}
+/*
+    Second Round
+*/
+class Solution3 {
+    private void combine(int n, int k, int index, ArrayList<Integer> path, ArrayList<ArrayList<Integer>> result) {
         if(k == 0) {
             result.add(path);
         }
@@ -88,22 +91,22 @@ class Solution {
             for(int i = index; i <= n; i++) {
                 ArrayList<Integer> p = new ArrayList<Integer>(path);
                 p.add(i);
-                combine3(n, k - 1, i + 1, p, result);
+                combine(n, k - 1, i + 1, p, result);
             }
         }
     }
     
-    public ArrayList<ArrayList<Integer>> combine3(int n, int k) {
+    public ArrayList<ArrayList<Integer>> combine(int n, int k) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
         if(n <= 0 || k > n) return result;
-        combine3(n, k, 1, new ArrayList<Integer>(), result);
+        combine(n, k, 1, new ArrayList<Integer>(), result);
         return result;
     }
 }
 
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        System.out.println(solution.combine3(4, 2));
+        Solution3 solution = new Solution3();
+        System.out.println(solution.combine(4, 2));
     }
 }

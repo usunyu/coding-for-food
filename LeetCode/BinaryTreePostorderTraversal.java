@@ -101,27 +101,58 @@ class Solution3 {
 // mirror of pre-order: curr -> right -> left. Reverse to get the post-order
 class Solution4 {
     public ArrayList<Integer> postorderTraversal(TreeNode root) {
-        ArrayList<Integer> res = new ArrayList<Integer>();
-        if (root == null) return res;
-        Stack<TreeNode> st = new Stack<TreeNode>();
-        while (root != null){
-            st.push(root);
-            res.add(root.val);
-            root = root.right;
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        if(root == null) return result;
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        TreeNode cur = root;
+        while(cur != null) {
+            result.add(cur.val);
+            stack.push(cur);
+            cur = cur.right;
         }
-        while (!st.isEmpty()){
-            TreeNode curr = st.pop();
-            curr = curr.left;
-            while (curr != null){
-                st.push(curr);
-                res.add(curr.val);
-                curr = curr.right;
+        while(!stack.isEmpty()) {
+            cur = stack.pop();
+            cur = cur.left;
+            while(cur != null) {
+                result.add(cur.val);
+                stack.push(cur);
+                cur = cur.right;
             }
         }
-        Collections.reverse(res);
-        return res;
+        Collections.reverse(result);
+        return result;
     }
-}  
+}
+
+// morris + mirror
+class Solution5 {
+    public ArrayList<Integer> postorderTraversal(TreeNode root) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        if(root == null) return result;
+        TreeNode cur = root;
+        while(cur != null) {
+            if(cur.right == null) {
+                result.add(cur.val);
+                cur = cur.left;
+            }
+            else {
+                TreeNode pred = cur.right;
+                while(pred.left != null && pred.left != cur) pred = pred.left;
+                if(pred.left == null) {
+                    pred.left = cur;
+                    result.add(cur.val);
+                    cur = cur.right;
+                }
+                else {
+                    pred.left = null;
+                    cur = cur.left;
+                }
+            }
+        }
+        Collections.reverse(result);
+        return result;
+    }
+}   
 
 class Main {
     public static void main(String[] args) {

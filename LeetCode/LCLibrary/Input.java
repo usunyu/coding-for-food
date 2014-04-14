@@ -288,6 +288,17 @@ public class Input {
 		return matrix;
 	}
 
+	public static int[][] buildMatrix2(int M, int N) {
+		int[][] matrix = new int[M][N];
+		for(int i = 0; i < M; i++)
+			for(int j = 0; j < N; j++) {
+				Random random = new Random();
+				int rint = random.nextInt(10);
+				matrix[i][j] = rint;
+			}
+		return matrix;
+	}
+
 	public static int[][] buildMatrixWithZeros(int M, int N) {
 		int[][] matrix = new int[M][N];
 		int zero = 0;	// allowed 3 zero

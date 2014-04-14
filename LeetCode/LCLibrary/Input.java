@@ -1,6 +1,7 @@
 package LCLibrary;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Input {
 	/*
@@ -268,6 +269,23 @@ public class Input {
 				matrix[i][j] = ++val;
 			}
 		}
+		return matrix;
+	}
+
+	public static int[][] buildMatrixWithZeros(int M, int N) {
+		int[][] matrix = new int[M][N];
+		int zero = 0;	// allowed 3 zero
+		for(int i = 0; i < M; i++)
+			for(int j = 0; j < N; j++) {
+				Random random = new Random();
+				int rint = random.nextInt(10);
+				if(rint == 0) {
+					zero++;
+					if(zero > 3)
+						rint++;
+				}
+				matrix[i][j] = rint;
+			}
 		return matrix;
 	}
 

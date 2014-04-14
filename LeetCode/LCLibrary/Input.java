@@ -174,6 +174,22 @@ public class Input {
         return head;
 	}
 
+	public static ListNode buildExampleListWithArray(int[] array) {
+		ListNode head = null, prev = null;
+        for(int i = 0; i < array.length; i++) {
+            ListNode node = new ListNode(array[i]);
+            if(prev == null) {
+                head = node;
+                prev = node;
+            }
+            else {
+                prev.next = node;
+                prev = node;
+            }
+        }
+        return head;
+	}
+
 	/*
 		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10

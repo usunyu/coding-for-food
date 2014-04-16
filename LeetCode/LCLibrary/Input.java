@@ -331,6 +331,31 @@ public class Input {
         return board;
 	}
 
+	public static char[][] buildRegionBoard() {
+		char[][] board = {
+			{'X', 'O', 'X', 'O', 'O', 'O', 'O'}, 
+			{'X', 'O', 'O', 'O', 'O', 'O', 'O'},
+			{'X', 'O', 'O', 'O', 'O', 'X', 'O'},
+			{'O', 'O', 'O', 'O', 'X', 'O', 'X'},
+			{'O', 'X', 'O', 'O', 'O', 'O', 'O'},
+			{'O', 'O', 'O', 'O', 'O', 'O', 'O'},
+			{'O', 'X', 'O', 'O', 'O', 'O', 'O'},
+		};
+		return board;
+	}
+
+	public static char[][] buildRegionBoard(String[] strs) {
+		if(strs == null || strs.length == 0 || strs[0].length() == 0) return null;
+		int M = strs.length, N = strs[0].length();
+		char[][] board = new char[M][N];
+		for(int i = 0; i < M; i++) {
+			for(int j = 0; j < N; j++) {
+				board[i][j] = strs[i].charAt(j);
+			}
+		}
+		return board;
+	}
+
 	/*
 		   1
 	      / \

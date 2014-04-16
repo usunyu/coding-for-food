@@ -13,15 +13,15 @@ public class MyLinkedList {
 		}
 	}
 
-	public static void initialList(String str, MyLinkedList list) {
+	public void initialList(String str) {
 		for(int i = 0; i < str.length(); i++) {
 			char ch = str.charAt(i);
-			list.add(ch);
+			add(ch);
 		}
 	}
 
-	public static void displayList(MyLinkedList list) {
-		MyNode current = list.head;
+	public void displayList() {
+		MyNode current = head;
 		if(current == null)
 			return;
 		while(current != null) {
@@ -31,6 +31,7 @@ public class MyLinkedList {
 		System.out.println();
 	}
 
+	//------------------------------- Q2.1 -------------------------------//
 	public void removeDuplicate() {
 		MyNode current = head;
 		while(current != null) {
@@ -62,4 +63,5 @@ public class MyLinkedList {
 			current = current.next;
 		}
 	}
+	//--------------------------------------------------------------------//
 }

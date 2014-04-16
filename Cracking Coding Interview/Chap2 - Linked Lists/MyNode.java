@@ -5,4 +5,8 @@ public class MyNode {
 	public MyNode(char ch) {
 		this.ch = ch;
 	}
+
+	public void display() {
+		System.out.println(ch);
+	}
 }

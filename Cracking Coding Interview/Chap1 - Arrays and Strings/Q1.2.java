@@ -3,7 +3,6 @@ Implement a function void reversefchar* str) in Cor C++ which reverses a null-te
 */
 
 class Solution {
-	/*
 	public static String reverse(String str) {
 		StringBuffer sb = new StringBuffer(str);
 		for(int i = 0, j = sb.length() - 1; i < j; i++, j--) {
@@ -20,10 +19,12 @@ class Solution {
 		testStr = reverse(testStr);
 		System.out.println(testStr);
 	}
-	*/
-	/*
-		Second Round
-	*/
+}
+
+/*
+	Second Round
+*/
+class Solution2 {
 	public static String reverse(String str) {
 		StringBuilder sb = new StringBuilder(str);
 		for(int i = 0, j = sb.length() - 1; i < j; i++, j--) {

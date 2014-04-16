@@ -4,7 +4,7 @@ Write an algorithm such that if an element in an MxN matrix is 0, its entire row
 
 import java.util.*;
 import CtCILibrary.AssortedMethods;
-/*
+
 class Index {
 	public int i, j;
 
@@ -13,9 +13,8 @@ class Index {
 		this.j = j;
 	}
 }
-*/
+
 class Solution {
-	/*
 	static int M = 10, N = 8;
 	static int[][] matrix = new int[M][N];
 
@@ -81,10 +80,11 @@ class Solution {
 		setZero();
 		display();
 	}
-	*/
-	/*
-		Second Round
-	*/
+}
+/*
+	Second Round
+*/
+class Solution2 {
 	public static void setZeros(int[][] matrix) {
 		ArrayList<Integer> indexs = new ArrayList<Integer>();
 		for(int i = 0; i < matrix.length; i++) {

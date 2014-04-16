@@ -1,11 +1,10 @@
 /*
-Given two strings,write a method to decide if one is a permutation of the other.
+Given two strings, write a method to decide if one is a permutation of the other.
 */
 
 import java.util.*;
 
 class Solution {
-	/*
 	// test if str1 is permutation of str2
 	public static boolean permutation(String str1, String str2) {
 		int length = str1.length();
@@ -37,10 +36,11 @@ class Solution {
 		else
 			System.out.println("False");
 	}
-	*/
-	/*
-		Second Round
-	*/
+}
+/*
+	Second Round
+*/
+class Solution2 {
 	public static boolean permutation(String s, String t) {
 		if(s.length() != t.length()) return false;
 		// compare hash value

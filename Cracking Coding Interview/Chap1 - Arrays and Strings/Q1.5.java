@@ -7,7 +7,6 @@ become smaller than the original string, your method should return the original 
 import java.util.*;
 
 class Solution {
-	/*
 	public static String compression(String str) {
 		if(str == null || str.isEmpty())
 			return str;
@@ -41,10 +40,11 @@ class Solution {
 		testStr = compression(testStr);
 		System.out.println(testStr);
 	}
-	*/
-	/*
-		Second Round
-	*/
+}
+/*
+	Second Round
+*/
+class Solution2 {
 	public static String compression(String str) {
 		if(str == null || str.length() == 0) return str;
 		StringBuffer sb = new StringBuffer();

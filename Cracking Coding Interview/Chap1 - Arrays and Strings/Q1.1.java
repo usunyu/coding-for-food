@@ -57,9 +57,7 @@ class Solution2 {
 		}
 		return true;
 	}
-}
 
-class Main {
 	public static void main(String[] args) {
 		Solution2 solution = new Solution2();
 		String[] words = {"abcde", "hello", "apple", "kite", "padle"};

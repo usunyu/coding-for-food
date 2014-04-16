@@ -300,6 +300,6 @@ class Main {
     public static void main(String[] args) {
         Solution5 solution = new Solution5();
         ArrayList<ArrayList<String>> result = solution.partition("fff");
-        Output.printStringList(result);
+        Output.printStringLists(result);
     }
 }

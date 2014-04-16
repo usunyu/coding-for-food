@@ -86,7 +86,12 @@ public class Output {
         }
     }
 
-    public static void printStringList(ArrayList<ArrayList<String>> lists) {
+    public static void printStringList(ArrayList<String> list) {
+        for(String str : list)
+            System.out.println(str);
+    }
+
+    public static void printStringLists(ArrayList<ArrayList<String>> lists) {
         for(ArrayList<String> list : lists)
             System.out.println(list);
     }

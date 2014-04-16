@@ -98,4 +98,12 @@ public class Output {
             System.out.println(Arrays.toString(array));
         }
     }
+
+    public static void printMatrix(char[][] matrix) {
+        int n = matrix.length;
+        for(int i = 0; i < n; i++) {
+            char[] array = matrix[i];
+            System.out.println(Arrays.toString(array));
+        }
+    }
 }

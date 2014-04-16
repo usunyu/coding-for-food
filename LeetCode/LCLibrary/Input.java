@@ -38,6 +38,24 @@ public class Input {
         TreeNode node7 = new TreeNode(7); node3.right = node7;
         return node1;
 	}
+
+	/* Symmetric Tree 
+	    1
+	   / \
+	  2   2
+	 / \ / \
+	3  4 4  3
+	*/
+	public static TreeNode buildExampleTree3() {
+		TreeNode root = new TreeNode(1);
+        TreeNode node1 = new TreeNode(2); root.left = node1;
+        TreeNode node2 = new TreeNode(2); root.right = node2;
+        TreeNode node3 = new TreeNode(3); node1.left = node3;
+        TreeNode node4 = new TreeNode(4); node1.right = node4;
+        TreeNode node5 = new TreeNode(4); node2.left = node5;
+        TreeNode node6 = new TreeNode(3); node2.right = node6;
+        return root;
+	}
 	/*
 		   5
 		  / \

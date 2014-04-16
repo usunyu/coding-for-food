@@ -1,11 +1,41 @@
-import java.util.*;
+/*
+Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
 
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
-}
+For example, this binary tree is symmetric:
+
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+But the following is not:
+    1
+   / \
+  2   2
+   \   \
+   3    3
+Note:
+Bonus points if you could solve it both recursively and iteratively.
+
+confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
+
+
+OJ's Binary Tree Serialization:
+The serialization of a binary tree follows a level order traversal, where '#' signifies a path terminator where no node exists below.
+
+Here's an example:
+   1
+  / \
+ 2   3
+    /
+   4
+    \
+     5
+The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
+*/
+
+import java.util.*;
+import LCLibrary.*;
 
 class Solution {
     // iteratively solution
@@ -39,7 +69,9 @@ class Solution {
         if(!leftStack.isEmpty() || !rightStack.isEmpty()) symmetric = false;
         return symmetric;
     }
+}
 
+class Solution2 {
     private boolean isSymmetricRec(TreeNode lnode, TreeNode rnode) {
         if(lnode == null && rnode == null) return true;
         if(lnode == null || rnode == null || lnode.val != rnode.val) return false;
@@ -47,27 +79,29 @@ class Solution {
     }
 
     // recursively solution
-    public boolean isSymmetric2(TreeNode root) {
+    public boolean isSymmetric(TreeNode root) {
         return root == null || isSymmetricRec(root.left, root.right);
+    }
+}
+/*
+    Second Round
+*/
+class Solution3 {
+    private boolean isSymmetric(TreeNode node1, TreeNode node2) {
+        if(node1 == null && node2 == null) return true;
+        if(node1 == null || node2 == null || node1.val != node2.val) return false;
+        return isSymmetric(node1.left, node2.right) && isSymmetric(node1.right, node2.left);
+    }
+    
+    public boolean isSymmetric(TreeNode root) {
+        return root == null || isSymmetric(root.left, root.right);
     }
 }
 
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        TreeNode root = new TreeNode(1);
-        TreeNode t1 = new TreeNode(2);
-        root.left = t1;
-        TreeNode t2 = new TreeNode(2);
-        root.right = t2;
-        TreeNode t3 = new TreeNode(3);
-        t1.left = t3;
-        TreeNode t4 = new TreeNode(4);
-        t1.right = t4;
-        TreeNode t5 = new TreeNode(4);
-        t2.left = t5;
-        TreeNode t6 = new TreeNode(3);
-        t2.right = t6;
-        System.out.println(solution.isSymmetric2(root));
+        Solution2 solution = new Solution2();
+        TreeNode root = Input.buildExampleTree3();
+        System.out.println(solution.isSymmetric(root));
     }
 }

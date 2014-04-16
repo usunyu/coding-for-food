@@ -39,9 +39,9 @@ class Solution {
 		System.out.println("Use My LinkedList:");
 		MyLinkedList myList = new MyLinkedList();
 		myList.initialList(listStr);
-		myList.displayList();
+		myList.displayChList();
 		myList.removeDuplicate();
-		myList.displayList();
+		myList.displayChList();
 	}
 }
 /*
@@ -52,9 +52,9 @@ class Solution2 {
 		String listStr = "ABSNDAASXK";
 		MyLinkedList myList = new MyLinkedList();
 		myList.initialList(listStr);
-		myList.displayList();
+		myList.displayChList();
 		myList.removeDuplicate2();
-		myList.displayList();
+		myList.displayChList();
 	}
 }
 

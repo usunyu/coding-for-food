@@ -1,12 +1,17 @@
 public class MyNode {
 	public char ch;
+	public int val;
 	public MyNode next;
 
 	public MyNode(char ch) {
 		this.ch = ch;
 	}
 
-	public void display() {
-		System.out.println(ch);
+	public MyNode(int val) {
+		this.val = val;
+	}
+
+	public void displayVal() {
+		System.out.println(val);
 	}
 }

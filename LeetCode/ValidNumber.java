@@ -127,6 +127,13 @@ class Solution2 {
     }
 }
 
+// http://n00tc0d3r.blogspot.com/2013/06/valid-number.html?q=Valid+Number
+class Solution3 {
+    public boolean isNumber(String s) {
+        return s.matches("^\\s*[+-]?(\\d+|\\d*\\.\\d+|\\d+\\.\\d*)([eE][+-]?\\d+)?\\s*$");
+    }
+}
+
 class Main {
     public static void main(String[] args) {
         Solution2 solution = new Solution2();

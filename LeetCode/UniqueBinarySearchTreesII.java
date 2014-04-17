@@ -118,9 +118,40 @@ class Solution3 {
     }
 }
 
+// add cache
+class Solution4 {
+    static int N;
+
+    private ArrayList<TreeNode> generateTrees(int left, int right, HashMap<Integer, ArrayList<TreeNode>> cache) {
+        ArrayList<TreeNode> trees = new ArrayList<TreeNode>();
+        if(left > right) trees.add(null);
+        int id = left * N + right;
+        if(cache.containsKey(id)) return cache.get(id);
+        for(int i = left; i <= right; i++) {
+            ArrayList<TreeNode> leftTrees = generateTrees(left, i - 1, cache);
+            ArrayList<TreeNode> rightTrees = generateTrees(i + 1, right, cache);
+            for(TreeNode leftNode : leftTrees) {
+                for(TreeNode rightNode : rightTrees) {
+                    TreeNode root = new TreeNode(i);
+                    root.left = leftNode; root.right = rightNode;
+                    trees.add(root);
+                }
+            }
+        }
+        cache.put(id, trees);
+        return trees;
+    }
+    
+    public ArrayList<TreeNode> generateTrees(int n) {
+        N = n;
+        HashMap<Integer, ArrayList<TreeNode>> cache = new HashMap<Integer, ArrayList<TreeNode>>();
+        return generateTrees(1, n, cache);
+    }
+}
+
 class Main {
     public static void main(String[] args) {
-        Solution2 solution = new Solution2();
+        Solution4 solution = new Solution4();
         System.out.println(solution.generateTrees(10).size());
     }
 }

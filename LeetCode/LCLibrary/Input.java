@@ -375,6 +375,24 @@ public class Input {
 	}
 
 	/*
+	[
+	     [2],
+	    [3,4],
+	   [6,5,7],
+	  [4,1,8,3]
+	]
+	*/
+	public static ArrayList<ArrayList<Integer>> buildTriangle() {
+		ArrayList<ArrayList<Integer>> triangle = new ArrayList<ArrayList<Integer>>();
+        ArrayList<Integer> row1 = new ArrayList<Integer>(); row1.add(2);
+        ArrayList<Integer> row2 = new ArrayList<Integer>(); row2.add(3); row2.add(4);
+        ArrayList<Integer> row3 = new ArrayList<Integer>(); row3.add(6); row3.add(5); row3.add(7);
+        ArrayList<Integer> row4 = new ArrayList<Integer>(); row4.add(4); row4.add(1); row4.add(8); row4.add(3);
+        triangle.add(row1); triangle.add(row2); triangle.add(row3); triangle.add(row4);
+        return triangle;
+	}
+
+	/*
 		   1
 	      / \
 	     /   \

@@ -92,10 +92,59 @@ class Solution {
         return text;
     }
 }
+/*
+    Second Round
+*/
+class Solution2 {
+    public ArrayList<String> fullJustify(String[] words, int L) {
+        ArrayList<String> text = new ArrayList<String>();
+        if(words == null || words.length == 0) return text;
+        ArrayList<String> buffer = new ArrayList<String>();
+        int capacity = L, wordLen = 0, size, single;
+        StringBuilder sb;
+        for(String word : words) {
+            if(capacity >= word.length()) { // word can be placed at current line
+                buffer.add(word);
+                wordLen += word.length();   // count total length of words
+                capacity -= (word.length() + 1);    // left capacity
+            }
+            else {
+                sb = new StringBuilder();   // build space
+                if(buffer.size() == 1) size = (L - wordLen);
+                else size = (L - wordLen) / (buffer.size() - 1);
+                for(int i = 0; i < size; i++) sb.append(' ');
+                if(buffer.size() == 1) single = 0;
+                else single = (L - wordLen) - (buffer.size() - 1) * size;    // space have one more ' '
+                String space = sb.toString(); // space separate words (at least)
+                sb = new StringBuilder();   // build line
+                for(int i = 0; i < buffer.size(); i++) {
+                    sb.append(buffer.get(i));
+                    if(i != buffer.size() - 1 || buffer.size() == 1) sb.append(space);
+                    if(single-- > 0) sb.append(' ');
+                }
+                text.add(sb.toString());
+                buffer.clear(); // clear buffer
+                buffer.add(word);
+                wordLen = word.length();   // reset count
+                capacity = L - wordLen - 1;   // reset capacity
+            }
+        }
+        if(buffer.size() > 0) { // last word
+            sb = new StringBuilder();
+            for(String w : buffer) {
+                sb.append(w);
+                if(sb.length() < L) sb.append(' ');
+            }
+            while(sb.length() < L) sb.append(' ');
+            text.add(sb.toString());
+        }
+        return text;
+    }
+}
 
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution2 solution = new Solution2();
         String[] words = {"Listen","to","many,","speak","to","a","few."};
         Output.printStringList(solution.fullJustify(words, 6));
     }

@@ -31,6 +31,7 @@ class Solution {
 /*
     Second Round
 */
+// top - down
 class Solution2 {
     private int numTrees(int n, HashMap<Integer, Integer> cache) {
         if(n == 0 || n == 1) return 1;
@@ -47,6 +48,21 @@ class Solution2 {
         HashMap<Integer, Integer> cache = new HashMap<Integer, Integer>();
         return numTrees(n, cache);
     }  
+}
+// bottom - up
+class Solution3 {
+    public int numTrees(int n) {
+        if(n <= 0) return 0;
+        int[] count = new int[n + 1];
+        count[0] = 1; count[1] = 1;
+        for(int i = 2; i <= n; i++) {
+            int sum = 0;
+            for(int j = 0; j < i; j++)
+                sum += count[j] * count[i - j - 1];
+            count[i] = sum;
+        }
+        return count[n];
+    }
 }
 
 class Main {

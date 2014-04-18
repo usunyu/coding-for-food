@@ -1,11 +1,30 @@
-import java.util.*;
+/*
+Given a binary tree, determine if it is a valid binary search tree (BST).
 
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
-}
+Assume a BST is defined as follows:
+
+The left subtree of a node contains only nodes with keys less than the node's key.
+The right subtree of a node contains only nodes with keys greater than the node's key.
+Both the left and right subtrees must also be binary search trees.
+confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
+
+
+OJ's Binary Tree Serialization:
+The serialization of a binary tree follows a level order traversal, where '#' signifies a path terminator where no node exists below.
+
+Here's an example:
+   1
+  / \
+ 2   3
+    /
+   4
+    \
+     5
+The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
+*/
+
+import java.util.*;
+import LCLibrary.*;
 
 class Solution {
     public boolean isValidBST(TreeNode root, int min, int max) {
@@ -45,7 +64,9 @@ class Solution {
         }
         return isValidBST;
     }
+}
 
+class Solution2 {
     class IntWraper {
         int val;
         public IntWraper(int val) {
@@ -54,31 +75,45 @@ class Solution {
     }
 
     // inorder traversal
-    public boolean isValidBST2(TreeNode root, IntWraper prev) {
+    public boolean isValidBST(TreeNode root, IntWraper prev) {
         if(root == null) {
             return true;
         }
-        if(isValidBST2(root.left, prev)) {
+        if(isValidBST(root.left, prev)) {
             if(root.val > prev.val) {
                 prev.val = root.val;
-                return isValidBST2(root.right, prev);
+                return isValidBST(root.right, prev);
             }
         }
         return false;
     }
 
-    public boolean isValidBST2(TreeNode root) {
+    public boolean isValidBST(TreeNode root) {
         IntWraper prev = new IntWraper(Integer.MIN_VALUE);
-        return isValidBST2(root, prev);
+        return isValidBST(root, prev);
+    }
+}
+/*
+    Second Round
+*/
+class Solution3 {
+    private boolean isValidBST(TreeNode root, int min, int max) {
+        if(root == null) return true;
+        if(min >= root.val || root.val >= max) return false;
+        if(!isValidBST(root.left, min, root.val)) return false;
+        if(!isValidBST(root.right, root.val, max)) return false;
+        return true;
+    }
+    
+    public boolean isValidBST(TreeNode root) {
+        return isValidBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 }
 
 class Main {
     public static void main(String[] args) {
-        TreeNode t1 = new TreeNode(0);
-        TreeNode t2 = new TreeNode(-1);
-        t1.left = t2;
+        TreeNode root = Input.buildExampleBadBST();
         Solution solution = new Solution();
-        System.out.println(solution.isValidBST2(t1));
+        System.out.println(solution.isValidBST(root));
     }
 }

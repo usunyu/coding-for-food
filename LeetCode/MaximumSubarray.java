@@ -33,10 +33,13 @@ class Solution {
         }
         return max;
     }
-    /*
-        Second Round
-    */
-    public int maxSubArray2(int[] A) {
+}
+/*
+    Second Round
+*/
+// dynamic programming
+class Solution2 {
+    public int maxSubArray(int[] A) {
         if(A == null || A.length == 0) return 0;
         int max = A[0], current = A[0];
         for(int i = 1; i < A.length; i++) {
@@ -45,6 +48,35 @@ class Solution {
             max = Math.max(current, max);
         }
         return max;
+    }
+}
+// divide and conquer
+class Solution3 {
+    private int maxSubArray(int[] A, int left, int right) {
+        int mid = left + (right - left) / 2;
+        // if max is cross
+        int sum = A[mid], max = A[mid];
+        for(int i = mid - 1; i >= left; i--) {
+            sum += A[i];
+            max = Math.max(sum, max);
+        }
+        sum = max;
+        for(int i = mid + 1; i <= right; i++) {
+            sum += A[i];
+            max = Math.max(sum, max);
+        }
+        // max is in left
+        if(left <= mid - 1)
+            max = Math.max(maxSubArray(A, left, mid - 1), max);
+        // max is in right
+        if(mid + 1 <= right)
+            max = Math.max(maxSubArray(A, mid + 1, right), max);
+        return max;
+    }
+    
+    public int maxSubArray(int[] A) {
+        if(A == null || A.length == 0) return 0;
+        return maxSubArray(A, 0, A.length - 1);
     }
 }
 

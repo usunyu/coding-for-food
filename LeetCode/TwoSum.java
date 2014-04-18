@@ -1,6 +1,42 @@
+/*
+Given an array of integers, find two numbers such that they add up to a specific target number.
+
+The function twoSum should return indices of the two numbers such that they add up to the target, 
+where index1 must be less than index2. Please note that your returned answers (both index1 and index2) 
+are not zero-based.
+
+You may assume that each input would have exactly one solution.
+
+Input: numbers={2, 7, 11, 15}, target=9
+Output: index1=1, index2=2
+*/
+
 import java.util.*;
 
 class Solution {
+    // time complexity: O(N)
+    // space complexity: O(N)
+    public int[] twoSum(int[] numbers, int target) {
+        // Note: The Solution object is instantiated only once and is reused by each test case.
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        int[] result = new int[2];
+        for(int i = 0; i < numbers.length; i++) {
+            int value = numbers[i];
+            int need = target - value;
+            if(map.containsKey(need)) {
+                result[0] = map.get(need) + 1;
+                result[1] = i + 1;
+                break;
+            }
+            if(!map.containsKey(value)) {
+                map.put(value, i);
+            }
+        }
+        return result;
+    }
+}
+
+class Solution2 {
     public void quickSort(int[] numbers) {
         quickSort(numbers, 0, numbers.length - 1);
     }
@@ -65,32 +101,9 @@ class Solution {
         return result;
     }
 
-    // time complexity: O(N^2)
-    // space complexity: O(1)
-    public int[] twoSum3(int[] numbers, int target) {
-        // Note: The Solution object is instantiated only once and is reused by each test case.
-        int[] result = new int[2];
-        boolean find = false;
-        for(int i = 0; i < numbers.length; i++) {
-            for(int j = i + 1; j < numbers.length; j++) {
-                int sum = numbers[i] + numbers[j];
-                if(sum == target) {
-                    result[0] = i + 1;
-                    result[1] = j + 1;
-                    find = true;
-                    break;
-                }
-            }
-            if(find) {
-                break;
-            }
-        }
-        return result;
-    }
-    
     // time complexity: O(NlogN)
     // space complexity: O(N)
-    public int[] twoSum2(int[] numbers, int target) {
+    public int[] twoSum(int[] numbers, int target) {
         // Note: The Solution object is instantiated only once and is reused by each test case.
         int[] origin = numbers.clone();
         quickSort(numbers);
@@ -117,26 +130,50 @@ class Solution {
         }
         return result;
     }
+}
 
-    // time complexity: O(N)
-    // space complexity: O(N)
+class Solution3 {
+    // time complexity: O(N^2)
+    // space complexity: O(1)
     public int[] twoSum(int[] numbers, int target) {
         // Note: The Solution object is instantiated only once and is reused by each test case.
-        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
         int[] result = new int[2];
+        boolean find = false;
         for(int i = 0; i < numbers.length; i++) {
-            int value = numbers[i];
-            int need = target - value;
-            if(map.containsKey(need)) {
-                result[0] = map.get(need) + 1;
-                result[1] = i + 1;
-                break;
+            for(int j = i + 1; j < numbers.length; j++) {
+                int sum = numbers[i] + numbers[j];
+                if(sum == target) {
+                    result[0] = i + 1;
+                    result[1] = j + 1;
+                    find = true;
+                    break;
+                }
             }
-            if(!map.containsKey(value)) {
-                map.put(value, i);
+            if(find) {
+                break;
             }
         }
         return result;
+    }
+}
+/*
+    Second Round
+*/
+class Solution4 {
+    public int[] twoSum(int[] numbers, int target) {
+        int[] ret = new int[2];
+        if(numbers == null || numbers.length < 2) return ret;
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for(int i = 0; i < numbers.length; i++) {
+            int need = target - numbers[i];
+            if(map.containsKey(need)) {
+                ret[0] = map.get(need) + 1;
+                ret[1] = i + 1;
+                break;
+            }
+            else map.put(numbers[i], i);
+        }
+        return ret;
     }
 }
 
@@ -144,8 +181,10 @@ class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         int[] numbers = {11, 15, 2, 7};
-        int[] result = solution.twoSum(numbers, 9);
-        System.out.println("index1=" + result[0] + ", index2=" + result[1]);
+        int target = 9;
+        System.out.println("Input: numbers=" + Arrays.toString(numbers) + ", target=" + target);
+        int[] result = solution.twoSum(numbers, target);
+        System.out.println("Output: index1=" + result[0] + ", index2=" + result[1]);
     }
 }
 

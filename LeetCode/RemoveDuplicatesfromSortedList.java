@@ -1,11 +1,12 @@
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) {
-        val = x;
-        next = null;
-    }
-}
+/*
+Given a sorted linked list, delete all duplicates such that each element appear only once.
+
+For example,
+Given 1->1->2, return 1->2.
+Given 1->1->2->3->3, return 1->2->3.
+*/
+
+import LCLibrary.*;
 
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
@@ -25,33 +26,30 @@ class Solution {
         return head;
     }
 }
+/*
+    Second Round
+*/
+class Solution2 {
+    public ListNode deleteDuplicates(ListNode head) {
+        if(head == null) return null;
+        ListNode prev = null, cur = head;
+        while(cur != null) {
+            ListNode tmp = cur.next;
+            if(prev == null || prev.val != cur.val) {
+                cur.next = null;
+                if(prev != null) prev.next = cur;
+                prev = cur;
+            }
+            cur = tmp;
+        }
+        return head;
+    }
+}
 
 class Main {
-    public static void print(ListNode head) {
-        while(head != null) {
-            System.out.print(head.val + " ");
-            head = head.next;
-        }
-        System.out.println();
-    }
-
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        ListNode head = new ListNode(1);
-        ListNode node1 = new ListNode(2);
-        head.next = node1;
-        ListNode node2 = new ListNode(2);
-        node1.next = node2;
-        ListNode node3 = new ListNode(3);
-        node2.next = node3;
-        ListNode node4 = new ListNode(3);
-        node3.next = node4;
-        ListNode node5 = new ListNode(4);
-        node4.next = node5;
-        ListNode node6 = new ListNode(5);
-        node5.next = node6;
-        ListNode node7 = new ListNode(5);
-        node6.next = node7;
-        print(solution.deleteDuplicates(head));
+        Solution2 solution = new Solution2();
+        ListNode head = Input.buildExampleListWithDup();
+        Output.printList(solution.deleteDuplicates(head));
     }
 }

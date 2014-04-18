@@ -15,6 +15,7 @@ Note: Recursive solution is trivial, could you do it iteratively?
 
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.Collections;
 import LCLibrary.TreeNode;
 import LCLibrary.*;
 
@@ -32,9 +33,11 @@ class Solution {
         postorderTraversal(root, traversal);
         return traversal;
     }
+}
 
+class Solution2 {
     // iteratively
-    public ArrayList<Integer> postorderTraversal2(TreeNode root) {
+    public ArrayList<Integer> postorderTraversal(TreeNode root) {
         ArrayList<Integer> traversal = new ArrayList<Integer>();
         TreeNode pointer = root;
         Stack<TreeNode> stack = new Stack<TreeNode>();
@@ -59,11 +62,13 @@ class Solution {
         }
         return traversal;
     }
+}
 
-    /*
-        Second Round
-    */
-    public ArrayList<Integer> postorderTraversal3(TreeNode root) {
+/*
+    Second Round
+*/
+class Solution3 {
+    public ArrayList<Integer> postorderTraversal(TreeNode root) {
         ArrayList<Integer> result = new ArrayList<Integer>();
         if(root == null) return result;
         TreeNode ptr = root, last = null;
@@ -91,10 +96,68 @@ class Solution {
     }
 }
 
+// post-order: left -> right -> curr
+// pre-order: curr -> left -> right
+// mirror of pre-order: curr -> right -> left. Reverse to get the post-order
+class Solution4 {
+    public ArrayList<Integer> postorderTraversal(TreeNode root) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        if(root == null) return result;
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        TreeNode cur = root;
+        while(cur != null) {
+            result.add(cur.val);
+            stack.push(cur);
+            cur = cur.right;
+        }
+        while(!stack.isEmpty()) {
+            cur = stack.pop();
+            cur = cur.left;
+            while(cur != null) {
+                result.add(cur.val);
+                stack.push(cur);
+                cur = cur.right;
+            }
+        }
+        Collections.reverse(result);
+        return result;
+    }
+}
+
+// morris + mirror
+class Solution5 {
+    public ArrayList<Integer> postorderTraversal(TreeNode root) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        if(root == null) return result;
+        TreeNode cur = root;
+        while(cur != null) {
+            if(cur.right == null) {
+                result.add(cur.val);
+                cur = cur.left;
+            }
+            else {
+                TreeNode pred = cur.right;
+                while(pred.left != null && pred.left != cur) pred = pred.left;
+                if(pred.left == null) {
+                    pred.left = cur;
+                    result.add(cur.val);
+                    cur = cur.right;
+                }
+                else {
+                    pred.left = null;
+                    cur = cur.left;
+                }
+            }
+        }
+        Collections.reverse(result);
+        return result;
+    }
+}   
+
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution4 solution = new Solution4();
         TreeNode root = Input.buildExampleTree();
-        System.out.println(solution.postorderTraversal3(root));
+        System.out.println(solution.postorderTraversal(root));
     }
 }

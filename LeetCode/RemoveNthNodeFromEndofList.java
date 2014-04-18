@@ -1,13 +1,18 @@
-import java.util.*;
+/*
+Given a linked list, remove the nth node from the end of list and return its head.
 
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) {
-        val = x;
-        next = null;
-    }
-}
+For example,
+
+   Given linked list: 1->2->3->4->5, and n = 2.
+
+   After removing the second node from the end, the linked list becomes 1->2->3->5.
+Note:
+Given n will always be valid.
+Try to do this in one pass.
+*/
+
+import java.util.*;
+import LCLibrary.*;
 
 class Solution {
     // time complexity : O(N)
@@ -34,10 +39,11 @@ class Solution {
         }
         return head;
     }
-
+}
+class Solution2 {
     // time complexity : O(N)
     // space complexity : O(1)
-    public ListNode removeNthFromEnd2(ListNode head, int n) {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
         // IMPORTANT: Please reset any member data you declared, as
         // the same Solution instance will be reused for each test case.
         ListNode fast = head, slow = head;
@@ -57,36 +63,33 @@ class Solution {
         return head;
     }
 }
-
-class Main {
-    public static ListNode constructList() {
-        ListNode head = null, prev = null;
-        for(int i = 0; i < 5; i++) {
-            ListNode node = new ListNode(i + 1);
-            if(i == 0) {
-                head = node;
-            }
-            else {
-                prev.next = node;
-            }
-            prev = node;
+/*
+    Second Round
+*/
+class Solution3 {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        if(head == null) return null;
+        ListNode fast = head, slow = head, prev = null;
+        for(int i = 0; i < n && fast != null; i++) {
+            fast = fast.next;
         }
+        while(fast != null) {
+            fast = fast.next;
+            prev = slow;
+            slow = slow.next;
+        }
+        if(prev == null)
+            head = slow.next;
+        else
+            prev.next = slow.next;
         return head;
     }
+}
 
-    public static void print(ListNode head) {
-        ListNode current = head;
-        while(current != null) {
-            System.out.print(current.val);
-            current = current.next;
-        }
-        System.out.println();
-    }
-
+class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        ListNode head = constructList();
-        head = solution.removeNthFromEnd(head, 2);
-        print(head);
+        Solution3 solution = new Solution3();
+        ListNode head = Input.buildExampleList5();
+        Output.printList(solution.removeNthFromEnd(head, 2));
     }
 }

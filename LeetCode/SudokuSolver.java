@@ -1,4 +1,13 @@
+/*
+Write a program to solve a Sudoku puzzle by filling the empty cells.
+
+Empty cells are indicated by the character '.'.
+
+You may assume that there will be only one unique solution.
+*/
+
 import java.util.*;
+import LCLibrary.*;
 
 class Position {
     int x;
@@ -128,31 +137,130 @@ class Solution {
     }
 }
 
-class Main {
-    public static void print(char[][] board) {
-        for(int i = 0; i < 9; i++) {
-            for(int j = 0; j < 9; j++) {
-                System.out.print(board[i][j] + " ");
-            }
-            System.out.println();
+/*
+    Second Round
+*/
+class Solution2 {
+    int N;
+    
+    private void checkRow(char[][] board, int row, boolean[] occurred) {
+        for(int i = 0; i < N; i++) {
+            if(board[row][i] == '.') continue;
+            int index = board[row][i] - '0' - 1;
+            occurred[index] = true;
         }
     }
+    
+    
+    private void checkCol(char[][] board, int col, boolean[] occurred) {
+        for(int i = 0; i < N; i++) {
+            if(board[i][col] == '.') continue;
+            int index = board[i][col] - '0' - 1;
+            occurred[index] = true;
+        }
+    }
+    
+    private void checkNine(char[][] board, int i, int j, boolean[] occurred) {
+        int length = N / 3;
+        int si = (i / length) * length, sj = (j / length) * length;
+        for(int k = si; k < si + length; k++) {
+            for(int l = sj; l < sj + length; l++) {
+                if(board[k][l] == '.') continue;
+                int index = board[k][l] - '0' - 1;
+                occurred[index] = true;
+            }
+        }
+    }
+    
+    private boolean[] checkAll(char[][] board, int i, int j) {
+        boolean[] occurred = new boolean[N];
+        checkRow(board, i, occurred);
+        checkCol(board, j, occurred);
+        checkNine(board, i, j, occurred);
+        return occurred;
+    }
+    
+    // return -1 if no certain number
+    private int getCertainNumber(char[][] board, int i, int j) {
+        boolean[] occurred = checkAll(board, i, j);
+        int number = -1;
+        for(int k = 0; k < N; k++) {
+            if(occurred[k]) continue;
+            else if(number == -1) number = k + 1;
+            else {
+                number = -1;
+                break;
+            }
+        }
+        return number;
+    }
+    
+    // return valid number grater or equal to bound, or return -1
+    private int getValid(char[][] board, int i, int j, int bound) {
+        boolean[] occurred = checkAll(board, i, j);
+        int number = -1;
+        for(int k = bound - 1; k < N; k++) {
+            if(!occurred[k]) {
+                number = k + 1;
+                break;
+            }
+        }
+        return number;
+    }
+    
+    public void solveSudoku(char[][] board) {
+        N = board.length;
+        // try to fill all certain number
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < N; j++) {
+                if(board[i][j] == '.') {
+                    int num = getCertainNumber(board, i, j);
+                    if(num != -1) {
+                        board[i][j] = (char)(num + '0');
+                        i = 0; j = 0;   // restart to fill more number
+                    }
+                }
+            }
+        }
+        // calculate, back tracking
+        Stack<Integer> stack = new Stack<Integer>();    // for back tracking
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < N; j++) {
+                if(board[i][j] == '.') {
+                    int num = getValid(board, i, j, 1);
+                    if(num != -1) {
+                        int id = i * N + j;
+                        stack.push(id); // for next use
+                        board[i][j] = (char)(num + '0');
+                    }
+                    else {  // back tracking
+                        while(!stack.isEmpty()) {
+                            int id = stack.peek();
+                            i = id / N; j = id % N;
+                            int bound = board[i][j] - '0' + 1;
+                            num = getValid(board, i, j, bound);
+                            if(num != -1) {
+                                board[i][j] = (char)(num + '0');
+                                break;
+                            }
+                            else {
+                                board[i][j] = '.';
+                                stack.pop();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
+class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        char[][] board = {
-            {'.', '.', '9', '7', '4', '8', '.', '.', '.'},
-            {'7', '.', '.', '.', '.', '.', '.', '.', '.'},
-            {'.', '2', '.', '1', '.', '9', '.', '.', '.'},
-            {'.', '.', '7', '.', '.', '.', '2', '4', '.'},
-            {'.', '6', '4', '.', '1', '.', '5', '9', '.'},
-            {'.', '9', '8', '.', '.', '.', '3', '.', '.'},
-            {'.', '.', '.', '8', '.', '3', '.', '2', '.'},
-            {'.', '.', '.', '.', '.', '.', '.', '.', '6'},
-            {'.', '.', '.', '2', '7', '5', '9', '.', '.'}
-        };
+        Solution2 solution = new Solution2();
+        char[][] board = Input.buildSudokuBoard();
         solution.solveSudoku(board);
-        print(board);
+        Output.printMatrix(board);
     }
 }
 

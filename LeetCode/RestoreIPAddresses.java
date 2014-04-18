@@ -1,3 +1,12 @@
+/*
+Given a string containing only digits, restore it by returning all possible valid IP address combinations.
+
+For example:
+Given "25525511135",
+
+return ["255.255.11.135", "255.255.111.35"]. (Order does not matter)
+*/
+
 import java.util.*;
 
 class IPAddress {
@@ -74,11 +83,50 @@ class Solution {
         return ipList;
     }
 }
+/*
+    Second Round
+*/
+class Solution2 {
+    private boolean isValidIP(String s) {
+        if(s.length() >= 2 && s.charAt(0) == '0' || s.length() >= 4) return false;
+        int ip = Integer.parseInt(s);
+        if(ip <= 255 && ip >= 0) return true;
+        return false;
+    }
+    
+    private void restoreIpAddresses(String s, int field, String ip, ArrayList<String> ips) {
+        if(s == null || s.length() == 0) return;
+        if(field == 3) {
+            if(isValidIP(s)) {
+                ip = ip + "." + s;
+                ips.add(ip);
+            }
+            return;
+        }
+        for(int i = 1; i <= 4 && i <= s.length(); i++) {
+            String part = s.substring(0, i);
+            if(isValidIP(part)) {
+                String prev = ip;
+                if(prev == null)
+                    prev = part;
+                else
+                    prev = prev + "." + part;
+                restoreIpAddresses(s.substring(i), field + 1, prev, ips);
+            }
+        }
+    }
+    
+    public ArrayList<String> restoreIpAddresses(String s) {
+        ArrayList<String> ips = new ArrayList<String>();
+        restoreIpAddresses(s, 0, null, ips);
+        return ips;
+    }
+}
 
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        ArrayList<String> ipList = solution.restoreIpAddresses("010010");
+        Solution2 solution = new Solution2();
+        ArrayList<String> ipList = solution.restoreIpAddresses("0279245587303");
         for(String ip : ipList) {
             System.out.println(ip);
         }

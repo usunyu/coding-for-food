@@ -1,3 +1,23 @@
+/*
+Given a 2D board and a word, find if the word exists in the grid.
+
+The word can be constructed from letters of sequentially adjacent cell, 
+where "adjacent" cells are those horizontally or vertically neighboring. 
+The same letter cell may not be used more than once.
+
+For example,
+Given board =
+
+[
+  ["ABCE"],
+  ["SFCS"],
+  ["ADEE"]
+]
+word = "ABCCED", -> returns true,
+word = "SEE", -> returns true,
+word = "ABCB", -> returns false.
+*/
+
 import java.util.*;
 
 class CharLocation {
@@ -137,8 +157,10 @@ class Solution {
         }
         return false;
     }
+}
 
-    public boolean exist2(char[][] board, String word) {
+class Solution2 {
+    public boolean exist(char[][] board, String word) {
         HashMap<Character, ArrayList<Integer>> allNodes = preprocess(board);
         if (!allNodes.containsKey(word.charAt(0)))
             return false;
@@ -194,16 +216,53 @@ class Solution {
         return ((max - min) == m || (max - min == 1 && (max % m) != 0));
     }
 }
+/*
+    Second Round
+*/
+class Solution3 {
+    static int M, N;
+    
+    private boolean exist(char[][] board, String word, int index, int i, int j) {
+        if(index == word.length()) return true;
+        if(i < 0 || i >= M || j < 0 || j >= N || board[i][j] != word.charAt(index)) return false;
+        char tmp = board[i][j];
+        board[i][j] = '*';  // make sure we not use this char again
+
+        // check up
+        if(exist(board, word, index + 1, i - 1, j)) return true;
+        // check down
+        if(exist(board, word, index + 1, i + 1, j)) return true;
+        // check right
+        if(exist(board, word, index + 1, i, j + 1)) return true;
+        // check left
+        if(exist(board, word, index + 1, i, j - 1)) return true;
+
+        board[i][j] = tmp;  // backtracking
+        return false;
+    }
+    
+    public boolean exist(char[][] board, String word) {
+        if(board.length == 0 || board[0].length == 0 || word == null || word.length() == 0) return false;
+        M = board.length; N = board[0].length;
+        char first = word.charAt(0);
+        for(int i = 0; i < M; i++) {
+            for(int j = 0; j < N; j++) {
+                if(exist(board, word, 0, i, j))
+                    return true;
+            }
+        }
+        return false;
+    }
+}
 
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution3 solution = new Solution3();
         char[][] board = {{'A','B','C','E'},{'S','F','E','S'},{'A','D','E','E'}};
-        long begintime = System.currentTimeMillis();
+        long begin = System.currentTimeMillis();
         System.out.println(solution.exist(board, "ABCESEEEFS"));
-        long endtime = System.currentTimeMillis();
-        long costTime = (endtime - begintime);
-        System.out.println("cost: " + costTime + " ms");
+        long end = System.currentTimeMillis();
+        System.out.println("Runtime: " + (end - begin) + " ms");
     }
 }
 

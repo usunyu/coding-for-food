@@ -126,38 +126,29 @@ class Solution2 {
 class Solution3 {
     public int trap(int[] A) {
         if(A == null || A.length == 0) return 0;
-        // skip zeros
         int left = 0;
-        while(left < A.length && A[left] == 0) left++;
-        // traversal array
-        int current = left + 1;
-        int temp = 0, sum = 0;
-        while(current < A.length) {
-            if(A[current] < A[left]) 
-                temp += A[left] - A[current];
-            else {
-                sum += temp;
-                left = current;
-                temp = 0;
+        while(left < A.length && A[left] == 0) left++;  // skip zeros
+        int current = left + 1, tmp = 0, sum = 0;
+        while(current < A.length) { // from left to right
+            if(A[current] >= A[left]) {
+                sum += tmp; // add temp
+                tmp = 0;    // reset
+                left = current; // move left
             }
+            else tmp += A[left] - A[current];
             current++;
         }
-        // reverse traversal array
-        if(left < A.length) {
-            int right = A.length - 1;
-            while(right >= left && A[right] == 0) right--;
-            current = right - 1;
-            temp = 0;
-            while(current >= left) {
-                if(A[current] < A[right]) 
-                    temp += A[right] - A[current];
-                else {
-                    sum += temp;
-                    right = current;
-                    temp = 0;
-                }
-                current--;
+        int right = A.length - 1;
+        while(right >= left && A[right] == 0) right--;  // skip zeros
+        current = right - 1; tmp = 0;
+        while(current >= left) { // from right to left
+            if(A[current] >= A[right]) {
+                sum += tmp; // add temp
+                tmp = 0;    // reset
+                right = current;    // move right
             }
+            else tmp += A[right] - A[current];
+            current--;
         }
         return sum;
     }

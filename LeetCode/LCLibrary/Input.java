@@ -2,6 +2,7 @@ package LCLibrary;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.HashSet;
 
 public class Input {
 	/*
@@ -372,6 +373,13 @@ public class Input {
 			}
 		}
 		return board;
+	}
+
+	public static HashSet<String> buildDictionary(String[] words) {
+		HashSet<String> dict = new HashSet<String>();
+		for(String word : words)
+			dict.add(word);
+		return dict;
 	}
 
 	/*

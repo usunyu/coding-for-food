@@ -1,6 +1,8 @@
 package LCLibrary;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.HashSet;
 
 public class Input {
 	/*
@@ -36,6 +38,24 @@ public class Input {
         TreeNode node6 = new TreeNode(6); node3.left = node6;
         TreeNode node7 = new TreeNode(7); node3.right = node7;
         return node1;
+	}
+
+	/* Symmetric Tree 
+	    1
+	   / \
+	  2   2
+	 / \ / \
+	3  4 4  3
+	*/
+	public static TreeNode buildExampleTree3() {
+		TreeNode root = new TreeNode(1);
+        TreeNode node1 = new TreeNode(2); root.left = node1;
+        TreeNode node2 = new TreeNode(2); root.right = node2;
+        TreeNode node3 = new TreeNode(3); node1.left = node3;
+        TreeNode node4 = new TreeNode(4); node1.right = node4;
+        TreeNode node5 = new TreeNode(4); node2.left = node5;
+        TreeNode node6 = new TreeNode(3); node2.right = node6;
+        return root;
 	}
 	/*
 		   5
@@ -159,6 +179,37 @@ public class Input {
 	}
 
 	/*
+		1->2->2->3->3->4->5->5
+	*/
+	public static ListNode buildExampleListWithDup() {
+		ListNode head = new ListNode(1);
+        ListNode node1 = new ListNode(2); head.next = node1;
+        ListNode node2 = new ListNode(2); node1.next = node2;
+        ListNode node3 = new ListNode(3); node2.next = node3;
+        ListNode node4 = new ListNode(3); node3.next = node4;
+        ListNode node5 = new ListNode(4); node4.next = node5;
+        ListNode node6 = new ListNode(5); node5.next = node6;
+        ListNode node7 = new ListNode(5); node6.next = node7;
+        return head;
+	}
+
+	public static ListNode buildExampleListWithArray(int[] array) {
+		ListNode head = null, prev = null;
+        for(int i = 0; i < array.length; i++) {
+            ListNode node = new ListNode(array[i]);
+            if(prev == null) {
+                head = node;
+                prev = node;
+            }
+            else {
+                prev.next = node;
+                prev = node;
+            }
+        }
+        return head;
+	}
+
+	/*
 		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 		1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
@@ -243,6 +294,110 @@ public class Input {
             prev = node;
         }
         return head;
+	}
+
+	public static int[][] buildMatrix(int N) {
+		int[][] matrix = new int[N][N];
+		int val = 0;
+		for(int i = 0; i < N; i++) {
+			for(int j = 0; j < N; j++) {
+				matrix[i][j] = ++val;
+			}
+		}
+		return matrix;
+	}
+
+	public static int[][] buildMatrix2(int M, int N) {
+		int[][] matrix = new int[M][N];
+		for(int i = 0; i < M; i++)
+			for(int j = 0; j < N; j++) {
+				Random random = new Random();
+				int rint = random.nextInt(10);
+				matrix[i][j] = rint;
+			}
+		return matrix;
+	}
+
+	public static int[][] buildMatrixWithZeros(int M, int N) {
+		int[][] matrix = new int[M][N];
+		int zero = 0;	// allowed 3 zero
+		for(int i = 0; i < M; i++)
+			for(int j = 0; j < N; j++) {
+				Random random = new Random();
+				int rint = random.nextInt(10);
+				if(rint == 0) {
+					zero++;
+					if(zero > 3)
+						rint++;
+				}
+				matrix[i][j] = rint;
+			}
+		return matrix;
+	}
+
+	public static char[][] buildSudokuBoard() {
+		char[][] board = {
+            {'.', '.', '9', '7', '4', '8', '.', '.', '.'},
+            {'7', '.', '.', '.', '.', '.', '.', '.', '.'},
+            {'.', '2', '.', '1', '.', '9', '.', '.', '.'},
+            {'.', '.', '7', '.', '.', '.', '2', '4', '.'},
+            {'.', '6', '4', '.', '1', '.', '5', '9', '.'},
+            {'.', '9', '8', '.', '.', '.', '3', '.', '.'},
+            {'.', '.', '.', '8', '.', '3', '.', '2', '.'},
+            {'.', '.', '.', '.', '.', '.', '.', '.', '6'},
+            {'.', '.', '.', '2', '7', '5', '9', '.', '.'}
+        };
+        return board;
+	}
+
+	public static char[][] buildRegionBoard() {
+		char[][] board = {
+			{'X', 'O', 'X', 'O', 'O', 'O', 'O'}, 
+			{'X', 'O', 'O', 'O', 'O', 'O', 'O'},
+			{'X', 'O', 'O', 'O', 'O', 'X', 'O'},
+			{'O', 'O', 'O', 'O', 'X', 'O', 'X'},
+			{'O', 'X', 'O', 'O', 'O', 'O', 'O'},
+			{'O', 'O', 'O', 'O', 'O', 'O', 'O'},
+			{'O', 'X', 'O', 'O', 'O', 'O', 'O'},
+		};
+		return board;
+	}
+
+	public static char[][] buildRegionBoard(String[] strs) {
+		if(strs == null || strs.length == 0 || strs[0].length() == 0) return null;
+		int M = strs.length, N = strs[0].length();
+		char[][] board = new char[M][N];
+		for(int i = 0; i < M; i++) {
+			for(int j = 0; j < N; j++) {
+				board[i][j] = strs[i].charAt(j);
+			}
+		}
+		return board;
+	}
+
+	public static HashSet<String> buildDictionary(String[] words) {
+		HashSet<String> dict = new HashSet<String>();
+		for(String word : words)
+			dict.add(word);
+		return dict;
+	}
+
+	/*
+	[
+	     [2],
+	    [3,4],
+	   [6,5,7],
+	  [4,1,8,3]
+	]
+	*/
+	public static ArrayList<ArrayList<Integer>> buildTriangle() {
+		ArrayList<ArrayList<Integer>> triangle = new ArrayList<ArrayList<Integer>>();
+        ArrayList<Integer> row1 = new ArrayList<Integer>(); row1.add(2);
+        ArrayList<Integer> row2 = new ArrayList<Integer>(); row2.add(3); row2.add(4);
+        ArrayList<Integer> row3 = new ArrayList<Integer>(); row3.add(6); row3.add(5); row3.add(7);
+        ArrayList<Integer> row4 = new ArrayList<Integer>(); row4.add(4); row4.add(1); row4.add(8); row4.add(3);
+        triangle.add(row1); triangle.add(row2); triangle.add(row3); triangle.add(row4);
+        return triangle;
 	}
 
 	/*

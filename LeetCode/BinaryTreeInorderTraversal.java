@@ -47,9 +47,11 @@ class Solution {
         inorderTraversal(root, result);
         return result;
     }
+}
 
+class Solution2 {
     // iterative solution
-    public ArrayList<Integer> inorderTraversal2(TreeNode root) {
+    public ArrayList<Integer> inorderTraversal(TreeNode root) {
         ArrayList<Integer> result = new ArrayList<Integer>();
         Stack<TreeNode> stack = new Stack<TreeNode>();
         TreeNode node = root;
@@ -66,11 +68,13 @@ class Solution {
         }
         return result;
     }
+}
 
-    /*
-        Second Round
-    */
-    public ArrayList<Integer> inorderTraversal3(TreeNode root) {
+/*
+    Second Round
+*/
+class Solution3 {
+    public ArrayList<Integer> inorderTraversal(TreeNode root) {
         ArrayList<Integer> result = new ArrayList<Integer>();
         if(root == null) return result;
         TreeNode ptr = root;
@@ -86,6 +90,59 @@ class Solution {
                 TreeNode node = stack.pop();
                 result.add(node.val);
                 ptr = node.right;
+            }
+        }
+        return result;
+    }
+}
+
+class Solution4 {
+    public ArrayList<Integer> inorderTraversal(TreeNode root) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        if(root == null) return result;
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        TreeNode cur = root;
+        while(cur != null) {
+            stack.push(cur);
+            cur = cur.left;
+        }
+        while(!stack.isEmpty()) {
+            cur = stack.pop();
+            result.add(cur.val);
+            cur = cur.right;
+            while(cur != null) {
+                stack.push(cur);
+                cur = cur.left;
+            }
+        }
+        return result;
+    }
+}
+
+// Morris Solution
+// O(1) space
+class Solution5 {
+    public ArrayList<Integer> inorderTraversal(TreeNode root) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        if(root == null) return result;
+        TreeNode cur = root;
+        while(cur != null) {
+            if(cur.left == null) {
+                result.add(cur.val);
+                cur = cur.right;
+            }
+            else {
+                TreeNode pred = cur.left;
+                while(pred.right != null && pred.right != cur) pred = pred.right;
+                if(pred.right == cur) {
+                    pred.right = null;
+                    result.add(cur.val);
+                    cur = cur.right;
+                }
+                else {
+                    pred.right = cur;
+                    cur = cur.left;
+                }
             }
         }
         return result;

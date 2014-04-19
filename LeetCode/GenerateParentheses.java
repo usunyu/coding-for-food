@@ -1,3 +1,11 @@
+/*
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+For example, given n = 3, a solution set is:
+
+"((()))", "(()())", "(())()", "()(())", "()()()"
+*/
+
 import java.util.*;
 
 class Solution {
@@ -31,8 +39,10 @@ class Solution {
         }
         return parenthesisList;
     }
+}
 
-    public void generateParenthesis2(int leftRemain, int rightRemain, String parenthesis, ArrayList<String> parenthesisList) {
+class Solution2 {
+    public void generateParenthesis(int leftRemain, int rightRemain, String parenthesis, ArrayList<String> parenthesisList) {
     if(leftRemain < 0 || rightRemain < 0) {
         return;
     }
@@ -43,56 +53,59 @@ class Solution {
         if(leftRemain < rightRemain) {  // we can insert left and right parenthesis
             String temp = parenthesis;
             temp += '(';
-            generateParenthesis2(leftRemain - 1, rightRemain, temp, parenthesisList);
+            generateParenthesis(leftRemain - 1, rightRemain, temp, parenthesisList);
             temp = parenthesis;
             temp += ')';
-            generateParenthesis2(leftRemain, rightRemain - 1, temp, parenthesisList);
+            generateParenthesis(leftRemain, rightRemain - 1, temp, parenthesisList);
         }
         else if(leftRemain == rightRemain) {    // we can only insert left parenthesis
             parenthesis += '(';
-            generateParenthesis2(leftRemain - 1, rightRemain, parenthesis, parenthesisList);
+            generateParenthesis(leftRemain - 1, rightRemain, parenthesis, parenthesisList);
         }
         else {  // we can only insert right parenthesis
             parenthesis += ')';
-            generateParenthesis2(leftRemain, rightRemain - 1, parenthesis, parenthesisList);
+            generateParenthesis(leftRemain, rightRemain - 1, parenthesis, parenthesisList);
         }
     }
 
-    public ArrayList<String> generateParenthesis2(int n) {
+    public ArrayList<String> generateParenthesis(int n) {
         ArrayList<String> parenthesisList = new ArrayList<String>();
-        generateParenthesis2(n, n, "", parenthesisList);
+        generateParenthesis(n, n, "", parenthesisList);
         return parenthesisList;
     }
-    /*
-        Second Round
-    */
-    private void generateParenthesis3(int left, int right, StringBuilder path, ArrayList<String> result) {
-        if(left < 0 || right < 0) return;
+}
+
+/*
+    Second Round
+*/
+class Solution3 {
+    private void generateParenthesis(int left, int right, StringBuilder path, ArrayList<String> result) {
+        if(left < 0 || right < 0 || left > right) return;
         if(left == 0 && right == 0) {
             result.add(path.toString());
             return;
         }
-        if(left < right) {
-            path.append(')');
-            generateParenthesis3(left, right - 1, path, result);
-            path.deleteCharAt(path.length() - 1);
-        }
+        
         path.append('(');
-        generateParenthesis3(left - 1, right, path, result);
+        generateParenthesis(left - 1, right, path, result);
+        path.deleteCharAt(path.length() - 1);
+        
+        path.append(')');
+        generateParenthesis(left, right - 1, path, result);
         path.deleteCharAt(path.length() - 1);
     }
     
-    public ArrayList<String> generateParenthesis3(int n) {
+    public ArrayList<String> generateParenthesis(int n) {
         ArrayList<String> result = new ArrayList<String>();
-        generateParenthesis3(n, n, new StringBuilder(), result);
+        generateParenthesis(n, n, new StringBuilder(), result);
         return result;
     }
 }
 
 class Main {    
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution3 solution = new Solution3();
         int n = 3;
-        System.out.println(solution.generateParenthesis3(n));
+        System.out.println(solution.generateParenthesis(n));
     }
 }

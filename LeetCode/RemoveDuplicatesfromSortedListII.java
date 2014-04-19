@@ -1,12 +1,11 @@
+/*
+Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.
 
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) {
-        val = x;
-        next = null;
-    }
-}
+For example,
+Given 1->2->3->3->4->4->5, return 1->2->5.
+Given 1->1->1->2->3, return 2->3.
+*/
+import LCLibrary.*;
 
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
@@ -43,32 +42,41 @@ class Solution {
     }
 }
 
-class Main {
-    public static void print(ListNode head) {
-        while(head != null) {
-            System.out.print(head.val + " ");
-            head = head.next;
+/*
+    Second Round
+*/
+class Solution2 {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode head2 = null, prev = null, cur = head;
+        while(cur != null) {
+            if(cur.next == null || cur.next.val != cur.val) {   // insert
+                ListNode tmp = cur.next;
+                cur.next = null;    // clean
+                if(head2 == null) {
+                    head2 = cur;
+                    prev = cur;
+                }
+                else {
+                    prev.next = cur;
+                    prev = cur;
+                }
+                cur = tmp;
+            }
+            else {
+                int val = cur.val;
+                while(cur != null && cur.val == val) {
+                    cur = cur.next;
+                }
+            }
         }
-        System.out.println();
+        return head2;
     }
+}
 
+class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        ListNode head = new ListNode(1);
-        ListNode node1 = new ListNode(2);
-        head.next = node1;
-        ListNode node2 = new ListNode(2);
-        node1.next = node2;
-        ListNode node3 = new ListNode(3);
-        node2.next = node3;
-        ListNode node4 = new ListNode(3);
-        node3.next = node4;
-        ListNode node5 = new ListNode(4);
-        node4.next = node5;
-        ListNode node6 = new ListNode(4);
-        node5.next = node6;
-        ListNode node7 = new ListNode(5);
-        node6.next = node7;
-        print(solution.deleteDuplicates(head));
+        Solution2 solution = new Solution2();
+        ListNode head = Input.buildExampleListWithDup();
+        Output.printList(solution.deleteDuplicates(head));
     }
 }

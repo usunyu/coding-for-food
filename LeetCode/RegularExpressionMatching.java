@@ -170,7 +170,7 @@ class Solution4 {
         if(s == null) return p == null;
         if (p.isEmpty()) return s.isEmpty();
         int N = s.length(), M = p.length();
-        Stack[] cache = new Stack[M];
+        Stack<Integer>[] cache = new Stack[M];
         for(int i = 0; i < M; i++) cache[i] = new Stack<Integer>();	// initial
         int sIt = 0, pIt = 0;
         while(pIt >= 0 && pIt < M) {	// matching

@@ -2,6 +2,7 @@ package LCLibrary;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Arrays;
 
 public class Output {
 	public static void printList(ListNode node) {
@@ -85,8 +86,30 @@ public class Output {
         }
     }
 
-    public static void printStringList(ArrayList<ArrayList<String>> lists) {
+    public static void printStringList(ArrayList<String> list) {
+        for(String str : list) {
+            System.out.println("[" + str + "]");
+        }   
+    }
+
+    public static void printStringLists(ArrayList<ArrayList<String>> lists) {
         for(ArrayList<String> list : lists)
             System.out.println(list);
+    }
+
+    public static void printMatrix(int[][] matrix) {
+        int n = matrix.length;
+        for(int i = 0; i < n; i++) {
+            int[] array = matrix[i];
+            System.out.println(Arrays.toString(array));
+        }
+    }
+
+    public static void printMatrix(char[][] matrix) {
+        int n = matrix.length;
+        for(int i = 0; i < n; i++) {
+            char[] array = matrix[i];
+            System.out.println(Arrays.toString(array));
+        }
     }
 }

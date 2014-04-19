@@ -42,6 +42,24 @@ class Solution2 {
     }
 }
 
+class Solution3 {
+    public int removeDuplicates(int[] A) {
+        if(A == null || A.length == 0) return 0;
+        int prev = 0, count = 0;
+        for(int i = 0; i < A.length; i++) {
+            if(prev == 0 || A[i] == A[prev - 1]) {
+                if(count < 2) A[prev++] = A[i];
+                count++;
+            }
+            else {
+                A[prev++] = A[i];
+                count = 1;
+            }
+        }
+        return prev;
+    }
+}
+
 class Main {
     public static void main(String[] args) {
         Solution2 solution = new Solution2();

@@ -60,6 +60,14 @@ public class MyLinkedList {
 		System.out.println();
 	}
 
+	public MyNode get(int k) {
+		MyNode current = head;
+		for(int i = 0; i < k; i++) {
+			current = current.next;
+		}
+		return current;
+	}
+
 	//------------------------------- Q2.1 -------------------------------//
 	public void removeDuplicate() {
 		MyNode current = head;
@@ -199,5 +207,46 @@ public class MyLinkedList {
 
 	public MyNode nthToLast2Rec(int k) {
 		return nthToLast2Rec(k, head);
+	}
+
+	//------------------------------- Q2.3 -------------------------------//
+	public void remove(MyNode node) {
+		node.next = node.next.next;
+	}
+
+	public void removeMiddle() {
+		if(head == null)
+			return;
+		MyNode n1 = head;
+		MyNode n2 = head;
+		while(true) {
+			if(n2.next == null) {
+				remove(n1);
+				return;
+			}
+			n2 = n2.next;
+			if(n2.next == null) {
+				remove(n1);
+				return;
+			}
+			n2 = n2.next;
+			if(n2.next != null)
+				n1 = n1.next;
+		}
+	}
+
+	public void removeNode(MyNode node) {
+		if(node == null && node.next != null)
+			return;
+		node.ch = node.next.ch;
+		node.next = node.next.next;
+	}
+	/*
+		Second Round
+	*/
+	public void removeNode2(MyNode node) {
+		if(node == null || node.next == null) return;
+		node.ch = node.next.ch;
+		node.next = node.next.next;
 	}
 }

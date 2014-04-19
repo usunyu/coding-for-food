@@ -1,3 +1,13 @@
+/*
+In the classic problem of the Towers of Hanoi, you have 3 towers and N disks of different sizes which can 
+slide onto any tower. The puzzle starts with disks sorted in ascending order of size from top to bottom 
+(i.e., each disk sits on top of an even larger one). You have the following constraints:
+(1) Only one disk can be moved at a time.
+(2) A disk is slid off the top of one tower onto the next rod.
+(3) A disk can only be placed on top of a larger disk.
+Write a program to move the disks from the first tower to the last using Stacks.
+*/
+
 import java.util.*;
 
 class MyNode {
@@ -87,7 +97,7 @@ class Hanoi {
 	}
 }
 
-class Q3_4App {
+class Solution {
 	public static void main(String[] args) {
 		Hanoi hanoiTower = new Hanoi();
 		// index, char, size
@@ -97,8 +107,28 @@ class Q3_4App {
 		hanoiTower.move(3, 0, 1, 2);
 	}
 }
+/*
+	Second Round
+*/
+class Hanoi2 {
+	public static void printMove(int n, int from, int to) {
+		System.out.println("Move disk " + n + " from tower " + from + " to tower " + to);
+	}
 
+	public static void move(int n, int from, int inter, int to) {
+		if(n == 1) printMove(n, from, to);
+		else {
+			move(n - 1, from, to, inter);
+			printMove(n, from, to);
+			move(n - 1, inter, from, to);
+		}
+	}
+}
 
-
+class Solution2 {
+	public static void main(String[] args) {
+		Hanoi2.move(3, 0, 1, 2);
+	}
+}
 
 

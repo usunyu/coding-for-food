@@ -251,4 +251,57 @@ public class MyLinkedList {
 		node.next = node.next.next;
 		return true;
 	}
+
+	//------------------------------- Q2.4 -------------------------------//
+	public void partition(int value) {
+		if(head == null)
+			return;
+		MyNode current = head;
+		while(current.next != null) {
+			if(current.next.val < value) {
+				MyNode temp = current.next;
+				current.next = current.next.next;
+				temp.next = head;
+				head = temp;
+			}
+			else
+				current = current.next;
+		}
+	}
+	/*
+		Second Round
+	*/
+	public void partition2(int value) {
+		if(head == null) return;
+		MyNode less = null, larger = null, head1 = null, head2 = null;
+		MyNode current = head;
+		while(current != null) {
+			if(current.val < value) {
+				if(head1 == null) {
+					head1 = current;
+					less = current;
+				}
+				else {
+					less.next = current;
+					less = current;
+				}
+			}
+			else {
+				if(head2 == null) {
+					head2 = current;
+					larger = current;
+				}
+				else {
+					larger.next = current;
+					larger = current;
+				}
+			}
+			current = current.next;
+		}
+		less.next = head2;
+		larger.next = null;
+		head = head1;
+	}
 }
+
+

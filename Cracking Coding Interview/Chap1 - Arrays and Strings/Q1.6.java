@@ -6,7 +6,6 @@ write a method to rotate the image by 90 degrees. Canyou do this in place?
 import CtCILibrary.*;
 
 class Solution {
-	/*
 	static int N = 10;
 	static char[][] matrixImage = new char[N][N];
 
@@ -54,10 +53,11 @@ class Solution {
 		rotate();
 		display();
 	}
-	*/
-	/*
-		Second Round
-	*/
+}
+/*
+	Second Round
+*/
+class Solution2 {
 	public static void rotate(int[][] matrix) {
 		int N = matrix.length;
 		for(int i = 0; i < N / 2; i++) {

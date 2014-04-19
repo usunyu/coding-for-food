@@ -7,7 +7,6 @@ to isSubstring (e.g.,"waterbottle" is a rotation of "erbottlewat").
 import java.util.*;
 
 class Solution {
-	/*
 	public static boolean isSubstring(String s1, String s2) {
 		if(s1.length() < s2.length())
 			return false;
@@ -46,10 +45,11 @@ class Solution {
 		else
 			System.out.println("Not rotation.");
 	}
-	*/
-	/*
-		Second Round
-	*/
+}
+/*
+	Second Round
+*/
+class Solution2 {
 	public static boolean isSubstring(String s1, String s2) {
 		if(s2.length() > s1.length()) return false;
 		// preprocess

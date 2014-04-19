@@ -5,7 +5,6 @@ Implement an algorithm to determine if a string has all unique characters. What 
 import java.util.*;
 
 class Solution {
-	/*
 	static String testStr = "ABCDEFGD";
 	public static void main(String[] args) {
 		System.out.println(testStr);
@@ -43,10 +42,11 @@ class Solution {
 		else
 			System.out.println("This is not a string has all unique characters.");
 	}
-	*/
-	/*
-		Second Round
-	*/
+}
+/*
+	Second Round
+*/
+class Solution2 {
 	public static boolean isUniqueChars(String str) {	// assume all the char is in lower case
 		int bits = 0;
 		for(int i = 0; i < str.length(); i++) {
@@ -59,12 +59,10 @@ class Solution {
 	}
 
 	public static void main(String[] args) {
+		Solution2 solution = new Solution2();
 		String[] words = {"abcde", "hello", "apple", "kite", "padle"};
 		for (String word : words) {
-			System.out.println(word + ": " + isUniqueChars(word));
+			System.out.println(word + ": " + solution.isUniqueChars(word));
 		}
 	}
 }
-
-
-

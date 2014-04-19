@@ -10,7 +10,6 @@ import java.util.*;
 import CtCILibrary.AssortedMethods;
 
 class Solution {
-	/*
 	public static String replaceSpace(String str) {
 		char[] charArray = str.toCharArray();
 		// first count space number
@@ -57,10 +56,13 @@ class Solution {
 		testStr = replaceSpace(testStr);
 		System.out.println(testStr);
 	}
-	*/
-	/*
-		Second Round
-	*/
+}
+
+/*
+	Second Round
+*/
+class Solution2 {
+	
 	public static void replaceSpaces(char[] str, int length) {
 		// count chars and space
 		int chars = 0, spaces = 0;

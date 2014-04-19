@@ -1,16 +1,6 @@
 import java.util.Stack;
 import java.util.ArrayList;
 
-class TempSum {
-	public MyLinkedList resultList;
-	public int carry;
-
-	public TempSum() {
-		resultList = new MyLinkedList();
-		carry = 0;
-	}
-}
-
 public class MyLinkedList {
 	public MyNode head;
 
@@ -436,6 +426,16 @@ public class MyLinkedList {
 		return result;
 	}
 
+	class TempSum {
+		public MyLinkedList resultList;
+		public int carry;
+
+		public TempSum() {
+			resultList = new MyLinkedList();
+			carry = 0;
+		}
+	}
+
 	public MyLinkedList addListForward2(MyLinkedList list) {
 		int length1 = length();
 		int length2 = list.length();
@@ -597,6 +597,77 @@ public class MyLinkedList {
 			collide = collide.next;
 			slow = slow.next;
 		}
+	}
+
+	//------------------------------- Q2.7 -------------------------------//
+	public boolean isPalindrome() {
+		Stack<Character> stack = new Stack<Character>();
+		MyNode current = head;
+		while(current != null) {
+			stack.push(current.ch);
+			current = current.next;
+		}
+		current = head;
+		boolean isPalin = true;
+		while(current != null) {
+			if(current.ch != stack.pop()) {
+				isPalin = false;
+				break;
+			}
+			current = current.next;
+		}
+		return isPalin;
+	}
+
+	class MyResult {
+		boolean isPalin;
+		MyNode nextNode;
+
+		public MyResult(MyNode node) {
+			isPalin = true;
+			nextNode = node;
+		}
+	}
+
+	public boolean isPalindrome2() {
+		return isPalindrome2Rec(head, length).isPalin;
+	}
+
+	private MyResult isPalindrome2Rec(MyNode node, int l) {
+		if(l == 1)
+			return new MyResult(node.next);
+		if(l == 0)
+			return new MyResult(node);
+		MyResult result = isPalindrome2Rec(node.next, l - 2);
+		if(result.nextNode.ch != node.ch)
+			result.isPalin = false;
+		result.nextNode = result.nextNode.next;
+		return result;
+	}
+	/*
+		Second Round
+	*/
+	class MyNodeWraper {
+		MyNode node;
+		
+		public String toString() {
+			return node.toString();
+		}
+	}
+	
+	private boolean isPalindrome3Rec(MyNode node, MyNodeWraper compare) {
+		if(node == null) return true;
+		boolean ret = isPalindrome3Rec(node.next, compare);
+		if(!ret) return false;
+		if(compare.node.ch != node.ch) return false;
+		compare.node = compare.node.next;
+		return true;
+	}
+
+	public boolean isPalindrome3() {
+		MyNodeWraper wraper = new MyNodeWraper();
+		wraper.node = head;
+		return isPalindrome3Rec(head, wraper);
 	}
 }
 

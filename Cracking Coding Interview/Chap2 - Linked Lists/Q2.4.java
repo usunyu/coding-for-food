@@ -41,7 +41,8 @@ class Solution2 {
 		myList.add(55);
 		myList.add(34);
 		myList.displayValList();
-		myList.partition2(50);
+		// myList.partition2(50);
+		myList.partition3(50);
 		myList.displayValList();
 	}
 }

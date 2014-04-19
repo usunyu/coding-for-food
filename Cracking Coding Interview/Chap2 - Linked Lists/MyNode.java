@@ -14,4 +14,8 @@ public class MyNode {
 	public void displayVal() {
 		System.out.println(val);
 	}
+
+	public String toString() {
+		return "[" + ch + ", " + val + "]";
+	}
 }

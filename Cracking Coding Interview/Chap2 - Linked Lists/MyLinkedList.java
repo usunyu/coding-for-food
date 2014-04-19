@@ -1,3 +1,15 @@
+import java.util.Stack;
+
+class TempSum {
+	public MyLinkedList resultList;
+	public int carry;
+
+	public TempSum() {
+		resultList = new MyLinkedList();
+		carry = 0;
+	}
+}
+
 public class MyLinkedList {
 	public MyNode head;
 
@@ -24,6 +36,16 @@ public class MyLinkedList {
 			current.next = node;
 		}
     }
+
+    public void addFirst(int i) {
+		MyNode node = new MyNode(i);
+		if(head == null)
+			head = node;
+		else {
+			node.next = head;
+			head = node;
+		}
+	}
 
 	public void initialList(String str) {
 		for(int i = 0; i < str.length(); i++) {
@@ -60,12 +82,38 @@ public class MyLinkedList {
 		System.out.println();
 	}
 
+	public void displayValReverseList() {
+		MyNode current = head;
+		Stack<Integer> stack = new Stack<Integer>();
+		if(current == null)
+			return;
+		while(current != null) {
+			stack.push(current.val);
+			current = current.next;
+		}
+		while(!stack.isEmpty()) {
+			int t = stack.pop();
+			System.out.print(t + " ");
+		}
+		System.out.println();
+	}
+
 	public MyNode get(int k) {
 		MyNode current = head;
 		for(int i = 0; i < k; i++) {
 			current = current.next;
 		}
 		return current;
+	}
+
+	public int length() {
+		int l = 0;
+		MyNode current = head;
+		while(current != null) {
+			current = current.next;
+			l++;
+		}
+		return l;
 	}
 
 	//------------------------------- Q2.1 -------------------------------//
@@ -301,6 +349,186 @@ public class MyLinkedList {
 		less.next = head2;
 		larger.next = null;
 		head = head1;
+	}
+
+	public void partition3(int value) {
+		if(head == null) return;
+		MyNode current = head, prev = null;
+		while(current != null) {
+			MyNode tmp = current.next;
+			if(current.val < value) {	// move to head
+				if(prev != null) {
+					prev.next = current.next;
+					current.next = head;
+					head = current;
+				}
+			}
+			else prev = current;
+			current = tmp;
+		}
+	}
+
+	//------------------------------- Q2.5 -------------------------------//
+	public MyLinkedList addList(MyLinkedList list) {
+		MyNode n1 = head;
+		MyNode n2 = list.head;
+		MyLinkedList result = new MyLinkedList();
+		int carry = 0;
+		while (n1 != null && n2 != null) {
+			int i1 = n1.val;
+			int i2 = n2.val;
+			int i3 = i1 + i2 + carry;
+
+			carry = i3 / 10;
+			i3 = i3 - carry * 10;
+
+			result.add(i3);
+
+			n1 = n1.next;
+			n2 = n2.next;
+		}
+		while(n1 != null) {
+			int i1 = n1.val;
+			int i3 = i1 + carry;
+
+			carry = i3 / 10;
+			i3 = i3 - carry * 10;
+
+			result.add(i3);
+
+			n1 = n1.next;
+		}
+		while(n2 != null) {
+			int i2 = n2.val;
+			int i3 = i2 + carry;
+
+			carry = i3 / 10;
+			i3 = i3 - carry * 10;
+
+			result.add(i3);
+
+			n2 = n2.next;
+		}
+		if(carry != 0)
+			result.add(carry);
+		return result;
+	}
+
+	// not in place
+	public MyLinkedList reverse() {
+		if(head == null)
+			return null;
+		MyLinkedList reverseList = new MyLinkedList();
+		MyNode current = head;
+		while(current != null) {
+			reverseList.addFirst(current.val);
+			current = current.next;
+		}
+		return reverseList;
+	}
+
+	public MyLinkedList addListForward(MyLinkedList list) {
+		MyLinkedList number1 = this.reverse();
+		MyLinkedList number2 = list.reverse();
+		MyLinkedList result = number1.addList(number2);
+		result = result.reverse();
+		return result;
+	}
+
+	public MyLinkedList addListForward2(MyLinkedList list) {
+		int length1 = length();
+		int length2 = list.length();
+
+		// make length of two list equal
+		if(length1 < length2)
+			padList(length2 - length1);
+		else
+			list.padList(length1 - length2);
+
+		MyNode node1 = head;
+		MyNode node2 = list.head;
+
+		TempSum sum = addListForward2Rec(node1, node2);
+
+		MyLinkedList resultList = sum.resultList;
+		if(sum.carry != 0)
+			resultList.addFirst(sum.carry);
+
+		return resultList;
+	}
+
+	public TempSum addListForward2Rec(MyNode node1, MyNode node2) {
+		if(node1 == null && node2 == null) {
+			TempSum sum = new TempSum();
+			return sum;
+		}
+		TempSum sum = addListForward2Rec(node1.next, node2.next);
+		int value1 = node1.val;
+		int value2 = node2.val;
+		int value3 = value1 + value2 + sum.carry;
+		int carry = value3 / 10;
+		value3 %= 10;
+		sum.resultList.addFirst(value3);
+		sum.carry = carry;
+		return sum;
+	}
+
+	public void padList(int n) {
+		for(int i = 0; i < n; i++)
+			addFirst(0);
+	}
+	/*
+		Second Round
+	*/	
+	public MyLinkedList addList2(MyLinkedList other) {
+		MyNode pt1 = head, pt2 = other.head, head3 = null, cur = null;
+		int carry = 0;
+		while(pt1 != null || pt2 != null) {
+			int add = (pt1 == null ? 0 : pt1.val) + 
+				(pt2 == null ? 0 : pt2.val) + carry;
+			MyNode node = new MyNode(add % 10);
+			carry = add / 10;
+			if(head3 == null) {
+				head3 = node;
+				cur = node;
+			}
+			else {
+				cur.next = node;
+				cur = node;
+			}
+			if(pt1 != null) pt1 = pt1.next;
+			if(pt2 != null) pt2 = pt2.next;
+		}
+		MyLinkedList list = new MyLinkedList();
+		list.head = head3;
+		return list;
+	}
+
+	private int addListForward3Rec(MyNode head1, MyNode head2, MyNode head3) {
+		if(head1 == null || head2 == null) return 0;
+		int val = head1.val + head2.val;
+		MyNode node = new MyNode(val % 10);
+		head3.next = node;
+		int carry = addListForward3Rec(head1.next, head2.next, node);
+		// update with carry
+		val = head1.val + head2.val + carry;
+		node.val = val % 10;
+		return val / 10;
+	}
+
+	public MyLinkedList addListForward3(MyLinkedList list) {
+		int len1 = length(), len2 = list.length();
+		int diff = Math.abs(len2 - len1);
+		if(len1 > len2) list.padList(diff);
+		else padList(diff);
+
+		MyNode head1 = head, head2 = list.head, head3 = new MyNode(0);
+		int carry = addListForward3Rec(head1, head2, head3);
+		if(carry == 0) head3 = head3.next;
+		else head3.val = carry;
+		MyLinkedList ret = new MyLinkedList();
+		ret.head = head3;
+		return ret;
 	}
 }
 

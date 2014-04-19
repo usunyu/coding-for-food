@@ -11,6 +11,10 @@ public class MyNode {
 		this.val = val;
 	}
 
+	public void displayCh() {
+		System.out.println(ch);
+	}
+
 	public void displayVal() {
 		System.out.println(val);
 	}

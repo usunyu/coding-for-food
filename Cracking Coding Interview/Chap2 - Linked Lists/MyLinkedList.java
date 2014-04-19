@@ -1,4 +1,5 @@
 import java.util.Stack;
+import java.util.ArrayList;
 
 class TempSum {
 	public MyLinkedList resultList;
@@ -529,6 +530,73 @@ public class MyLinkedList {
 		MyLinkedList ret = new MyLinkedList();
 		ret.head = head3;
 		return ret;
+	}
+
+	//------------------------------- Q2.6 -------------------------------//
+	public void corrupt(int i) {
+		if(head == null)
+			return;
+		MyNode current = head;
+		MyNode temp = null;
+		int k = 0;
+		while(current.next != null) {
+			if(k == i)
+				temp = current;
+			current = current.next;
+			k++;
+		}
+		current.next = temp;
+	}
+
+	private boolean checkCorrupt(ArrayList<MyNode> arrayList, MyNode node) {
+		boolean result = false;
+		for(int i = 0; i < arrayList.size(); i++) {
+			if(arrayList.get(i).next == node.next) {
+				result = true;
+				break;
+			}
+		}
+		return result;
+	}
+
+	public MyNode findCorrupt() {
+		ArrayList<MyNode> arrayList = new ArrayList<MyNode>();
+		MyNode current = head;
+		while(current.next != null) {
+			if(checkCorrupt(arrayList, current)) {
+				return current.next;
+			}
+			else {
+				arrayList.add(current);
+				current = current.next;
+			}
+		}
+		return null;
+	}
+
+	public MyNode findCorrupt2() {
+		if(head == null)
+			return null;
+		MyNode fast = head;
+		MyNode slow = head;
+		MyNode collide = null;
+		while(fast.next != null && fast.next.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+			if(fast == slow) {
+				collide = fast;
+				break;
+			}
+		}
+		if(collide == null)
+			return null;
+		slow = head;
+		while(true) {
+			if(collide == slow)
+				return collide;
+			collide = collide.next;
+			slow = slow.next;
+		}
 	}
 }
 

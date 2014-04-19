@@ -41,7 +41,14 @@ class Solution2 {
 		myList.initialList(input);
 		myList.displayValList();
 		int n = 6;
+		System.out.println("Iteration: ");
 		MyNode node = myList.nthToLast2(n);
+		if(node != null)
+			System.out.println("Last " + n + " number is " + node.val);
+		else
+			System.err.println("Not found!");
+		System.out.println("Recursion: ");
+		node = myList.nthToLast2Rec(n);
 		if(node != null)
 			System.out.println("Last " + n + " number is " + node.val);
 		else

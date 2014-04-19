@@ -185,4 +185,19 @@ public class MyLinkedList {
 		}
 		return slow;
 	}
+	// recursion
+	static int length = 0;
+
+	private MyNode nthToLast2Rec(int k, MyNode node) {
+		if(node == null) return null;
+		MyNode n = nthToLast2Rec(k, node.next);
+		length++;
+		if(length == k) return node;
+		else if(length > k) return n;
+		else return null;
+	}
+
+	public MyNode nthToLast2Rec(int k) {
+		return nthToLast2Rec(k, head);
+	}
 }

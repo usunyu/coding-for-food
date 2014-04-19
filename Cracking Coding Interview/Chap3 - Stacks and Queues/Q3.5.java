@@ -1,3 +1,7 @@
+/*
+Implement a MyQueue class which implements a queue using two stacks.
+*/
+
 import java.util.*;
 
 class MyNode {
@@ -79,7 +83,7 @@ class MyQueue {
 	}
 }
 
-class Q3_5App {
+class Solution {
 	public static void main(String[] args) {
 		MyQueue queue = new MyQueue();
 		queue.enqueue(1);

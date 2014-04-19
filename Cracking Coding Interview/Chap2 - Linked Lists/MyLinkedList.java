@@ -244,9 +244,11 @@ public class MyLinkedList {
 	/*
 		Second Round
 	*/
-	public void removeNode2(MyNode node) {
-		if(node == null || node.next == null) return;
+	public boolean removeNode2(MyNode node) {
+		// can not delete if the node is last, mark it as dumy
+		if(node == null || node.next == null) return false;
 		node.ch = node.next.ch;
 		node.next = node.next.next;
+		return true;
 	}
 }

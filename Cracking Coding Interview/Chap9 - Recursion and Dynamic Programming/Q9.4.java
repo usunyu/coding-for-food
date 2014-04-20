@@ -1,6 +1,10 @@
+/*
+Write a method to return all subsets of aset.
+*/
+
 import java.util.*;
 
-class Q9_4App {
+class Solution {
 	public static void print(int[] set) {
 		for(int i = 0; i < set.length; i++) {
 			System.out.print(set[i] + " ");

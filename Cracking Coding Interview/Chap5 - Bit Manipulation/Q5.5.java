@@ -1,3 +1,7 @@
+/*
+Write a function to determine the number of bits required to convert integer A to integer B.
+*/
+
 import java.util.*;
 
 class BitObject {
@@ -55,7 +59,7 @@ class BitObject {
 	}
 }
 
-class Q5_5App {
+class Solution {
 	public static void main(String[] args) {
 		BitObject n1 = new BitObject(31);
 		BitObject n2 = new BitObject(14);

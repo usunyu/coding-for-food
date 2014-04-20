@@ -1,4 +1,9 @@
-class Q9_5App {
+/*
+Write a method to compute all permutations of a string.
+*/
+import java.util.*;
+
+class Solution {
 	public static String shift(String str, int index) {
 		StringBuffer stb = new StringBuffer();
 		// append the original until index
@@ -33,7 +38,40 @@ class Q9_5App {
 	}
 
 	public static void main(String[] args) {
-		String str = "ABCD";
+		String str = "ABC";
 		permutations(str);
+	}
+}
+/*
+	Second Round
+*/
+class Solution2 {
+	private static void swap(StringBuilder sb, int i, int j) {
+		char tmp = sb.charAt(i);
+		sb.setCharAt(i, sb.charAt(j));
+		sb.setCharAt(j, tmp);
+	}
+
+	private static void permutations(StringBuilder sb, int index, ArrayList<String> result) {
+		if(index == sb.length()) result.add(sb.toString());
+		else {
+			for(int i = index; i < sb.length(); i++) {
+				swap(sb, i, index);
+				permutations(sb, index + 1, result);
+				swap(sb, i, index);	// backtracking
+			}
+		}
+	}
+
+	public static ArrayList<String> permutations(String str) {
+		ArrayList<String> result = new ArrayList<String>();
+		permutations(new StringBuilder(str), 0, result);
+		return result;
+	}
+
+	public static void main(String[] args) {
+		String str = "ABC";
+		for(String s : permutations(str))
+			System.out.println(s);
 	}
 }

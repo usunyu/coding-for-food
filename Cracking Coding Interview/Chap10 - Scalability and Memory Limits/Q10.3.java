@@ -1,9 +1,18 @@
+/*
+Given an input file with four billion non-negative integers, provide an algorithm to generate an integer 
+which is not contained in the file. Assume you have 1 GB of memory availablefor this task.
+
+FOLLOW UP
+What if you have only 10 MB of memory? Assume that all the values are distinct and we now have no more 
+than one billion non-negative integers.
+*/
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-class Question {
+class Solution {
 	public static long numberOfInts = ((long) Integer.MAX_VALUE) + 1;
 	public static byte[] bitfield = new byte [(int) (numberOfInts / 8)];
 
@@ -33,5 +42,4 @@ class Question {
 	public static void main(String[] args)  throws IOException {
 		findOpenNumber();
 	}
-
 }

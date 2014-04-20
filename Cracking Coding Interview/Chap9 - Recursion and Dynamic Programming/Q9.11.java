@@ -1,3 +1,8 @@
+/*
+Given a boolean expression consistingof the symbols 0, 1, &, |, and ^, and a desired boolean result value result, 
+implement a function to count the number of ways of parenthesizing the expression such that it evaluates to result.
+*/
+
 import java.util.*;
 
 class SubSolution {
@@ -10,7 +15,7 @@ class SubSolution {
 	}
 }
 
-class Q9_11App {
+class Solution {
 
 	public static int calSubExp(String expression) {
 		int n1 = Character.getNumericValue(expression.charAt(0));

@@ -1,3 +1,8 @@
+/*
+Design the data structures for a generic deck of cards. Explain how you would
+subclass the data structures to implement blackjack.
+*/
+
 import java.util.*;
 
 enum Suit { 
@@ -372,7 +377,7 @@ class BlackJackGameAutomator {
 	}
 }
 
-class Q8_1App {
+class Solution {
 	public static void main(String[] args) {
 		int numHands = 5;
 

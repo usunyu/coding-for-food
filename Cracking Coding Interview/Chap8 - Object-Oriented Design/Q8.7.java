@@ -1,3 +1,8 @@
+/*
+Explain how you would design a chat server. In particular, provide details about the various backend components, 
+classes, and methods. What would be the hardest problems to solve?
+*/
+
 import java.util.*;
 
 enum Status {
@@ -76,7 +81,7 @@ class ChatServer {
 	}
 }
 
-class Q8_7App {
+class Solution {
 	public static void main(String[] args) {
 
 	}

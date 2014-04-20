@@ -1,3 +1,8 @@
+/*
+Write methods to implement the multiply, subtract, and divide operations for integers. 
+Use only the add operator.
+*/
+
 class Solution {
 	public static int negate(int a) {
 		int negate = 0;

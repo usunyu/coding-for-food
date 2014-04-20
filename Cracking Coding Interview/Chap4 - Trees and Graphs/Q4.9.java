@@ -1,3 +1,8 @@
+/*
+You are given a binary tree in which each node contains a value. Design an algorithm to print all paths which 
+sum to a given value. The path does not need to start or end at the root or a leaf.
+*/
+
 import java.util.*;
 
 class MyNode {
@@ -12,6 +17,10 @@ class MyNode {
 
 	public void display() {
 		System.out.print(value + " ");
+	}
+
+	public String toString() {
+		return "[" + value + "]";
 	}
 }
 
@@ -88,7 +97,7 @@ class MyBST {
 	}
 }
 
-class Q4_9App {
+class Solution {
 	public static void main(String[] args) {
 		MyBST bst = new MyBST();
 		bst.insert(20);
@@ -100,6 +109,44 @@ class Q4_9App {
 		bst.insert(18);
 
 		bst.path(45);
+	}
+}
+/*
+	Second Round
+*/
+class Solution2 {
+	private static void findPath(MyNode root, ArrayList<MyNode> path, ArrayList<ArrayList<MyNode>> paths, int current, int target) {
+		if(root == null) return;
+		ArrayList<MyNode> list = new ArrayList<MyNode>(path);
+		list.add(root);
+		int next = current - root.value;
+		if(next == 0) paths.add(list);
+		// else {
+		findPath(root.leftChild, list, paths, next, target);
+		findPath(root.rightChild, list, paths, next, target);
+		// }
+		if(!path.isEmpty()) {
+			findPath(root, new ArrayList<MyNode>(), paths, target, target);
+		}
+	}
+
+	public static ArrayList<ArrayList<MyNode>> findPath(MyNode root, int target) {
+		ArrayList<ArrayList<MyNode>> paths = new ArrayList<ArrayList<MyNode>>();
+		findPath(root, new ArrayList<MyNode>(), paths, target, target);
+		return paths;
+	}
+
+	public static void main(String[] args) {
+		MyBST bst = new MyBST();
+		bst.insert(20);
+		bst.insert(10);
+		bst.insert(23);
+		bst.insert(5);
+		bst.insert(15);
+		bst.insert(22);
+		bst.insert(18);
+
+		System.out.println(findPath(bst.root, 45));
 	}
 }
 

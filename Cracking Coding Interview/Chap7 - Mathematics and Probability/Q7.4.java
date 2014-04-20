@@ -1,4 +1,4 @@
-class Q7_4App {
+class Solution {
 	public static int negate(int a) {
 		int negate = 0;
 		int d = a < 0 ? 1 : -1;

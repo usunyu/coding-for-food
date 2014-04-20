@@ -1,3 +1,9 @@
+/*
+Given a real number between 0 and 7 (e.g., 0.72) that is passed in as a double, 
+print the binary representation. If the number cannot be represented accurately in binary 
+with at most 32 characters, print "ERROR."
+*/
+
 import java.util.*;
 
 class BitObject {
@@ -37,7 +43,7 @@ class BitObject {
 	}
 }
 
-class Q5_2App {
+class Solution {
 	public static void main(String[] args) {
 		BitObject bo = new BitObject(0.8125);
 		bo.display();

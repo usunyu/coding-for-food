@@ -1,3 +1,8 @@
+/*
+Design an algorithm and write code to find the first common ancestor of two nodes in a binary tree. 
+Avoid storing additional nodes in a data structure.NOTE: This is not necessarily a binary search tree.
+*/
+
 import java.util.*;
 
 class MyNode {
@@ -117,7 +122,7 @@ class MyBST {
 	}
 }
 
-class Q4_7App {
+class Solution {
 	public static void main(String[] args) {
 		MyBST bst = new MyBST();
 		MyNode node1 = new MyNode(10);
@@ -150,7 +155,63 @@ class Q4_7App {
 		System.out.println("common of (" + node5.value + ") and (" + node9.value + ") is (" + bst.common2(node5, node9).value + ")");
 	}
 }
+/*
+	Second Round
+*/
+class Solution2 {
+	private static boolean check(MyNode root, MyNode p) {
+		if(root == null || p == null) return false;
+		if(root == p) return true;
+		if(check(root.leftChild, p)) return true;
+		if(check(root.rightChild, p)) return true;
+		return false;
+	}
 
+	private static MyNode commonAncestorRec(MyNode root, MyNode p, MyNode q) {
+		if(root == p || root == q || root == null) return root;	// find p | q
+		MyNode left = commonAncestorRec(root.leftChild, p, q);
+		MyNode right = commonAncestorRec(root.rightChild, p, q);
+		if(left == p && right == q) return root;
+		if(left == q && right == p) return root;
+		if(left == null) return right;
+		if(right == null) return left;
+		return null;
+	}
+
+	public static MyNode commonAncestor(MyNode root, MyNode p, MyNode q) {
+		// check node are in the tree
+		if(!check(root, p) || !check(root, q)) return null;	// node not in tree
+		return commonAncestorRec(root, p, q);
+	}
+
+	public static void main(String[] args) {
+		MyBST bst = new MyBST();
+		MyNode node1 = new MyNode(10);
+		bst.insert(node1);
+		MyNode node2 = new MyNode(5);
+		bst.insert(node2);
+		MyNode node3 = new MyNode(15);
+		bst.insert(node3);
+		MyNode node4 = new MyNode(3);
+		bst.insert(node4);
+		MyNode node5 = new MyNode(7);
+		bst.insert(node5);
+		MyNode node6 = new MyNode(1);
+		bst.insert(node6);
+		MyNode node7 = new MyNode(6);
+		bst.insert(node7);
+		MyNode node8 = new MyNode(8);
+		bst.insert(node8);
+		MyNode node9 = new MyNode(13);
+		bst.insert(node9);
+		MyNode node10 = new MyNode(17);
+		bst.insert(node10);
+
+		System.out.println("common of (" + node1.value + ") and (" + node10.value + ") is (" + commonAncestor(bst.root, node1, node10).value + ")");
+		System.out.println("common of (" + node4.value + ") and (" + node5.value + ") is (" + commonAncestor(bst.root, node4, node5).value + ")");
+		System.out.println("common of (" + node5.value + ") and (" + node9.value + ") is (" + commonAncestor(bst.root, node5, node9).value + ")");
+	}
+}
 
 
 

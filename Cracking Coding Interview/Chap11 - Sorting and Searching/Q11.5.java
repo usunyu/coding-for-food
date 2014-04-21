@@ -1,7 +1,12 @@
+/*
+Given a sorted array of strings which is interspersed with empty strings, write a method to find the location 
+of a given string.
+*/
+
 // time complexity : O(logN)
 // space complexity : O(1)
 
-class Q11_5App {
+class Solution {
 	public static int find(String[] strArr, String str, int start, int end) {
 		while(strArr[start].equals(""))
 			start++;

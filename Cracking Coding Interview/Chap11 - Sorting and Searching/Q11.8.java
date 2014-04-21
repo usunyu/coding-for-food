@@ -4,7 +4,6 @@ Imagine you are reading in a stream of integers. Periodically, you wish to be ab
 operations. That is, implement the method track(int x), which is called when each number is generated, and the
 method get RankOfNumber(int x), which returns the numberof values less than or equal to x (not including x itself).
 */
-
 import java.util.*;
 import CtCILibrary.AssortedMethods;
 

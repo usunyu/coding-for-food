@@ -4,7 +4,6 @@ For practical and aesthetic reasons, each person must be both shorter and lighte
 below him or her. Given the heights and weights of each person in the circus, write a method to 
 compute the largest possible number of people in such a tower.
 */
-
 // time complexity : O(N!) -> O(N^2)
 // space complexity : O(N^2) -> O(N)
 

@@ -1,3 +1,7 @@
+/*
+Write a SQL query to get a list of tenants who are renting more than one apartment.
+*/
+
 SELECT TenantName
 FROM Tenants,
 	(SELECT Tenants.TenantsID, COUNT(AptTenants.AptID) AS Count

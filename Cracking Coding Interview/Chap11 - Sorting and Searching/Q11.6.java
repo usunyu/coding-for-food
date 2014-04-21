@@ -1,7 +1,12 @@
+/*
+Given an M X N matrix in which each row and each column is sorted in ascending order, 
+write a method to find an element.
+*/
+
 // time complexity : O(logN x logM)
 // space complexity : O(1)
 
-class Q11_6App {
+class Solution {
 
 	// return the nearest smaller column
 	public static int findInRow(int[][] matrix, int value, int start, int end) {

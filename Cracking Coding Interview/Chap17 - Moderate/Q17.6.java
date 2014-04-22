@@ -1,3 +1,8 @@
+/*
+Given an array of integers, write a method to find indices m and n such that if you sorted elements m 
+through n, the entire array would be sorted. Minimize n - m(that is, find the smallest such sequence).
+*/
+
 import java.util.PriorityQueue;
 import java.util.Comparator;
 
@@ -10,7 +15,7 @@ class Range {
 	}
 }
 
-class Main {
+class Solution {
 	public static Range findMinRange(int[] array) {
 		PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>(100);
 

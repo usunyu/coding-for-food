@@ -1,4 +1,11 @@
-class Main {
+/*
+Write a method to shuffle a deck of cards. It must be a perfect shuffle—in other words, each of the 52! 
+permutations of the deck has to be equally likely. Assume that you are given a random number generator 
+which is perfect.
+*/
+import CtCILibrary.AssortedMethods;
+
+class Solution {
 	/* Random number between lower and higher, inclusive */
 	public static int rand(int lower, int higher) { 
 		return lower + (int)(Math.random() * (higher - lower + 1));
@@ -31,19 +38,10 @@ class Main {
 		}
 	}
 
-	public static void print(int[] array) {
-		System.out.print("[");
-		for(int i = 0; i < array.length; i++) {
-			if(i == array.length - 1) System.out.print(array[i]);
-			else System.out.print(array[i] + ", ");
-		}
-		System.out.println("]");
-	}
-
 	public static void main(String[] args) {
 		int[] cards = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-		print(cards);
+		System.out.println(AssortedMethods.arrayToString(cards));
 		shuffleArrayInteratively(cards);
-		print(cards);
+		System.out.println(AssortedMethods.arrayToString(cards));
 	}
 }

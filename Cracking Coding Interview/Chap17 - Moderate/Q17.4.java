@@ -1,4 +1,8 @@
-class Main {
+/*
+Write a method which finds the maximum of two numbers. You should not use if-else or any other comparison operator.
+*/
+
+class Solution {
 	/* Flips a 1 to a 0 and a 0 to a 1 */
 	public static int flip(int bit) {
 		return 1 ^ bit;

@@ -1,4 +1,9 @@
-class Main {
+/*
+Given any integer, print an English phrase that describes the integer 
+(e.g., "One Thousand, Two Hundred Thirty Four").
+*/
+
+class Solution {
 	public static String[] digits = {"One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"};
 	public static String[] teens = {"Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
 	public static String[] tens = {"Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};

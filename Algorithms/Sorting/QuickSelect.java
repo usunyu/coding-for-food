@@ -26,7 +26,7 @@ class Main {
 				}
 				else right--;	// the value is larger than the pivot, skip
 			}
-			if(array[right] > pivot)
+			if(array[right] > pivot)	// not good
 				swap(array, right, end);	// move the pivot in right place
 			
 			if(K - 1 <= right) {
@@ -57,6 +57,33 @@ class Main {
 			quickSort(array, right + 1, end);
 		}
 	}
+
+	private static int partition(int[] array, int start, int end) {
+		int pivot = array[end];
+		int i = start, j = start;
+		while(j < end) {
+			if(array[j] >= pivot) {
+				swap(array, i++, j);
+			}
+			j++;
+		}
+		swap(array, i, end);	// always swap
+		return i;
+	}
+	
+	public static int quickSelect2(int[] array, int k) {
+		int start = 0, end = array.length - 1;
+		while(start < end) {
+			int p = partition(array, start, end);
+			if(p == k - 1) 
+				return array[p];
+			else if(p < k - 1)
+				start = p + 1;
+			else 
+				end = p - 1;
+		}
+		return array[start];
+	}
 	
 	public static void quickSort(int[] array) {
 		if(array == null || array.length <= 1) return;
@@ -69,7 +96,7 @@ class Main {
 		int K = 4;
 		System.out.println(Arrays.toString(array));
 		System.out.println("Quick Select: " + K);
-		quickSelect(array, K);
+		quickSelect2(array, K);
 		System.out.println(Arrays.toString(array));
 		
 		int[] array2 = {21,3,34,5,13,8,2,55,1,19};

@@ -1,3 +1,7 @@
+/*
+Given a string s and an array of smaller strings T, design a method to search s for each small string in T.
+*/
+
 import java.util.HashMap;
 
 class SuffixTree {
@@ -46,7 +50,7 @@ class SuffixTreeNode {
 	}
 }
 
-class Main {
+class Solution {
 	public static void main(String[] args) {
 		String testString = "mississippi";
         String[] stringList = {"is", "sip", "hi", "sis"};

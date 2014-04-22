@@ -1,3 +1,8 @@
+/*
+Numbers are randomly generated and passed to a method. Write a program to find and maintain 
+the median value as new values are generated.
+*/
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -23,7 +28,7 @@ class MinHeapComparator implements Comparator<Integer>{
 	}
 }
 
-class Main {
+class Solution {
 	private static Comparator<Integer> maxHeapComparator;
 	private static Comparator<Integer> minHeapComparator;
 	private static PriorityQueue<Integer> maxHeap;

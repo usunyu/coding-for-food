@@ -1,4 +1,12 @@
-class Q9_3App {
+/*
+Amagic index in an array A[1...n-1] is defined to be an index such that A[i] = i. 
+Given a sorted array of distinct integers, write a method to find a magic index, if one exists, in array A.
+FOLLOW UP
+What if the values are not distinct?
+*/
+import java.util.ArrayList;
+
+class Solution {
 
 	public static int findMagicDup(int[] A, int start, int end) {
 		if(start > end)
@@ -60,5 +68,46 @@ class Q9_3App {
 		System.out.println("The magic number is " + findMagic(A, 0, A.length - 1));
 		int[] D = {-10, -5, 2, 2, 2, 3, 4, 7, 9, 12, 13};
 		System.out.println("The magic number(has dup) is " + findMagicDup(D, 0, D.length - 1));
+	}
+}
+/*
+	Second Round
+*/
+class Solution2 {
+	private static void findMagicDup(int[] A, int start, int end, ArrayList<Integer> result) {
+		if(start > end) return;
+		int mid = start + (end - start) / 2;
+		if(mid == A[mid]) result.add(mid);
+		if(A[end] >= end) findMagicDup(A, mid + 1, end, result);
+		if(A[start] <= start) findMagicDup(A, start, mid - 1, result);
+	}
+
+	public static ArrayList<Integer> findMagicDup(int[] A) {
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		findMagicDup(A, 0, A.length - 1, result);
+		return result;
+	}
+
+	// only can find one magic number
+	public static int findMagicDupBad(int[] A, int start, int end) {
+		int left = start, right = end;
+		while(left <= right) {
+			int mid = left + (right - left) / 2;
+			if(mid == A[mid]) return mid;
+			else if(A[mid] < mid) {
+				if(A[right] < right) right = mid - 1;
+				else left = mid + 1;
+			}
+			else if(A[mid] > mid) {
+				if(A[left] > left) left = mid + 1;
+				else right = mid - 1;
+			}
+		}
+		return -1;
+	}
+
+	public static void main(String[] args) {
+		int[] D = {-10, -5, 2, 2, 2, 3, 4, 7, 9, 12, 13};
+		System.out.println("The magic number(has dup) is " + findMagicDup(D));
 	}
 }

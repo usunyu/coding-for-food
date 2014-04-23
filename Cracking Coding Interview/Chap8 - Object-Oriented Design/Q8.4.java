@@ -1,3 +1,7 @@
+/*
+Design a parking lot using object-oriented principles.
+*/
+
 import java.util.*;
 
 enum Type {
@@ -109,7 +113,7 @@ class ParkingLot {
 	}
 }
 
-class Q8_4App {
+class Solution {
 	public static void main(String[] args) {
 
 	}

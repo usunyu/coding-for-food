@@ -1,21 +1,11 @@
+/*
+Describe an algorithm to find the smallest one million numbers in one billion numbers. 
+Assume that the computer memory can hold all one billion numbers.
+*/
+import CtCILibrary.AssortedMethods;
 import java.util.Arrays;
 
-class Main {
-	public static int randomInt(int n) {
-		return (int) (Math.random() * n);
-	}
-
-	public static int randomIntInRange(int min, int max) {
-		return randomInt(max + 1 - min) + min;
-	}
-
-	public static int[] randomArray(int N, int min, int max) {
-		int[] array = new int[N];
-		for (int j = 0; j < N; j++) {
-			array[j] = randomIntInRange(min, max);
-		}
-		return array;
-	}
+class Solution {
 
 	public static int max(int[] array, int left, int right) {
 		int max = Integer.MIN_VALUE;
@@ -57,25 +47,44 @@ class Main {
 		if(i < right) quickSort(array, i, right);
 	}
 
-	public static void print(int[] array) {
-		System.out.print("[");
-		for (int i = 0; i < array.length; i++) {
-			if (i == array.length - 1)
-				System.out.print(array[i]);
-			else
-				System.out.print(array[i] + ", ");
+	private static int partition(int[] array, int start, int end) {
+		int pivot = array[end];
+		int i = start, j = start;
+		while(j < end) {
+			if(array[j] >= pivot) {
+				swap(array, i++, j);
+			}
+			j++;
 		}
-		System.out.println("]");
+		swap(array, i, end);
+		return i;
+	}
+	/*
+		Second Round
+	*/
+	public static int quickSelect2(int[] array, int k) {
+		int start = 0, end = array.length - 1;
+		while(start < end) {
+			int p = partition(array, start, end);
+			if(p == k - 1) 
+				return array[p];
+			else if(p < k - 1)
+				start = p + 1;
+			else 
+				end = p - 1;
+		}
+		return array[start];
 	}
 
 	public static void main(String[] args) {
-		int[] array = randomArray(10, 0, 100);
+		int[] array = AssortedMethods.randomArray(10, 0, 100);
 		// int[] array = {3, 71, 21, 78, 67, 52, 30, 33, 50, 13};
-		print(array);
+		AssortedMethods.printIntArray(array);
 		int no = 5;
-		System.out.println("NO " + no + " number is: " + quickSelect(array, 0, array.length - 1, no));
+		// System.out.println("NO " + no + " number is: " + quickSelect(array, 0, array.length - 1, no));
+		System.out.println("NO " + no + " number is: " + quickSelect2(array, no));
 		// Arrays.sort(array);
 		// quickSort(array, 0, array.length - 1);
-		print(array);
+		AssortedMethods.printIntArray(array);
 	}
 }

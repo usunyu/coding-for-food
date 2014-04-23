@@ -1,6 +1,10 @@
+/*
+Given a list of words, write a program to find the longest word made of other words in the list.
+*/
+
 import java.util.HashMap;
 
-class Main {
+class Solution {
 	private static boolean searchWord(String word, HashMap<String, Integer> map, boolean flag) {
 		boolean contains = false;
 		for(int i = 1; i <= word.length(); i++) {

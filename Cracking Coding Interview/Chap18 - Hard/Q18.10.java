@@ -1,3 +1,8 @@
+/*
+Given two words of equal length that are in a dictionary, write a method to transform one word into another 
+word by changing only one letter at a time. The new word you get in each step must be in the dictionary.
+*/
+
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -91,13 +96,7 @@ class Dict {
 	}
 }
 
-class Main {
-	public static void print(ArrayList<ArrayList<String>> steps) {
-		for(ArrayList<String> path : steps) {
-			System.out.println(path);
-		}
-	}
-
+class Solution {
 	public static void main(String[] args) {
 		HashSet<String> dict = new HashSet<String>();
 		dict.add("hello");
@@ -108,6 +107,6 @@ class Main {
 		Dict dictClass = new Dict(dict);
 		dictClass.preProcess();
 		ArrayList<ArrayList<String>> paths = dictClass.findTransStep("hello", "hapto");
-		print(paths);
+		System.out.println(paths);
 	}
 }

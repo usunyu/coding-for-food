@@ -1,3 +1,8 @@
+/*
+Given a positive integer, print the next smallest and the next largest number that have the same number of 
+1 bits in their binary representation.
+*/
+
 import java.util.*;
 
 class BitObject {
@@ -130,7 +135,7 @@ class BitObject {
 	}
 }
 
-class Q5_3App {
+class Solution {
 	public static void main(String[] args) {
 		BitObject ob = new BitObject(10115);
 		System.out.print("Original:\t");

@@ -1,3 +1,14 @@
+/*
+You have a stack of n boxes, with widths wi, heights hi and depths di. 
+The boxes cannot be rotated and can only be stacked on top of one another if each box in the stack is 
+strictly larger than the box above it in width, height, and depth. 
+Implement a method to build the tallest stack possible, where the height of a stack is the sum 
+of the heights of each box.
+*/
+/* Thought
+using dynamic programming, sort the box list first(a can be above of b, a < b. a cannot be above of b and
+b cannot be above of a, a '=' b)
+*/
 import java.util.*;
 
 class Box {
@@ -17,7 +28,7 @@ class Box {
 	}
 }
 
-class Q9_10App {
+class Solution {
 
 	public static int getMaxHeight(ArrayList<Box> boxList) {
 		int heightMax = -1;

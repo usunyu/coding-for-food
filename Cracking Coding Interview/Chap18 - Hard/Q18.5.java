@@ -1,7 +1,13 @@
+/*
+You have a large text file containing words. Given any two words, find the shortest distance 
+(in terms of number of words) between them in the file. If the operation will be repeated many times for the 
+same file (but different pairs of words), can you optimize your solution?
+*/
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-class Main {
+class Solution {
 	public static HashMap<String, ArrayList<Integer>> getLocationMap(String[] words) {
 		HashMap<String, ArrayList<Integer>> wordLocMap = new HashMap<String, ArrayList<Integer>>();
 		for(int i = 0; i < words.length; i++) {
@@ -40,6 +46,6 @@ class Main {
 	public static void main(String[] args) {
 		String[] words = {"hello", "world", "hi", "test", "hello"};
 		HashMap<String, ArrayList<Integer>> wordLocMap = getLocationMap(words);
-		System.out.println(getMinDistance("world", "test", wordLocMap));
+		System.out.println(getMinDistance("hello", "test", wordLocMap));
 	}
 }

@@ -1,6 +1,10 @@
+/*
+Write a method to return all subsets of aset.
+*/
+
 import java.util.*;
 
-class Q9_4App {
+class Solution {
 	public static void print(int[] set) {
 		for(int i = 0; i < set.length; i++) {
 			System.out.print(set[i] + " ");
@@ -35,3 +39,30 @@ class Q9_4App {
 		subset(set, subset, 0);
 	}
 }
+/*
+	Second Round
+*/
+class Solution2 {
+	public static ArrayList<ArrayList<Integer>> getSubset(ArrayList<Integer> set) {
+		ArrayList<ArrayList<Integer>> subsets = new ArrayList<ArrayList<Integer>>();
+		ArrayList<Integer> subset = new ArrayList<Integer>();
+		subsets.add(subset);	// initial
+		for(int i : set) {
+			int size = subsets.size();
+			for(int j = 0; j < size; j++) {
+				subset = new ArrayList<Integer>(subsets.get(j));
+				subset.add(i);
+				subsets.add(subset);
+			}
+		}
+		return subsets;
+	}
+
+	public static void main(String[] args) {
+		ArrayList<Integer> set = new ArrayList<Integer>();
+		set.add(1); set.add(2); set.add(3); set.add(4);
+		for(ArrayList<Integer> s : getSubset(set))
+			System.out.println(s);
+	}
+}
+

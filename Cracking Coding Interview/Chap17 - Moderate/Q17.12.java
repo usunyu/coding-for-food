@@ -1,7 +1,11 @@
+/*
+Design an algorithm to find all pairs of integers within an array which sum to a specified value.
+*/
+
 import java.util.Arrays;
 import java.util.HashMap;
 
-class Main {
+class Solution {
 	// time: O(nlogn)
 	// space: O(1)
 	public static void twoSum(int[] array, int target) {

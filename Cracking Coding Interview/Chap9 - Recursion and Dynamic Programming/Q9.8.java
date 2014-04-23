@@ -1,4 +1,8 @@
-class Q9_8App {
+/*
+Given an infinite number of quarters (25 cents), dimes (10 cents), nickels (5 cents) and pennies (1 cent), 
+write code to calculate the number of ways of representing n cents.
+*/
+class Solution {
 	static int count = 0;
 
 	public static void getChange(int n, int coin) {
@@ -35,8 +39,48 @@ class Q9_8App {
 	}
 
 	public static void main(String[] args) {
-		int n = 100;
-		getChange(n, 25);
-		System.out.println("There are " + count + " ways to represent " + n);
+		for(int n = 1; n <= 100; n++) {
+			getChange(n, 25);
+			System.out.println("getChange(" + n + "): " + count);
+			count = 0;	// reset
+		}
+	}
+}
+/*
+	Second Round
+*/
+class Solution2 {
+	// coin: 1, 5, 10, 25
+	public static int getChange(int n, int coin) {
+		if(n < 0) return 0;
+		if(n == 0) return 1;
+		int next = 0;
+		switch(coin) {
+			case 25:
+				next = 10;
+				break;
+			case 10:
+				next = 5;
+				break;
+			case 5:
+				next = 1;
+				break;
+			case 1:
+				next = 0;
+				break;
+			default:
+				return 0;
+		}
+		int count = 0;
+		for(int i = 0; i * coin <= n; i++) {
+			count += getChange(n - i * coin, next);
+		}
+		return count;
+	}
+
+	public static void main(String[] args) {
+		for(int n = 1; n <= 100; n++) {
+			System.out.println("getChange(" + n + "): " + getChange(n, 25));
+		}
 	}
 }

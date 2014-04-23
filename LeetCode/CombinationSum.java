@@ -43,11 +43,13 @@ class Solution {
         combinationSum(candidates, target, 0, new ArrayList<Integer>(), combinations);
         return combinations;
     }
+}
 
-    /*
-        Second Round
-    */
-    private void combinationSum2(int[] candidates, int target, ArrayList<Integer> path, int index, ArrayList<ArrayList<Integer>> result) {
+/*
+    Second Round
+*/
+class Solution2 {
+    private void combinationSum(int[] candidates, int target, ArrayList<Integer> path, int index, ArrayList<ArrayList<Integer>> result) {
         if(target == 0) {   // we find a solution
             ArrayList<Integer> p = new ArrayList<Integer>(path);
             result.add(p);
@@ -60,19 +62,19 @@ class Solution {
                 count++;
                 t -= candidates[index];
                 path.add(candidates[index]);
-                combinationSum2(candidates, t, path, index + 1, result);
+                combinationSum(candidates, t, path, index + 1, result);
             }
             // remove range
             path.subList(path.size() - count, path.size()).clear();; 
-            combinationSum2(candidates, target, path, index + 1, result);
+            combinationSum(candidates, target, path, index + 1, result);
         }
     }
     
-    public ArrayList<ArrayList<Integer>> combinationSum2(int[] candidates, int target) {
+    public ArrayList<ArrayList<Integer>> combinationSum(int[] candidates, int target) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
         if(candidates.length == 0) return result;
         Arrays.sort(candidates);
-        combinationSum2(candidates, target, new ArrayList<Integer>(), 0, result);
+        combinationSum(candidates, target, new ArrayList<Integer>(), 0, result);
         return result;
     }
 }
@@ -81,6 +83,6 @@ class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();
         int[] candidates = {2,3,6,7};
-        System.out.println(solution.combinationSum2(candidates, 7));
+        System.out.println(solution.combinationSum(candidates, 7));
     }
 }

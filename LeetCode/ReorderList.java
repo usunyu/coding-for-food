@@ -1,13 +1,15 @@
-import java.util.Stack;
+/*
+Given a singly linked list L: L0->L1->...->Ln-1->Ln,
+reorder it to: L0->Ln->L1->Ln-1->L2->Ln-2->...
 
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) {
-        val = x;
-        next = null;
-    }
-}
+You must do this in-place without altering the nodes' values.
+
+For example,
+Given {1,2,3,4}, reorder it to {1,4,2,3}.
+*/
+
+import java.util.Stack;
+import LCLibrary.*;
 
 class Solution {
     public void reorderList(ListNode head) {
@@ -30,8 +32,10 @@ class Solution {
         }
         last.next = null;
     }
+}
 
-    public void reorderList2(ListNode head) {
+class Solution2 {
+    public void reorderList(ListNode head) {
         if(head == null) return;
         // partition the list into 2 sublists of equal length
         ListNode fast = head, slow = head, prev = null;
@@ -66,31 +70,50 @@ class Solution {
     }
 }
 
-class Main {
-    public static void print(ListNode node) {
-        while(node != null) {
-            System.out.print(node.val + " ");
-            node = node.next;
+/*
+    Second Round
+*/
+class Solution3 {
+    public void reorderList(ListNode head) {
+        if(head == null) return;
+        // partition list
+        ListNode slow = head, fast = head;
+        while(fast != null) {
+            if(fast.next == null) break;
+            fast = fast.next;
+            if(fast.next == null) break;
+            fast = fast.next;
+            slow = slow.next;
         }
-        System.out.println();
+        ListNode head1 = head, head2 = slow.next;
+        slow.next = null;   // break
+        // reverse second part
+        ListNode cur = head2;
+        while(cur != null) {
+            ListNode tmp = cur.next;
+            cur.next = null;    // clean
+            if(head2 != cur) {
+                cur.next = head2;
+                head2 = cur;
+            }
+            cur = tmp;
+        }
+        // reorder list
+        while(head1 != null && head2 != null) {
+            ListNode tmp1 = head1.next, tmp2 = head2.next;
+            head1.next = head2;
+            head2.next = tmp1;
+            head1 = tmp1; head2 = tmp2;
+        }
     }
+}
 
+class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        ListNode head = null, prev = null;
-        for(int i = 1; i <= 5; i++) {
-            ListNode node = new ListNode(i);
-            if(head == null) {
-                head = node;
-                prev = node;
-            }
-            else {
-                prev.next = node;
-                prev = node;
-            }
-        }
-        print(head);
-        solution.reorderList2(head);
-        print(head);
+        Solution3 solution = new Solution3();
+        ListNode head = Input.buildExampleList5();
+        Output.printList(head);
+        solution.reorderList(head);
+        Output.printList(head);
     }
 }

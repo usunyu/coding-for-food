@@ -1,3 +1,8 @@
+/*
+Given a sorted (increasing order) array with unique integer elements, 
+write an algorithm to create a binary search tree with minimal height.
+*/
+
 import java.util.*;
 
 class MyNode {
@@ -95,7 +100,7 @@ class MyBST {
 	}
 }
 
-class Q4_3App {
+class Solution {
 	static int MAX = 10;
 	static int[] sortedArray = new int[MAX];
 	static MyBST bst = new MyBST();

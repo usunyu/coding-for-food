@@ -1,3 +1,24 @@
+/*
+Given a set of distinct integers, S, return all possible subsets.
+
+Note:
+Elements in a subset must be in non-descending order.
+The solution set must not contain duplicate subsets.
+For example,
+If S = [1,2,3], a solution is:
+
+[
+  [3],
+  [1],
+  [2],
+  [1,2,3],
+  [1,3],
+  [2,3],
+  [1,2],
+  []
+]
+*/
+import LCLibrary.*;
 import java.util.*;
 
 class Solution {
@@ -63,21 +84,32 @@ class Solution {
     }
 }
 
-class Main {
-    public static void print(ArrayList<ArrayList<Integer>> subsets) {
-        for(ArrayList<Integer> subset : subsets) {
-            for(int i : subset) {
-                System.out.print(i + " ");
+/*
+    Second Round
+*/
+class Solution2 {
+    public ArrayList<ArrayList<Integer>> subsets(int[] S) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        if(S == null || S.length == 0) return result;
+        ArrayList<Integer> first = new ArrayList<Integer>();
+        result.add(first);
+        Arrays.sort(S);
+        for(int i = 0; i < S.length; i++) {
+            int size = result.size();
+            for(int j = 0; j < size; j++) {
+                ArrayList<Integer> list = new ArrayList<Integer>(result.get(j));
+                list.add(S[i]);
+                result.add(list);
             }
-            System.out.println();
         }
-        System.out.println();
+        return result;
     }
+}
 
+class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution2 solution = new Solution2();
         int[] S = {4, 1, 0};
-        ArrayList<ArrayList<Integer>> subsets = solution.subsets(S);
-        print(subsets);
+        Output.printLevelLists(solution.subsets(S));
     }
 }

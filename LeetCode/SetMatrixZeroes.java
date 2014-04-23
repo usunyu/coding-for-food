@@ -1,4 +1,17 @@
+/*
+Given a m x n matrix, if an element is 0, set its entire row and column to 0. Do it in place.
+
+click to show follow up.
+
+Follow up:
+Did you use extra space?
+A straight forward solution using O(mn) space is probably a bad idea.
+A simple improvement uses O(m + n) space, but still not the best solution.
+Could you devise a constant space solution?
+*/
+
 import java.util.*;
+import LCLibrary.*;
 
 class Solution {
     public void setRowZeroes(int[][] matrix, int row) {
@@ -43,9 +56,23 @@ class Solution {
             }
         }
     }
+}
+
+class Solution2 {
+    public void setRowZeroes(int[][] matrix, int row) {
+        for(int i = 0; i < matrix[0].length; i++) {
+            matrix[row][i] = 0;
+        }
+    }
+    
+    public void setColZeroes(int[][] matrix, int col) {
+        for(int i = 0; i < matrix.length; i++) {
+            matrix[i][col] = 0;
+        }
+    }
 
     // space complixity : O(1)
-    public void setZeroes2(int[][] matrix) {
+    public void setZeroes(int[][] matrix) {
     	// row number
     	int M = matrix.length;
     	if(M <= 0) { return; }
@@ -98,42 +125,72 @@ class Solution {
     }
 }
 
+/*
+    Second Round
+*/
+class Solution3 {
+    private void setCol(int[][] matrix, int col) {
+        for(int i = 0; i < matrix.length; i++) {
+            matrix[i][col] = 0;
+        }
+    }
+    
+    private void setRow(int[][] matrix, int row) {
+        for(int i = 0; i < matrix[0].length; i++) {
+            matrix[row][i] = 0;
+        }
+    }
+    
+    public void setZeroes(int[][] matrix) {
+        if(matrix == null || matrix.length == 0 || matrix[0].length == 0) return;
+        boolean firstRow = false, firstCol = false;
+        int M = matrix.length, N = matrix[0].length;
+        for(int i = 0; i < M; i++) {
+            if(matrix[i][0] == 0) {
+                firstCol = true;
+                break;
+            }
+        }
+        for(int i = 0; i < N; i++) {
+            if(matrix[0][i] == 0) {
+                firstRow = true;
+                break;
+            }
+        }
+        for(int i = 1; i < M; i++) {
+            for(int j = 1; j < N; j++) {
+                if(matrix[i][j] == 0) {
+                    matrix[0][j] = 0;
+                    matrix[i][0] = 0;
+                }
+            }
+        }
+        for(int i = 1; i < M; i++) {
+            if(matrix[i][0] == 0) {
+                setRow(matrix, i);
+            }
+        }
+        for(int i = 1; i < N; i++) {
+            if(matrix[0][i] == 0) {
+                setCol(matrix, i);
+            }
+        }
+        if(firstRow) {
+            setRow(matrix, 0);
+        }
+        if(firstCol) {
+            setCol(matrix, 0);
+        }
+    }
+}
+
 class Main {
-	static int M = 10, N = 8;
-
-	public static void initial(int[][] matrix) {
-		int zero = 0;	// allowed 3 zero
-		for(int i = 0; i < M; i++)
-			for(int j = 0; j < N; j++) {
-				Random random = new Random();
-				int rint = random.nextInt(10);
-				if(rint == 0) {
-					zero++;
-					if(zero > 3)
-						rint++;
-				}
-				matrix[i][j] = rint;
-			}
-	}
-
-	public static void display(int[][] matrix) {
-		int M = matrix.length;
-		int N = matrix[0].length;
-		for(int i = 0; i < M; i++) {
-			for(int j = 0; j < N; j++) {
-				System.out.print(matrix[i][j] + "   ");
-			}
-			System.out.println();
-		}
-	}
-
     public static void main(String[] args) {
-        Solution solution = new Solution();
-		int[][] matrix = {{0,0,0,5}, {4,3,1,4}, {0,1,1,4}, {1,2,1,3}, {0,0,1,1}};
-		// initial(matrix);
-		// display(matrix);
-		// System.out.println();
-		solution.setZeroes2(matrix);
-		display(matrix);
+        Solution3 solution = new Solution3();
+		int[][] matrix = Input.buildMatrixWithZeros(10, 8);
+        Output.printMatrix(matrix);
+        System.out.println();
+		solution.setZeroes(matrix);
+		Output.printMatrix(matrix);
     }
 }

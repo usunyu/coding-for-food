@@ -1,3 +1,8 @@
+/*
+Write a SQL query to get a list of all buildings and the number of open requests (Requests in which status equals 
+'Open').
+*/
+
 SELECT BuildingName, ISNULL(Count2, 0) AS Count
 FROM Buildings
 LEFT JOIN

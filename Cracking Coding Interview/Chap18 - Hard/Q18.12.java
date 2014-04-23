@@ -1,4 +1,11 @@
-class Main {
+/*
+Given an NxN matrix of positive and negative integers, write code to find the submatrix with the largest 
+possible sum.
+*/
+
+import CtCILibrary.AssortedMethods;
+
+class Solution {
 	// Dynamic Programming Solution: O(N^4)
 	public static int getMaxMatrix(int[][] original) {
 		int maxArea = Integer.MIN_VALUE; // Important! Max could be < 0
@@ -59,6 +66,7 @@ class Main {
 		}
 	}
 
+	// O(N^3)
 	public static int maxSubMatrix(int[][] matrix) {
 		int rowCount = matrix.length;
 		int colCount = matrix[0].length;
@@ -80,6 +88,7 @@ class Main {
 		return maxSum;
 	}
 
+	// O(N)
 	public static int maxSubArray(int array[], int N) {
 		int maxSum = 0;
 		int runningSum = 0;
@@ -97,45 +106,9 @@ class Main {
 	}
 
 	public static void main(String[] args) {
-		int[][] matrix = randomMatrix(10, 10, -5, 5);
-		printMatrix(matrix);
+		int[][] matrix = AssortedMethods.randomMatrix(10, 10, -5, 5);
+		AssortedMethods.printMatrix(matrix);
 		System.out.println(getMaxMatrix(matrix));
 		System.out.println(maxSubMatrix(matrix));
-	}
-
-	public static int randomInt(int n) {
-		return (int) (Math.random() * n);
-	}
-
-	public static int randomIntInRange(int min, int max) {
-		return randomInt(max + 1 - min) + min;
-	}
-
-	public static int[][] randomMatrix(int M, int N, int min, int max) {
-		int[][] matrix = new int[M][N];
-		for (int i = 0; i < M; i++) {
-			for (int j = 0; j < N; j++) {
-				matrix[i][j] = randomIntInRange(min, max);
-			}
-		}
-		return matrix;
-	}
-
-	public static void printMatrix(int[][] matrix) {
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix[i].length; j++) {
-				if (matrix[i][j] < 10 && matrix[i][j] > -10) {
-					System.out.print(" ");
-				}
-				if (matrix[i][j] < 100 && matrix[i][j] > -100) {
-					System.out.print(" ");
-				}					
-				if (matrix[i][j] >= 0) {
-					System.out.print(" ");
-				}
-				System.out.print(" " + matrix[i][j]);				
-			}
-			System.out.println();
-		}
 	}
 }

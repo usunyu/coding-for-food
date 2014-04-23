@@ -1,3 +1,7 @@
+/*
+Given a directed graph, design an algorithm to find out whether there is a route between two nodes.
+*/
+
 import java.util.*;
 
 class MyNode {
@@ -97,7 +101,7 @@ class MyGraph {
 	}
 }
 
-class Q4_2App {
+class Solution {
 	public static void main(String[] args) {
 		MyGraph graph = new MyGraph(20);
 

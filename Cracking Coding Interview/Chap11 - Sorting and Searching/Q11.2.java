@@ -1,6 +1,10 @@
+/*
+Write a method to sort an array of strings so that all the anagrams are next to each other.
+*/
+
 import java.util.*;
 
-class Q11_2App {
+class Solution {
 	public static String sortChars(String s) {
 		char[] content = s.toCharArray();
 		Arrays.sort(content);

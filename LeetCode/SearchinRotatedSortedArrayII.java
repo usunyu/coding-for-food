@@ -1,3 +1,12 @@
+/*
+Follow up for "Search in Rotated Sorted Array":
+What if duplicates are allowed?
+
+Would this affect the run-time complexity? How and why?
+
+Write a function to determine if a given target is in the array.
+*/
+
 class Solution {
     // time complexity : O(logN), worest case O(N)
     public int searchRotate(int[] A, int start, int end) {
@@ -67,6 +76,46 @@ class Solution {
         }
         else if(rotate > 0 && target >= A[0] && target <= A[rotate - 1]) {
             return binarySearch(A, 0, rotate - 1, target);
+        }
+        return false;
+    }
+}
+
+/*
+    Second Round
+*/
+class Solution2 {
+    public boolean search(int[] A, int target) {
+        for(int i : A)
+            if(target == i)
+                return true;
+        return false;
+    }
+}
+
+class Solution3 {
+    public boolean search(int[] A, int target) {
+        int left = 0, right = A.length - 1;
+        while(left <= right) {
+            while(left <= right && A[left] == A[right]) {
+                if(A[left] == target) return true;
+                left++; right--;
+            }
+            if(left > right) return false;
+            int mid = left + (right - left) / 2;
+            if(A[mid] == target) return true;
+            else if(A[left] <= A[mid]) {
+                if(A[left] <= target && A[mid] > target)
+                    right = mid - 1;
+                else
+                    left = mid + 1;
+            }
+            else {
+                if(A[mid] < target && A[right] >= target)
+                    left = mid + 1;
+                else
+                    right = mid - 1;
+            }
         }
         return false;
     }

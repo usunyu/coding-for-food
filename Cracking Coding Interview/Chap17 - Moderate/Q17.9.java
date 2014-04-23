@@ -1,7 +1,11 @@
+/*
+Design a method to find the frequency of occurrences of any given word in a book.
+*/
+
 import java.util.HashSet;
 import java.util.HashMap;
 
-class Main {
+class Solution {
 	public static HashMap<String, Integer> getFrequency(String book, HashSet<Character> punctuation) {
 		StringBuilder sb = new StringBuilder();
 		HashMap<String, Integer> frequency = new HashMap<String, Integer>();

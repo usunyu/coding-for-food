@@ -1,6 +1,10 @@
+/*
+Design an algorithm to find the kth number such that the only prime factors are 3, 5, and 7.
+*/
+
 import java.util.*;
 
-class Q7_7App {
+class Solution {
 	public static int getKthMagicNumber(int k) {
 		if(k < 0)
 			return 0;

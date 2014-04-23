@@ -1,3 +1,9 @@
+/*
+Implement the "paint fill" function that one might see on many image editing programs. 
+That is, given a screen (represented by a two-dimensional array of colors), a point, and a new color, 
+fill in the surrounding area until the color changes from the original color.
+*/
+
 class Point {
 	int x;
 	int y;
@@ -7,7 +13,7 @@ class Point {
 	}
 }
 
-class Q9_7App {
+class Solution {
 	static int M = 10;
 	static int[][] screen = new int[M][M];
 

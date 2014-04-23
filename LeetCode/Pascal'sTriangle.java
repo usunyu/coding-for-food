@@ -53,6 +53,26 @@ class Solution2 {
     }
 }
 
+class Solution3 {
+    public ArrayList<ArrayList<Integer>> generate(int numRows) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        if(numRows == 0) return result;
+        ArrayList<Integer> first = new ArrayList<Integer>();
+        first.add(1);
+        result.add(first);
+        for(int i = 1; i < numRows; i++) {
+            ArrayList<Integer> last = result.get(i - 1);
+            ArrayList<Integer> current = new ArrayList<Integer>();
+            for(int j = 0; j <= last.size(); j++) {
+                if(j == 0 || j == last.size()) current.add(1);
+                else current.add(last.get(j - 1) + last.get(j));
+            }
+            result.add(current);
+        }
+        return result;
+    }
+}
+
 class Main {
     public static void main(String[] args) {
         Solution solution = new Solution();

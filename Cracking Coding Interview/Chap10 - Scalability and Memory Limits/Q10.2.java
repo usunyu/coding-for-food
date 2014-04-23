@@ -1,3 +1,9 @@
+/*
+How would you design the data structures for a very large social network like Facebook or Linkedin? 
+Describe how you would design an algorithm to show the connection, or path, between two people 
+(e.g., Me -> Bob -> Susan -> Jason -> You).
+*/
+
 import java.util.*;
 
 // HashMap
@@ -31,7 +37,7 @@ class ConnectGraph {
 	}
 }
 
-class Q10_2App {
+class Solution {
 	public static void main(String[] args) {
 		HashMap<Member, ArrayList<Member>> relationMap = new HashMap<Member, ArrayList<Member>>();
 	}

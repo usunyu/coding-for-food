@@ -1,3 +1,7 @@
+/*
+Describe how you could usea single array to implement three stacks
+*/
+
 import java.util.*;
 
 class ThreeStack {
@@ -63,7 +67,7 @@ class ThreeStack {
 	}
 }
 
-class Q3_1App {
+class Solution {
 	public static void main(String[] args) {
 		ThreeStack threeStack = new ThreeStack();
 		// first stack

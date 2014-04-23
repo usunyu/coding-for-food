@@ -1,4 +1,8 @@
-class Main {
+/*
+Design an algorithm to figure out if someone has won a game of tic-tac-toe.
+*/
+
+class Solution {
 	static int N = 3;
 
 	public static boolean checkColumn(char[][] board, char ch) {

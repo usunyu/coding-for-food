@@ -1,4 +1,10 @@
-class Q9_9App {
+/*
+Write an algorithm to prim all ways of arranging eight queens on an 8x8 chess board so that none of them 
+share the same row, column or diagonal. In this case, "diagonal" means all diagonals, not just the two 
+that bisect the board.
+*/
+
+class Solution {
 	static int count = 0;
 
 	public static void print(int[][] board) {

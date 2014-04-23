@@ -1,3 +1,7 @@
+/*
+Implement a function to check if a binary tree is a binary search tree.
+*/
+
 import java.util.*;
 
 class MyNode {
@@ -85,7 +89,7 @@ class MyBinaryTree {
 	}
 }
 
-class Q4_5App {
+class Solution {
 	public static void main(String[] args) {
 		MyBinaryTree tree1 = new MyBinaryTree();
 		MyBinaryTree tree2 = new MyBinaryTree();

@@ -1,3 +1,7 @@
+/*
+Design a musicaljukebox using object-oriented principles.
+*/
+
 import java.util.*;
 
 class CD {
@@ -59,7 +63,7 @@ class MusicalJukebox {
 	}
 }
 
-class Q8_3App {
+class Solution {
 	public static void main(String[] args) {
 
 	}

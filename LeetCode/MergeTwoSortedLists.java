@@ -58,10 +58,13 @@ class Solution {
         }
         return head;
     }
-    /*
-        Second Round
-    */
-    public ListNode mergeTwoLists2(ListNode l1, ListNode l2) {
+}
+
+/*
+    Second Round
+*/
+class Solution2 {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         if(l1 == null) return l2;
         if(l2 == null) return l1;
         ListNode head = null, prev = null;
@@ -91,6 +94,31 @@ class Solution {
         if(l2 != null) {
             prev.next = l2;
         }
+        return head;
+    }
+}
+
+class Solution3 {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode head = new ListNode(0), prev = head;
+        while(l1 != null && l2 != null) {
+            ListNode cur = null;
+            if(l1.val < l2.val) {
+                cur = l1;
+                l1 = l1.next;
+            }
+            else {
+                cur = l2;
+                l2 = l2.next;
+            }
+            prev.next = cur;
+            prev = cur;
+        }
+        if(l1 != null)
+            prev.next = l1;
+        if(l2 != null)
+            prev.next = l2;
+        head = head.next;
         return head;
     }
 }

@@ -1,3 +1,7 @@
+/*
+Design the data structures for an online book reader system.
+*/
+
 import java.util.*;
 
 enum Category {
@@ -89,7 +93,7 @@ class OnlineBookSystem {
 	}
 }
 
-class Q8_5App {
+class Solution {
 	public static void main(String[] args) {
 
 	}

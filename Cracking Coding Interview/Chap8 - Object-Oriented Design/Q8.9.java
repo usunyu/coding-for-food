@@ -1,3 +1,8 @@
+/*
+Explain the data structures and algorithms that you would use to design an in-memory file system. 
+Illustrate with an example in code where possible.
+*/
+
 import java.util.*;
 
 class File {
@@ -84,7 +89,7 @@ class FileSystem {
 	}
 }
 
-class Q8_9App {
+class Solution {
 	public static void main(String[] args) {
 
 	}

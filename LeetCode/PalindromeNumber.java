@@ -39,8 +39,10 @@ class Solution {
         }
         return true;
     }
+}
 
-    public boolean isPalindrome2(int x) {
+class Solution2 {
+    public boolean isPalindrome(int x) {
         if (x < 0) return false;
         int div = 1;
         while (x / div >= 10) {
@@ -56,10 +58,12 @@ class Solution {
         }
         return true;
     }
-    /*
-        Second Round
-    */
-    public boolean isPalindrome3(int x) {
+}
+/*
+    Second Round
+*/
+class Solution3 {
+    public boolean isPalindrome(int x) {
         if(x < 0) return false;
         long left = 1, right = 1, num = x;
         while(num >= 10) {
@@ -73,6 +77,27 @@ class Solution {
             // for next
             left /= 10;
             right *= 10;
+        }
+        return true;
+    }
+}
+
+class Solution {
+    public boolean isPalindrome(int x) {
+        if(x < 0) return false;
+        int bits = 1, num = x;
+        while(num >= 10) {
+            bits *= 10;
+            num /= 10;
+        }
+        num = x;
+        while(bits > 0) {
+            int last = num % 10;
+            int first = num / bits;
+            if(last != first) return false;
+            num -= first * bits;
+            num /= 10;
+            bits /= 100;
         }
         return true;
     }

@@ -1,3 +1,10 @@
+/*
+Write a program to sort a stack in ascending order (with biggest items on top). 
+You may use at most one additional stack to hold items, but you may not copy the elements 
+into any other data structure (such as an array). 
+The stack supports the following operations: push, pop, peek, and isEmpty.
+*/
+
 import java.util.*;
 
 class MyNode {
@@ -40,7 +47,7 @@ class MyStack {
 	}
 }
 
-class Q3_6App {
+class Solution {
 	public static void sortStack(MyStack stack) {
 		MyStack buffer = new MyStack();
 		while(!stack.isEmpty()) {
@@ -77,4 +84,39 @@ class Q3_6App {
 		System.out.println();
 	}
 }
-
+/*
+	Second Round
+*/
+class Solution2 {
+	public static void main(String[] args) {
+		Stack<Integer> stack = new Stack<Integer>();
+		Stack<Integer> addit = new Stack<Integer>();
+		stack.push(6);
+		stack.push(7);
+		stack.push(3);
+		stack.push(5);
+		stack.push(9);
+		stack.push(4);
+		// sort stack
+		for(int i = stack.size() - 1; i > 0; i--) {
+			int min = 0;
+			for(int j = 0; j <= i; j++) {
+				if(j == 0) min = stack.pop();
+				else {
+					int next = stack.pop();
+					if(next < min) {
+						addit.push(min);
+						min = next;
+					}
+					else addit.push(next);
+				}
+			}
+			// push min at stack
+			stack.push(min);
+			while(!addit.isEmpty()) stack.push(addit.pop());
+		}
+		while(!stack.isEmpty())
+			System.out.print(stack.pop() + " ");
+		System.out.println();
+	}
+}

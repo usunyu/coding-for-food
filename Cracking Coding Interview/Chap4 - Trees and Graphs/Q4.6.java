@@ -1,3 +1,8 @@
+/*
+Write an algorithm to find the 'next'node (i.e., in-order successor) of a given node in
+a binary search tree. You may assume that each node has a link to its parent.
+*/
+
 import java.util.*;
 
 class MyNode {
@@ -106,7 +111,7 @@ class MyBST {
 	}
 }
 
-class Q4_6App {
+class Solution {
 	public static void main(String[] args) {
 		MyBST bst = new MyBST();
 		MyNode node1 = new MyNode(10);

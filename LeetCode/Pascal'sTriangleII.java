@@ -44,6 +44,22 @@ class Solution2 {
     }
 }
 
+class Solution3 {
+    public ArrayList<Integer> getRow(int rowIndex) {
+        ArrayList<Integer> level = new ArrayList<Integer>();
+        int[] arr = new int[rowIndex + 1];
+        arr[0] = 1;
+        for(int i = 1; i <= rowIndex; i++) {
+            arr[i] = 1;
+            for(int j = i - 1; j >= 1; j--) {
+                arr[j] = arr[j - 1] + arr[j];
+            }
+        }
+        for(int i : arr) level.add(i);
+        return level;
+    }
+}
+
 class Main {
     public static void main(String[] args) {
         Solution2 solution = new Solution2();

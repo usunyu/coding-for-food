@@ -51,36 +51,41 @@ class Solution {
 */
 class Solution2 {
 	// coin: 1, 5, 10, 25
-	public static int getChange(int n, int coin) {
-		if(n < 0) return 0;
-		if(n == 0) return 1;
-		int next = 0;
-		switch(coin) {
-			case 25:
-				next = 10;
-				break;
-			case 10:
-				next = 5;
-				break;
-			case 5:
-				next = 1;
-				break;
-			case 1:
-				next = 0;
-				break;
-			default:
-				return 0;
+	// space m * n
+	public static int getChange(int n, int[] coins) {
+		int m = coins.length;
+		int[][] dp = new int[n + 1][m];
+		for(int i = 0; i < m; i++) dp[0][i] = 1;
+		// dp
+		for(int i = 1; i <= n; i++) {
+			for(int j = 0; j < m; j++) {
+				// including current coin
+				dp[i][j] += (i - coins[j] >= 0 ? dp[i - coins[j]][j] : 0);
+				// excluding current coin
+				dp[i][j] += (j -1 >= 0 ? dp[i][j - 1] : 0);
+			}
 		}
-		int count = 0;
-		for(int i = 0; i * coin <= n; i++) {
-			count += getChange(n - i * coin, next);
+		return dp[n][m - 1];
+	}
+
+	// space n
+	public static int getChange2(int n, int[] coins) {
+		int m = coins.length;
+		int[] dp = new int[n + 1];
+		dp[0] = 1;
+		// dp
+		for(int j = 0; j < m; j++) {
+			for(int i = coins[j]; i <= n; i++) {
+				dp[i] += dp[i - coins[j]];
+			}
 		}
-		return count;
+		return dp[n];
 	}
 
 	public static void main(String[] args) {
+		int[] coins = {1, 5, 10, 25};
 		for(int n = 1; n <= 100; n++) {
-			System.out.println("getChange(" + n + "): " + getChange(n, 25));
+			System.out.println("getChange(" + n + "): " + getChange(n, coins));
 		}
 	}
 }

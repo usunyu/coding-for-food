@@ -32,8 +32,10 @@ class LCA {
 	// use count flag if we already find one node
 	public static TreeNode lowestCommonAcestor(TreeNode root, TreeNode node1, TreeNode node2, IntWrap wrap) {
 		if(root == null || wrap.count == 2) return null;	// when count==2, already found, pruning
+		// fix same node bug
+		if(root == node1) wrap.count++;
+		if(root == node2) wrap.count++;
 		if(root == node1 || root == node2) {
-			wrap.count++;
 			// do not stop, fix node not in tree bug
 			lowestCommonAcestor(root.left, node1, node2, wrap);
 			lowestCommonAcestor(root.right, node1, node2, wrap);
@@ -72,7 +74,7 @@ class Main {
 	public static void main(String[] args) {
 		TreeNode root = buildExampleTree();
 		// TreeNode node1 = root.right, node2 = new TreeNode(10);
-		TreeNode node1 = root.right, node2 = root.right.left;
+		TreeNode node1 = root.right, node2 = root.right;
 		TreeNode common = LCA.lowestCommonAcestor(root, node1, node2);
 		System.out.println(common);
 	}

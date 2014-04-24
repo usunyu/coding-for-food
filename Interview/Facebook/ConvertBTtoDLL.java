@@ -14,6 +14,10 @@ class Node {
 	public Node(int data) {
 		this.data = data;
 	}
+	
+	public String toString() {
+		return "[" + data + "]";
+	}
 }
 
 // this class is help to store first node and last node of a list
@@ -62,12 +66,14 @@ class Solution {
 class Solution2 {
 	// morris solution
 	public static Node convert(Node root) {
-		Node cur = root, head = null, prev = null;
+		Node cur = root, head = null, prev = null, tmp, prec;
 		while(cur != null) {
 			if(cur.left == null) {
-				Node tmp = cur.right;
+				tmp = cur.right;
+				/* BUG: we cannot use this way to remove node from tree
 				if(cur.right != null && cur.right.left == cur)
 					cur.right.left = null;	// cut
+				*/
 				cur.right = null;	// clean
 				if(head == null) {
 					head = cur; prev = cur;
@@ -80,10 +86,13 @@ class Solution2 {
 				cur = tmp;
 			}
 			else {
-				Node prec = cur.left;
+				prec = cur.left;
 				while(prec.right != null) prec = prec.right;
 				prec.right = cur;
-				cur = cur.left;
+				/*	BUG Fix: */
+				tmp = cur.left;
+				cur.left = null;	// need cut here
+				cur = tmp;
 			}
 		}
 		if(head != null) {
@@ -125,14 +134,21 @@ class Main {
 	}
 
 	public static Node buildExampleBT() {
-		Node node1 = new Node(8);
-        Node node2 = new Node(4); node1.left = node2;
-        Node node3 = new Node(1); node1.right = node3;
-        Node node4 = new Node(9); node2.left = node4;
-        Node node5 = new Node(2); node3.left = node5;
-        Node node6 = new Node(3); node3.right = node6;
-        return node1;
+		// Node node1 = new Node(8);
+        // Node node2 = new Node(4); node1.left = node2;
+        // Node node3 = new Node(1); node1.right = node3;
+        // Node node4 = new Node(9); node2.left = node4;
+        // Node node5 = new Node(2); node3.left = node5;
+        // Node node6 = new Node(3); node3.right = node6;
+
+        Node node4 = new Node(4);
+        Node node2 = new Node(2); node4.left = node2;
+        Node node1 = new Node(1); node2.left = node1;
+        Node node3 = new Node(3); node2.right = node3;
+        Node node0 = new Node(0); node1.left = node0;
+        Node node5 = new Node(5); node4.right = node5;
+        Node node6 = new Node(6); node5.right = node6;
+        return node4;
 	}
 }
-
 

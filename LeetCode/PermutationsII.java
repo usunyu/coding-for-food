@@ -32,7 +32,9 @@ class Solution {
         return result;
     }
 }
-
+/*
+    Second Round
+*/
 class Solution2 {
     private void swap(int[] num, int i, int j) {
         int tmp = num[i];
@@ -66,11 +68,47 @@ class Solution2 {
         return permutations;
     }
 }
+/*
+    Third Round
+*/
+class Solution3 {
+    private void swap(int[] num, int i, int j) {
+        int tmp = num[i];
+        num[i] = num[j];
+        num[j] = tmp;
+    }
+    
+    private void permute(int[] num, int index, ArrayList<ArrayList<Integer>> res) {
+        if(index == num.length - 1) {
+            ArrayList<Integer> sub = new ArrayList<Integer>();
+            for(int n : num) sub.add(n);
+            res.add(sub);
+        }
+        else {
+            HashSet<Integer> visited = new HashSet<Integer>();
+            for(int i = index; i < num.length; i++) {
+                if(visited.contains(num[i]))
+                    continue;
+                swap(num, i, index);
+                permute(num, index + 1, res);
+                swap(num, i, index);    // backtracking
+                visited.add(num[i]);
+            }
+        }
+    }
+    
+    public ArrayList<ArrayList<Integer>> permuteUnique(int[] num) {
+        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+        if(num == null || num.length == 0) return res;
+        permute(num, 0, res);
+        return res;
+    }
+}
 
 class Main {
     public static void main(String[] args) {
-        Solution2 solution = new Solution2();
-        int[] num = {0,1,0,0,9};
+        Solution3 solution = new Solution3();
+        int[] num = {1,1,2};
         Output.printLevelLists(solution.permuteUnique(num));
     }
 }

@@ -15,6 +15,7 @@ Note:
 */
 
 import java.util.*;
+import LCLibrary.*;
 
 class Solution {
     // Time Limit Exceeded
@@ -41,9 +42,11 @@ class Solution {
         }
         return results;
     }
+}
 
+class Solution2 {
     // Time Complexity: O(N^3)
-    public ArrayList<ArrayList<Integer>> fourSum2(int[] num, int target) {
+    public ArrayList<ArrayList<Integer>> fourSum(int[] num, int target) {
         ArrayList<ArrayList<Integer>> results = new ArrayList<ArrayList<Integer>>();
         if(num.length < 4) return results;
         Arrays.sort(num);
@@ -78,11 +81,13 @@ class Solution {
         }
         return results;
     }
+}
 
-    /*
-        Second Round
-    */
-    public ArrayList<ArrayList<Integer>> fourSum3(int[] num, int target) {
+/*
+    Second Round
+*/
+class Solution3 {
+    public ArrayList<ArrayList<Integer>> fourSum(int[] num, int target) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
         if(num.length < 4) return result;
         Arrays.sort(num);
@@ -115,20 +120,45 @@ class Solution {
         return result;
     }
 }
+/*
+    Third Round
+*/
+class Solution4 {
+    public ArrayList<ArrayList<Integer>> fourSum(int[] num, int target) {
+        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+        if(num == null || num.length < 4) return res;
+        Arrays.sort(num);
+        int n = num.length;
+        for(int i = 0; i < n - 3; i++) {
+            while(i > 0 && i < n - 3 && num[i] == num[i - 1]) i++;
+            for(int j = i + 1; j < n - 2; j++) {
+                while(j > i + 1 && j < n - 2 && num[j] == num[j - 1]) j++;
+                int left = j + 1, right = n - 1;
+                while(left < right) {
+                    int sum = num[i] + num[j] + num[left] + num[right];
+                    if(sum == target) {
+                        ArrayList<Integer> sub = new ArrayList<Integer>();
+                        sub.add(num[i]); sub.add(num[j]); sub.add(num[left]); sub.add(num[right]);
+                        res.add(sub);
+                        left++; right--;
+                        while(left < right && num[left] == num[left - 1]) left++;
+                        while(left < right && right < n - 1 && num[right] == num[right + 1]) right--;
+                    }
+                    else if(sum < target)
+                        left++;
+                    else
+                        right--;
+                }
+            }
+        }
+        return res;
+    }
+}
 
 class Main {
-    public static void print(ArrayList<ArrayList<Integer>> results) {
-        for(ArrayList<Integer> quadruplets : results) {
-            for(int n : quadruplets) {
-                System.out.print(n + " ");
-            }
-            System.out.println();
-        }
-    }
-
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution4 solution = new Solution4();
         int[] array = {1, 0, -1, 0, -2, 2};
-        print(solution.fourSum3(array, 0));
+        Output.printLevelLists(solution.fourSum(array, 0));
     }
 }

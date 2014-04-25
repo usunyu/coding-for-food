@@ -67,10 +67,12 @@ class Solution {
         }
         return mul;
     }
+}
 
+class Solution2 {
     // time complexity : O(M*N)
     // space complexity : O(M+N)
-    public String multiply2(String num1, String num2) {
+    public String multiply(String num1, String num2) {
         if (num1.equals("0") || num2.equals("0")) return "0";
         int l1 = num1.length(), l2 = num2.length();
         int[] n1 = new int[l1];
@@ -99,10 +101,12 @@ class Solution {
         String s = strBuff.reverse().toString();
         return (s.isEmpty()) ? "0" : s;
     }
-    /*
-        Second Round
-    */
-    public String multiply3(String num1, String num2) {
+}
+/*
+    Second Round
+*/
+class Solution3 {
+    public String multiply(String num1, String num2) {
         int N1 = num1.length(), N2 = num2.length();
         if(N1 == 0 || N2 == 0) return "";
         if(num1.equals("0") || num2.equals("0")) return "0";
@@ -146,11 +150,53 @@ class Solution {
         return ret.toString();
     }
 }
+/*
+    Third Round
+*/
+class Solution4 {
+    public String multiply(String num1, String num2) {
+        if(num1 == null || num2 == null) return "";
+        if(num1.equals("0") || num2.equals("0")) return "0";
+        int l1 = num1.length(), l2 = num2.length();
+        int[] n1 = new int[l1], n2 = new int[l2];
+        for(int i = 0; i < l1; i++) n1[i] = num1.charAt(i) - '0';
+        for(int i = 0; i < l2; i++) n2[i] = num2.charAt(i) - '0';
+        ArrayList<Integer> result = null;
+        for(int i = l1 - 1; i >= 0; i--) {
+            ArrayList<Integer> sub = new ArrayList<Integer>();
+            for(int j = l1 - 1; j > i; j--) sub.add(0);
+            int carry = 0, mul = n1[i];
+            for(int j = l2 - 1; j >= 0; j--) {
+                int val = mul * n2[j] + carry;
+                int dig = val % 10;
+                carry = val / 10;
+                sub.add(dig);
+            }
+            if(carry != 0) sub.add(carry);
+            if(result == null) result = sub;
+            else {
+                carry = 0;
+                for(int j = 0; j < sub.size(); j++) {
+                    int val = sub.get(j) + (j >= result.size() ? 0 : result.get(j)) + carry;
+                    int dig = val % 10;
+                    carry = val / 10;
+                    sub.set(j, dig);
+                }
+                if(carry != 0) sub.add(carry);
+                result = sub;
+            }
+        }
+        StringBuilder ret = new StringBuilder();
+        for(int i = result.size() - 1; i >= 0; i--)
+            ret.append(result.get(i));
+        return ret.toString();
+    }
+}
 
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution4 solution = new Solution4();
         String num1 = "123", num2 = "456";
-        System.out.println(solution.multiply3(num1, num2));
+        System.out.println(solution.multiply(num1, num2));
     }
 }

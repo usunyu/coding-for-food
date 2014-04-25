@@ -84,10 +84,34 @@ class Solution3 {
         }
     }
 }
+/*
+    Third Round
+*/
+class Solution4 {
+    private void swap(int[] A, int i, int j) {
+        int tmp = A[i];
+        A[i] = A[j];
+        A[j] = tmp;
+    }
+    
+    public void sortColors(int[] A) {
+        if(A == null || A.length == 0) return;
+        int n = A.length;
+        int red = 0, current = 0, blue = n - 1;
+        while(current <= blue) {
+            if(A[current] == 0)
+                swap(A, red++, current++);
+            else if(A[current] == 2)
+                swap(A, blue--, current);
+            else
+                current++;
+        }
+    }
+}
 
 class Main {
     public static void main(String[] args) {
-        Solution3 solution = new Solution3();
+        Solution4 solution = new Solution4();
         int[] A = {0,1,1,0,0,2,0,2,0,1};
         System.out.println(Arrays.toString(A));
         solution.sortColors(A);

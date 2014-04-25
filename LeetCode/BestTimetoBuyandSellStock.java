@@ -22,11 +22,12 @@ class Solution {
         }
         return max;
     }
-
-    /*
-        Second Round
-    */
-    public int maxProfit2(int[] prices) {
+}
+/*
+    Second Round
+*/
+class Solution2 {
+    public int maxProfit(int[] prices) {
         int start = 0, max = 0;
         for(int i = 1; i < prices.length; i++) {
             if(prices[i] > prices[start]) {
@@ -43,10 +44,30 @@ class Solution {
     }
 }
 
+/*
+    Third Round
+*/
+class Solution3 {
+    public int maxProfit(int[] prices) {
+        if(prices == null || prices.length == 0)
+            return 0;
+        int buy = 0, n = prices.length, max = 0;
+        for(int i = 1; i < n; i++) {
+            if(prices[i] > prices[buy]) {
+                max = Math.max(prices[i] - prices[buy], max);
+            }
+            else {
+                buy = i;
+            }
+        }
+        return max;
+    }
+}
+
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution2 solution = new Solution2();
         int[] prices = {1, 2, 1, 3, 0, 3};
-        System.out.println(solution.maxProfit2(prices));
+        System.out.println(solution.maxProfit(prices));
     }
 }

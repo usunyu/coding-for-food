@@ -112,6 +112,38 @@ class Solution3 {
         return permutations;
     }
 }
+/*
+    Third Round
+*/
+class Solution4 {
+    private void swap(int[] num, int i, int j) {
+        int tmp = num[i];
+        num[i] = num[j];
+        num[j] = tmp;
+    }
+    
+    private void permute(int[] num, int index, ArrayList<ArrayList<Integer>> res) {
+        if(index == num.length - 1) {
+            ArrayList<Integer> sub = new ArrayList<Integer>();
+            for(int n : num) sub.add(n);
+            res.add(sub);
+        }
+        else {
+            for(int i = index; i < num.length; i++) {
+                swap(num, i, index);
+                permute(num, index + 1, res);
+                swap(num, i, index);    // backtracking
+            }
+        }
+    }
+    
+    public ArrayList<ArrayList<Integer>> permute(int[] num) {
+        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+        if(num == null || num.length == 0) return res;
+        permute(num, 0, res);
+        return res;
+    }
+}
 
 class Main {
     public static void main(String[] args) {

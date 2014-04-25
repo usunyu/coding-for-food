@@ -185,10 +185,30 @@ class Solution7 {
         return n > 0 ? ret : 1.0 / ret;
     }
 }
+/*
+    Third round
+*/
+class Solution8 {
+    public double pow(double x, int n) {
+        int exp = 1, m = Math.abs(n);
+        double res = 1, mul = x;
+        while(m > 0) {
+            res *= mul;
+            mul *= mul;
+            m -= exp;
+            exp *= 2;
+            if(exp > m) {
+                mul = x;
+                exp = 1;
+            }
+        }
+        return n > 0 ? res : 1.0 / res;
+    }
+}
 
 class Main {
     public static void main(String[] args) {
-        Solution7 solution = new Solution7();
+        Solution8 solution = new Solution8();
         double result = solution.pow(1.72777, 7);
         System.out.println(result);
     }

@@ -103,10 +103,35 @@ class Solution3 {
         return result;
     }
 }
+/*
+    Third Round
+*/
+class Solution4 {
+    private void combine(int n, int k, int index, ArrayList<Integer> path, ArrayList<ArrayList<Integer>> res) {
+        if(k == 0) {
+            ArrayList<Integer> copy = new ArrayList<Integer>(path);
+            res.add(copy);
+        }
+        else {
+            for(int i = index; i <= n; i++) {
+                path.add(i);
+                combine(n, k - 1, i + 1, path, res);
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+    
+    public ArrayList<ArrayList<Integer>> combine(int n, int k) {
+        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+        if(k > n) return res;
+        combine(n, k, 1, new ArrayList<Integer>(), res);
+        return res;
+    }
+}
 
 class Main {
     public static void main(String[] args) {
-        Solution3 solution = new Solution3();
+        Solution4 solution = new Solution4();
         System.out.println(solution.combine(4, 2));
     }
 }

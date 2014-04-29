@@ -42,14 +42,25 @@ public class Brute {
 			Point p1 = points.get(a);
 			for(int b = a + 1; b < points.size() - 2; b++) {
 				Point p2 = points.get(b);
-				double slope = p1.slopeTo(p2);
+				double slope1 = p1.slopeTo(p2);
+				if(slope1 == Double.NEGATIVE_INFINITY)
+					continue;
 				for(int c = b + 1; c < points.size() - 1; c++) {
 					Point p3 = points.get(c);
-					if(Math.abs(slope - p1.slopeTo(p3)) >= Precision)	// not equal
+					double slope2 = p1.slopeTo(p3);
+					if(slope2 == Double.NEGATIVE_INFINITY)
+						continue;
+					if(Math.abs(slope1 - slope2) >= Precision)	// not equal
 						continue;
 					for(int d = c + 1; d < points.size(); d++) {
 						Point p4 = points.get(d);
-						if(Math.abs(slope - p1.slopeTo(p4)) < Precision) {
+						double slope3 = p1.slopeTo(p4);
+						if(slope3 == Double.NEGATIVE_INFINITY)
+							continue;
+						if(Math.abs(slope1 - slope3) < Precision ||
+								slope1 == Double.POSITIVE_INFINITY &&
+								slope2 == Double.POSITIVE_INFINITY &&
+								slope3 == Double.POSITIVE_INFINITY) {
 							ArrayList<Point> collinear = new ArrayList<Point>();
 							collinear.add(p1);
 							collinear.add(p2);

@@ -41,6 +41,50 @@ public class Fast {
 		}
 	}
 	
+	private static void addCollinear(Point origin, Slope slope, Slope prev, int i, int j, int count, ArrayList<Slope> slopes) {
+		// check if contained
+		boolean contained = false;
+		for(int k = 0; k < i; k++) {
+			Slope check = new Slope(points.get(k), origin);
+			if(Math.abs(slope.getSlope() - check.getSlope()) < Precision) {
+				contained = true;
+				break;
+			}
+		}
+		if(contained)
+			return;
+		int n;
+		if(Math.abs(slope.getSlope() - prev.getSlope()) < Precision)
+			n = j + 1;
+		else
+			n = j;
+		ArrayList<Point> collinear = new ArrayList<Point>();
+		collinear.add(origin);
+		for(int k = j - count; k < n; k++) {
+			collinear.add(slopes.get(k).getToPoint());
+		}
+		collinears.add(collinear);
+	}
+	
+	private static void addCollinear(Point origin, int i, int j, ArrayList<Slope> slopes) {
+		// check if contained
+		boolean contained = false;
+		for(int k = 0; k < i; k++) {
+			Slope check = new Slope(points.get(k), origin);
+			if(check.getSlope() == Double.POSITIVE_INFINITY) {
+				contained = true;
+				break;
+			}
+		}
+		if(contained)
+			return;
+		ArrayList<Point> collinear = new ArrayList<Point>();
+		collinear.add(origin);
+		for(int k = j; k < slopes.size(); k++)
+			collinear.add(slopes.get(k).getToPoint());
+		collinears.add(collinear);
+	}
+	
 	private static void collinear() {
 		collinears = new ArrayList<ArrayList<Point>>();
 		for(int i = 0; i < points.size() - 3; i++) {
@@ -49,6 +93,8 @@ public class Fast {
 			for(int j = i + 1; j < points.size(); j++) {
 				Point to = points.get(j);
 				Slope slope = new Slope(origin, to);
+				if(slope.getSlope() == Double.NEGATIVE_INFINITY)
+					continue;
 				slopes.add(slope);
 			}
 			// sort by slope
@@ -57,32 +103,20 @@ public class Fast {
 			Slope prev = null;
 			for(int j = 0; j < slopes.size(); j++) {
 				Slope slope = slopes.get(j);
+				// if infinity
+				if(slope.getSlope() == Double.POSITIVE_INFINITY) {
+					// process prevs
+					if(count >= 3 && prev != null)
+						addCollinear(origin, slope, prev, i, j, count, slopes);
+					// precess infinity
+					if(slopes.size() - j >= 3)
+						addCollinear(origin, i, j, slopes);
+					break;
+				}
 				if(prev != null) {
 					if(Math.abs(slope.getSlope() - prev.getSlope()) > Precision || j == slopes.size() - 1) {
-						if(count >= 3) {
-							// check if contained
-							boolean contained = false;
-							for(int k = 0; k < i; k++) {
-								Slope check = new Slope(points.get(k), origin);
-								if(Math.abs(slope.getSlope() - check.getSlope()) < Precision) {
-									contained = true;
-									break;
-								}
-							}
-							if(contained)
-								continue;
-							int n;
-							if(Math.abs(slope.getSlope() - prev.getSlope()) < Precision)
-								n = j + 1;
-							else
-								n = j;
-							ArrayList<Point> collinear = new ArrayList<Point>();
-							collinear.add(origin);
-							for(int k = j - count; k < n; k++) {
-								collinear.add(slopes.get(k).getToPoint());
-							}
-							collinears.add(collinear);
-						}
+						if(count >= 3)
+							addCollinear(origin, slope, prev, i, j, count, slopes);
 						count = 1;
 					}
 					else {

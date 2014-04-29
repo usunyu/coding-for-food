@@ -18,12 +18,6 @@ public class Brute {
 	private static ArrayList<ArrayList<Point>> collinears;
 	private static double Precision = 0.0001;
 	
-	private static void setDraw() {
-		StdDraw.setXscale(0, 32768);
-        StdDraw.setYscale(0, 32768);
-        StdDraw.show(0);
-	}
-	
 	private static void input(String filename) {
 		points = new ArrayList<Point>();
 		File file = new File(filename);
@@ -98,12 +92,17 @@ public class Brute {
 	}
 	
 	public static void main(String[] args) {
+		StdDraw.setXscale(0, 32768);
+        StdDraw.setYscale(0, 32768);
+        StdDraw.show(0);
+		
 		input(args[0]);
 		Collections.sort(points);
-		//setDraw();
-		//drawPoints();
+		drawPoints();
 		collinear();
-		//drawCollinears();
+		drawCollinears();
 		printCollinears();
+		
+		StdDraw.show(0);
 	}
 }

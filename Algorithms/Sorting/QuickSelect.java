@@ -58,6 +58,8 @@ class Main {
 		}
 	}
 
+	// better solution for memory and in practice
+	// form Introduction to Algorithm
 	private static int partition(int[] array, int start, int end) {
 		int pivot = array[end];
 		int i = start, j = start;

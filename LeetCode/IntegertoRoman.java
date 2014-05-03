@@ -67,10 +67,40 @@ class Solution {
         }
         return romanStr;
     }
-    /*
-        Second Round
-    */
-    public String intToRoman2(int num) {
+}
+/*
+    Second Round
+*/
+class Solution2 {
+    public String getRomanBase(int num) {
+        String romanBase = "";
+        switch(num) {
+            case 1:
+                romanBase = "I";
+                break;
+            case 5:
+                romanBase = "V";
+                break;
+            case 10:
+                romanBase = "X";
+                break;
+            case 50:
+                romanBase = "L";
+                break;
+            case 100:
+                romanBase = "C";
+                break;
+            case 500:
+                romanBase = "D";
+                break;
+            case 1000:
+                romanBase = "M";
+                break;
+        }
+        return romanBase;
+    }
+
+    public String intToRoman(int num) {
         int romanBase = 1000;
         StringBuilder roman = new StringBuilder();
         while(romanBase >= 1) {
@@ -102,7 +132,7 @@ class Solution {
     }
 }
 
-class Solution2 {
+class Solution3 {
     public String intToRoman(int num) {
         int[] nums = new int[]{1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
         String[] s = new String[]{"M","CM", "D","CD", "C","XC", "L","XL", "X","IX", "V", "IV", "I"};
@@ -122,9 +152,9 @@ class Solution2 {
 
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution2 solution = new Solution2();
         int num = 9;
-        System.out.println(solution.intToRoman2(num));
+        System.out.println(solution.intToRoman(num));
     }
 }
 

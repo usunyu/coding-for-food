@@ -21,10 +21,12 @@ class Solution {
         }
         return builder.toString();
     }
-    /*
-        Second Round
-    */
-    public String longestCommonPrefix2(String[] strs) {
+}
+/*
+    Second Round
+*/
+class Solution2 {
+    public String longestCommonPrefix(String[] strs) {
         if(strs == null || strs.length == 0) return "";
         StringBuilder sb = new StringBuilder();
         for(int index = 0; index < strs[0].length(); index++) {
@@ -46,11 +48,33 @@ class Solution {
         return sb.toString();
     }
 }
+/*
+    Third Round
+*/
+class Solution3 {
+    public String longestCommonPrefix(String[] strs) {
+        if(strs == null || strs.length == 0) return "";
+        StringBuilder lcp = new StringBuilder();
+        for(int i = 0; i < strs[0].length(); i++) {
+            char pivot = strs[0].charAt(i);
+            boolean finish = false;
+            for(int j = 1; j < strs.length; j++) {
+                if(i == strs[j].length() || strs[j].charAt(i) != pivot) {
+                    finish = true;
+                    break;
+                }
+            }
+            if(finish) break;
+            lcp.append(pivot);
+        }
+        return lcp.toString();
+    }
+}
 
 class Main {
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution3 solution = new Solution3();
         String[] strs = {"ABCD", "ABEE", "ABCA"};
-        System.out.println(solution.longestCommonPrefix2(strs));
+        System.out.println(solution.longestCommonPrefix(strs));
     }
 }

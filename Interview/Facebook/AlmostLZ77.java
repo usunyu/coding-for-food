@@ -38,7 +38,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 class AlmostLZ77 {
-	private static final int maxSize = 16;
+	private static final int maxSize = (int)Math.pow(2, 12);	// max window size
 	private static ArrayList<Byte> input = new ArrayList<Byte>();
 	private static ArrayList<Byte> output = new ArrayList<Byte>();
 
@@ -81,16 +81,24 @@ class AlmostLZ77 {
 		}
 	}
 	
-	private static byte checkOutputByte(byte currentByte, byte currentBytePtr) {
+	private static boolean isCurrentByteFilled(byte currentByte, byte currentBytePtr) {
 		if(currentBytePtr == 8) {	// current byte filled
 			output.add(currentByte);
-			currentBytePtr = 0;
+			return true;
 		}
-		return currentBytePtr;
+		return false;
 	}
 	
-	private static byte writeCurrentByte(byte currentByte, byte currentBytePtr, byte buffer, int i) {
-		int bit = (buffer >> i) & 1;
+	private static int getBit(int buffer, int i) {
+		return (buffer >> i) & 1;
+	}
+	
+	private static int setBit(int buffer, int i) {
+		return buffer | (1 << i);
+	}
+	
+	private static byte writeCurrentByte(byte currentByte, byte currentBytePtr, int pointer, int i) {
+		int bit = getBit(pointer, i);
 		
 		if(bit != 0) {
 			currentByte |= (1 << (7 - currentBytePtr));
@@ -101,9 +109,14 @@ class AlmostLZ77 {
 	
 	private static void compress() {
 		int windowSize = 0;
+		
+		// debug
+		printBytesChar(input);
+		
 		byte currentByte = 0, currentBytePtr = 0;
 		for(int pos = 0; pos < input.size(); pos++) {
-			byte length = 0, pointer = -1;
+			byte length = 0;
+			int pointer = -1;
 			for(int i = pos - windowSize; i < pos; i++) {
 				int match = 0, left = i, right = pos;
 				while(left < pos && right < input.size() && input.get(left) == input.get(right)) {
@@ -111,7 +124,7 @@ class AlmostLZ77 {
 				}
 				if(match > length) {
 					length = (byte)match;
-					pointer = (byte)(left - 1);
+					pointer = (byte)(pos - left);	// pointer is relative position to pos
 				}
 			}
 			
@@ -119,21 +132,25 @@ class AlmostLZ77 {
 				currentByte |= (1 << (7 - currentBytePtr));	// first bit is 1
 				
 				for(int i = 0; i < 12; i++) {	// write pointer
-					currentBytePtr = checkOutputByte(currentByte, currentBytePtr);
+					if(isCurrentByteFilled(currentByte, currentBytePtr)) {
+						currentByte = 0; currentBytePtr = 0;
+					}
 					currentByte = writeCurrentByte(currentByte, currentBytePtr, pointer, i);
 					
 					// debug
-					printByte(currentByte);
+					printByteBinary(currentByte);
 					
 					currentBytePtr++;
 				}
 				
 				for(int i = 0; i < 4; i++) {	// write length
-					currentBytePtr = checkOutputByte(currentByte, currentBytePtr);
+					if(isCurrentByteFilled(currentByte, currentBytePtr)) {
+						currentByte = 0; currentBytePtr = 0;
+					}
 					currentByte = writeCurrentByte(currentByte, currentBytePtr, length, i);
 					
 					// debug
-					printByte(currentByte);
+					printByteBinary(currentByte);
 					
 					currentBytePtr++;
 				}
@@ -142,20 +159,24 @@ class AlmostLZ77 {
 				currentBytePtr++;	// first bit is 0
 				byte cha = input.get(pos);	// character 
 				for(int i = 0; i < 8; i++) {
-					currentBytePtr = checkOutputByte(currentByte, currentBytePtr);
+					if(isCurrentByteFilled(currentByte, currentBytePtr)) {
+						currentByte = 0; currentBytePtr = 0;
+					}
 					currentByte = writeCurrentByte(currentByte, currentBytePtr, cha, i);
 					
 					// debug
-					printByte(currentByte);
+					printByteBinary(currentByte);
 					
 					currentBytePtr++;
 				}
 				
 				// debug
-				printByte(currentByte);
+				printByteBinary(currentByte);
 			}
 			
-			currentBytePtr = checkOutputByte(currentByte, currentBytePtr);
+			if(isCurrentByteFilled(currentByte, currentBytePtr)) {
+				currentByte = 0; currentBytePtr = 0;
+			}
 			
 			if(windowSize < maxSize)
 				windowSize++;
@@ -165,7 +186,92 @@ class AlmostLZ77 {
 		}
 	}
 	
-	private static void printByte(byte b) {
+	private static void decompress() {
+		boolean started = false;
+		int bitCount = 0;
+		ArrayList<Byte> buffer = new ArrayList<Byte>();
+		ArrayList<Integer> flag = new ArrayList<Integer>();
+		byte currentWriteByte = 0, currentWriteBytePtr = 0;
+		for(byte currentByte : input) {
+			for(byte currentBytePtr = 0; currentBytePtr < 8; currentBytePtr++) {	// read bit by bit
+				if(!started) {	// start a new block
+					currentWriteByte = 0;
+					currentWriteBytePtr = 0;
+					started = true;
+					int bit = getBit(currentByte, currentBytePtr);
+					if(bit != 0) {
+						bitCount = 16;
+						flag.add(1);
+					}
+					else {
+						bitCount = 8;
+						flag.add(0);
+					}
+					continue;
+				}
+				if(bitCount > 0) {	// we still have bits to read
+					if(currentWriteBytePtr == 8) {
+						buffer.add(currentWriteByte);
+						currentWriteByte = 0;
+						currentWriteBytePtr = 0;
+					}
+					
+					int bit = getBit(currentByte, currentBytePtr);
+					
+					if(bit != 0) {
+						currentWriteByte |= (1 << currentWriteBytePtr++);
+					}
+					
+					bitCount--;
+				}
+				if(bitCount == 0) {	// current block read finish
+					started = false;
+					buffer.add(currentWriteByte);
+					currentWriteByte = 0;
+					currentWriteBytePtr = 0;
+				}
+			}
+		}
+		int index = 0;
+		for(int flg : flag) {
+			if(flg == 0) {	// read one byte and output
+				output.add(buffer.get(index++));
+			}
+			else {	// read two byte and decompress
+				byte b1 = buffer.get(index++);	// first 12 bits indicate pointer
+				byte b2 = buffer.get(index++);	// next 4 bits indicate length
+				int pointer = b1;
+				for(int i = 0; i < 4; i++) {
+					pointer <<= 1;
+					int bit = getBit(b2, 7 - i);
+					if(bit != 0) {
+						pointer = setBit(pointer, 0);
+					}
+				}
+				byte length = 0;
+				for(int i = 4; i < 8; i++) {
+					length <<= 1;
+					int bit = getBit(b2, 7 - i);
+					if(bit != 0) {
+						length = (byte)setBit(length, 0);
+					}
+				}
+				int prev = output.size() - pointer;
+				for(int i = 0; i < length; i++) {
+					output.add(output.get(prev++));
+				}
+			}
+		}
+	}
+	
+	private static void printBytesChar(ArrayList<Byte> bytes) {
+		for(byte b : bytes) {
+			System.out.print((char) b);
+		}
+		System.out.println();
+	}
+	
+	private static void printByteBinary(byte b) {
 		System.out.println(String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0'));
 	}
 	
@@ -188,15 +294,15 @@ class AlmostLZ77 {
 		
 		if(command.equals("compress")) {
 			compress();
+			writeBytes(output);
 		}
 		else if(command.equals("decompress")) {
-			
+			decompress();
+			writeBytes(output);
 		}
 		else {
 			usage();
 			System.exit(-1);
 		}
-		
-		writeBytes(output);
 	}
 }

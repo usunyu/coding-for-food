@@ -26,7 +26,9 @@ runs as fast as possible, without taking too much code (use your discretion).
 The compressor and decompressor should take binary files as input and output. If you're familiar with Lempel-Ziv 
 compressors, this is a simplified LZ77 compressor.
 
-reference: http://cs.stanford.edu/people/eroberts/courses/soco/projects/2000-01/data-compression/lossless/lz77/index.htm
+reference:
+http://cs.stanford.edu/people/eroberts/courses/soco/projects/2000-01/data-compression/lossless/lz77/index.htm
+http://hi.baidu.com/sihochina/item/c4c66e0ae3033b25a1312d65
 */
 
 import java.io.BufferedWriter;

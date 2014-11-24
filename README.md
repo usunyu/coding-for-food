@@ -9,3 +9,4 @@ Coding
 * Solutions to [LeetCode](http://oj.leetcode.com/problems/)
 * Solutions to [CareerCup](http://www.careercup.com/page)
 * Data Structures and Algorithms Coding Practice
+* Code Jam [Practice and Learn](https://code.google.com/codejam/contests.html)

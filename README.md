@@ -8,5 +8,4 @@ Coding
 * Solutions to [Cracking Coding Interview](http://www.amazon.com/Cracking-Coding-Interview-Programming-Questions/dp/098478280X)
 * Solutions to [LeetCode](http://oj.leetcode.com/problems/)
 * Solutions to [CareerCup](http://www.careercup.com/page)
-* Solutions to Interview Problem such as Facebook, Evernote, Rocket Fuel, etc,.
 * Data Structures and Algorithms Coding Practice
